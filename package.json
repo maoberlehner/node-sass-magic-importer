@@ -1,0 +1,30 @@
+{
+  "name": "node-sass-magic-importer",
+  "description": "",
+  "main": "index.js",
+  "version": "0.0.1",
+  "author": "Markus Oberlehner",
+  "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoberlehner/node-sass-magic-importer"
+  },
+  "bugs": {
+    "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
+  },
+  "dependencies": {
+    "findup-sync": "^0.4.1",
+    "glob": "^7.0.3"
+  },
+  "devDependencies": {
+    "bootstrap-sass": "^3.3.6",
+    "node-sass": "^3.7.0"
+  },
+  "scripts": {
+    "test:import-module": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/import-module.scss",
+    "test:globbing": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/globbing.scss",
+    "test:import-once": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/import-once.scss",
+    "test": "npm run test:import-module && npm run test:globbing && npm run test:import-once"
+  }
+}
