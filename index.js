@@ -1,57 +1,70 @@
+/**
+ * node-sass-magic-importer
+ */
 'use strict';
 
+const findup = require('findup-sync');
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
-const findup = require('findup-sync');
 
-// Hack to keep track of "sessions".
-let usedMap = new Map();
+// Keep track of imported files.
+const importedMap = new Map();
+
+// Possible file extensions.
+const extensions = ['.scss', '.sass', '.css'];
 
 // Normalizes an import path for storage.
-let normalize = (url) => {
+const normalize = (url) => {
+  // Normalize a path, taking care of '..' and '.' parts.
   url = path.normalize(url);
-  let parsed = path.parse(url);
+  const parsed = path.parse(url);
+  // Rremove the file extension.
   url = url.slice(0, url.length - parsed.ext.length);
-
   return url;
 };
 
+// Return possible import url variations.
+const getUrlVariants = (url) => {
+  const parsed = path.parse(url);
+  const urlVariants = [url];
+  if (!parsed.ext) {
+    // Add import url variations with all
+    // possible extensions and partial prefix.
+    extensions.forEach((extension) => {
+      urlVariants.push(`${parsed.dir}/${parsed.base}${extension}`);
+      urlVariants.push(`${parsed.dir}/_${parsed.base}${extension}`);
+    });
+  }
+  return urlVariants;
+};
+
 module.exports = function(url, prev, done) {
-  // We try to preserve imports within a Sass "session".
-  if (!usedMap.has(this.options.importer)) {
-    usedMap.set(this.options.importer, new Set());
+  // Keep track of imported files per "session".
+  if (!importedMap.has(this.options.importer)) {
+    importedMap.set(this.options.importer, new Set());
   }
 
-  let usedSet = usedMap.get(this.options.importer);
+  const importedSet = importedMap.get(this.options.importer);
+  const urlVariants = getUrlVariants(url);
   let cwd = this.options.includePaths;
+  let modulePath;
 
   if (path.isAbsolute(prev)) {
     cwd = path.dirname(prev);
   }
 
-  let urlArray = url.split('/');
-  let fileName = urlArray.pop();
-  let urlVariants = [
-    url,
-    urlArray.join('/') + '/' + fileName + '.scss',
-    urlArray.join('/') + '/_' + fileName + '.scss'
-  ];
-// console.log(urlArray);
-// console.log(fileName);
-  let modulePath;
-
-  urlVariants.forEach(function (variantUrl) {
+  urlVariants.forEach((variantUrl) => {
+    // Look for matching files inside the node_modules directory.
     modulePath = findup(variantUrl, { cwd: './node_modules', nocase: true });
-
     if (modulePath) {
       url = modulePath;
       return;
     }
-console.log(variantUrl);
   });
-//console.log(modulePath);
-//fs.existsSync(prev)
+
+  // Import files if they have no "*" in the URL and add
+  // the path to the map of already imported paths.
   if (!glob.hasMagic(url)) {
     let fullPath = url;
     if (!path.isAbsolute(url)) {
@@ -60,15 +73,14 @@ console.log(variantUrl);
 
     fullPath = normalize(fullPath);
 
-    // We've already imported this! Yuck!
-    // TODO: add "!multiple" suffix to force import
-    if (usedSet.has(fullPath)) {
+    // The file is already imported.
+    if (importedSet.has(fullPath)) {
       return {
         contents: "\n"
       };
     }
 
-    usedSet.add(fullPath);
+    importedSet.add(fullPath);
 
     return {
       file: url
@@ -80,11 +92,11 @@ console.log(variantUrl);
       return console.error(err);
     }
 
-    let imports = [];
-
-    for (let file of files) {
-      // Sass and SCSS syntax, though only SCSS is tested.
-      if (!/\.s[ac]ss$/.test(file)) {
+    const imports = [];
+    for (const file of files) {
+      const parsedFile = path.parse(file);
+      // Skip files that are not stylesheets.
+      if (extensions.indexOf(parsedFile.ext) === -1) {
         continue;
       }
 
@@ -92,15 +104,14 @@ console.log(variantUrl);
       if (!path.isAbsolute(file)) {
         fullPath = path.join(cwd, file);
       }
-
       fullPath = normalize(fullPath);
 
-      let escaped = fullPath.replace(/\\/g, "\\\\");
-
+      const escaped = fullPath.replace(/\\/g, "\\\\");
       imports.push(`@import "${escaped}";${this.options.linefeed}`);
     }
 
-    // Wrap it all up!
+    // Add the @import statements with files found via the
+    // glob pattern, to the contents so they are imported as usual.
     done({
       contents: imports.join("\n")
     });
