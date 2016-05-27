@@ -20,7 +20,7 @@
     "postcss-scss": "^0.1.8"
   },
   "devDependencies": {
-    "bootstrap-sass": "^3.3.6",
+    "bootstrap": "^4.0.0-alpha.2",
     "node-sass": "^3.7.0"
   },
   "scripts": {
