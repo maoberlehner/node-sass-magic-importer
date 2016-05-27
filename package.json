@@ -15,7 +15,9 @@
   },
   "dependencies": {
     "findup-sync": "^0.4.1",
-    "glob": "^7.0.3"
+    "glob": "^7.0.3",
+    "postcss": "^5.0.21",
+    "postcss-scss": "^0.1.8"
   },
   "devDependencies": {
     "bootstrap-sass": "^3.3.6",
@@ -25,6 +27,7 @@
     "test:import-module": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/import-module.scss",
     "test:globbing": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/globbing.scss",
     "test:import-once": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/import-once.scss",
-    "test": "npm run test:import-module && npm run test:globbing && npm run test:import-once"
+    "test:import-selectors": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/import-selectors.scss",
+    "test": "npm run test:import-module && npm run test:globbing && npm run test:import-once && npm run test:import-selectors"
   }
 }

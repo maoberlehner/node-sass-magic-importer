@@ -7,6 +7,8 @@ const findup = require('findup-sync');
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
+const postcss = require('postcss');
+const postcssScss = require('postcss-scss');
 
 // Keep track of imported files.
 const importedMap = new Map();
@@ -22,6 +24,13 @@ const normalize = (url) => {
   // Rremove the file extension.
   url = url.slice(0, url.length - parsed.ext.length);
   return url;
+};
+
+const getFullPath = (fullPath, cwd) => {
+  if (!path.isAbsolute(fullPath)) {
+    fullPath = path.join(cwd, fullPath);
+  }
+  return normalize(fullPath);
 };
 
 // Return possible import url variations.
@@ -46,15 +55,26 @@ module.exports = function(url, prev, done) {
   }
 
   const importedSet = importedMap.get(this.options.importer);
-  const urlVariants = getUrlVariants(url);
+  let selectors = url.match(/{([^}]+)}/);
   let cwd = this.options.includePaths;
-  let modulePath;
 
   if (path.isAbsolute(prev)) {
     cwd = path.dirname(prev);
   }
 
+  if (selectors) {
+    url = url.split(' from ')[1].trim();
+  }
+
+  const urlVariants = getUrlVariants(url);
+  let filePath;
+  let modulePath;
+
   urlVariants.forEach((variantUrl) => {
+    filePath = findup(variantUrl, { cwd: cwd, nocase: true });
+    if (filePath) {
+      return;
+    }
     // Look for matching files inside the node_modules directory.
     modulePath = findup(variantUrl, { cwd: './node_modules', nocase: true });
     if (modulePath) {
@@ -63,16 +83,50 @@ module.exports = function(url, prev, done) {
     }
   });
 
+  let whiteListedSelectors = [];
+  let replacementSelectors = {};
+
+  if (selectors) {
+    selectors = selectors[1].split(',').map(Function.prototype.call, String.prototype.trim);
+    selectors.map((currentValue, index) => {
+      const selectorAndReplacement = currentValue.split(' as ');
+      if (selectorAndReplacement[1]) {
+        selectors[index] = selectorAndReplacement[0].trim();
+        replacementSelectors[index] = selectorAndReplacement[1].trim();
+      }
+    });
+    whiteListedSelectors = selectors;
+
+    let scss = fs.readFileSync(filePath || url);
+    scss = postcss(postcss.plugin('postcss-remover', (options) => {
+      return (css) => {
+        css.walkRules((rule) => {
+          let whiteListSelectorIndex = false;
+          whiteListedSelectors.forEach((selector, index) => {
+            let selectorArray = rule.selector.split(',');
+            if (selectorArray.indexOf(selector) !== -1) {
+              whiteListSelectorIndex = index;
+              return;
+            }
+          });
+          if (whiteListSelectorIndex === false) {
+            rule.remove();
+          } else if (replacementSelectors[whiteListSelectorIndex]) {
+            rule.selector = replacementSelectors[whiteListSelectorIndex];
+          }
+        });
+      };
+    })).process(scss, { syntax: postcssScss }).css;
+
+    return {
+      contents: scss
+    };
+  }
+
   // Import files if they have no "*" in the URL and add
   // the path to the map of already imported paths.
   if (!glob.hasMagic(url)) {
-    let fullPath = url;
-    if (!path.isAbsolute(url)) {
-      fullPath = path.join(cwd, url);
-    }
-
-    fullPath = normalize(fullPath);
-
+    let fullPath = getFullPath(url, cwd);
     // The file is already imported.
     if (importedSet.has(fullPath)) {
       return {
@@ -100,12 +154,7 @@ module.exports = function(url, prev, done) {
         continue;
       }
 
-      let fullPath = file;
-      if (!path.isAbsolute(file)) {
-        fullPath = path.join(cwd, file);
-      }
-      fullPath = normalize(fullPath);
-
+      let fullPath = getFullPath(file, cwd);
       const escaped = fullPath.replace(/\\/g, "\\\\");
       imports.push(`@import "${escaped}";${this.options.linefeed}`);
     }
