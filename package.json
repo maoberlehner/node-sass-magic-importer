@@ -28,6 +28,7 @@
     "test:module": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/module.scss",
     "test:globbing": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/globbing.scss",
     "test:once": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/once.scss",
-    "test": "npm run test:selectors && npm run test:module && npm run test:globbing && npm run test:once"
+    "test:css": "node-sass --importer index.js -o ./tests/css/dist ./tests/css/css.scss",
+    "test": "npm run test:selectors && npm run test:module && npm run test:globbing && npm run test:once && npm run test:css"
   }
 }
