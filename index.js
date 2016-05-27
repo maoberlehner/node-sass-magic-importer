@@ -159,13 +159,13 @@ module.exports = function(url, prev, done) {
   // the path to the map of already imported paths.
   if (!glob.hasMagic(cleanUrl)) {
     let absoluteUrl = getAbsoluteUrl(cleanUrl);
-    importedSet.add(absoluteUrl);
     // The file is already imported.
     if (defaultOptions.importOnce && importedSet.has(absoluteUrl)) {
       return {
         contents: "\n"
       };
     }
+    importedSet.add(absoluteUrl);
 
     return {
       file: cleanUrl
