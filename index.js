@@ -13,11 +13,31 @@ const postcssScss = require('postcss-scss');
 // Keep track of imported files.
 const importedMap = new Map();
 
-// Possible file extensions.
-const extensions = ['.scss', '.sass', '.css'];
+// Default ptions.
+const defaultOptions = {
+  importOnce: true,
+  cssImport: true,
+  extensions: ['.scss']
+};
 
-// Normalizes an import path for storage.
-const normalize = (url) => {
+// Current working directory.
+let cwd;
+
+// Find selectors in the import url and
+// return a cleaned up url and the selectors.
+const parseUrl = (url) => {
+  let cleanUrl = url;
+  let selectorFilters;
+  let selectorFiltersMatch = url.match(/{([^}]+)}/);
+  if (selectorFiltersMatch) {
+    cleanUrl = url.split(' from ')[1].trim();
+    selectorFilters = selectorFiltersMatch[1].split(',').map(Function.prototype.call, String.prototype.trim);
+  }
+  return { cleanUrl, selectorFilters };
+};
+
+// Normalizes an import url for storage.
+const normalizeUrl = (url) => {
   // Normalize a path, taking care of '..' and '.' parts.
   url = path.normalize(url);
   const parsed = path.parse(url);
@@ -26,11 +46,13 @@ const normalize = (url) => {
   return url;
 };
 
-const getFullPath = (fullPath, cwd) => {
-  if (!path.isAbsolute(fullPath)) {
-    fullPath = path.join(cwd, fullPath);
+// Find the absolute path for a given url.
+const getAbsoluteUrl = (url) => {
+  let absoluteUrl = url;
+  if (!path.isAbsolute(url)) {
+    absoluteUrl = path.join(cwd, url);
   }
-  return normalize(fullPath);
+  return normalizeUrl(absoluteUrl);
 };
 
 // Return possible import url variations.
@@ -40,7 +62,7 @@ const getUrlVariants = (url) => {
   if (!parsed.ext) {
     // Add import url variations with all
     // possible extensions and partial prefix.
-    extensions.forEach((extension) => {
+    defaultOptions.extensions.forEach((extension) => {
       urlVariants.push(`${parsed.dir}/${parsed.base}${extension}`);
       urlVariants.push(`${parsed.dir}/_${parsed.base}${extension}`);
     });
@@ -49,99 +71,108 @@ const getUrlVariants = (url) => {
 };
 
 module.exports = function(url, prev, done) {
-  // Keep track of imported files per "session".
-  if (!importedMap.has(this.options.importer)) {
-    importedMap.set(this.options.importer, new Set());
-  }
-
-  const importedSet = importedMap.get(this.options.importer);
-  let selectors = url.match(/{([^}]+)}/);
-  let cwd = this.options.includePaths;
-
+  // Set the current working directory.
+  cwd = this.options.includePaths;
   if (path.isAbsolute(prev)) {
     cwd = path.dirname(prev);
   }
 
-  if (selectors) {
-    url = url.split(' from ')[1].trim();
+  // Add ".css" to the allowed extensions if CSS import is enabled.+
+  if (defaultOptions.cssImport) {
+    defaultOptions.extensions.push('.css');
   }
 
-  const urlVariants = getUrlVariants(url);
-  let filePath;
-  let modulePath;
+  // Keep track of imported files per "session".
+  if (!importedMap.has(this.options.importer)) {
+    importedMap.set(this.options.importer, new Set());
+  }
+  const importedSet = importedMap.get(this.options.importer);
 
+  // Get a clean url (without selector filters) and
+  // the selector filters from the import url.
+  let { cleanUrl, selectorFilters } = parseUrl(url);
+
+  // Find the path to the file and
+  // search for matching files inside the "node_modules" directory.
+  const urlVariants = getUrlVariants(cleanUrl);
+  let filePath;
   urlVariants.forEach((variantUrl) => {
-    filePath = findup(variantUrl, { cwd: cwd, nocase: true });
-    if (filePath) {
+    let searchPath = findup(variantUrl, { cwd: cwd });
+    if (searchPath) {
+      filePath = searchPath;
       return;
     }
     // Look for matching files inside the node_modules directory.
-    modulePath = findup(variantUrl, { cwd: './node_modules', nocase: true });
-    if (modulePath) {
-      url = modulePath;
+    searchPath = findup(variantUrl, { cwd: './node_modules', nocase: true });
+    if (searchPath) {
+      filePath = cleanUrl = searchPath;
       return;
     }
   });
 
-  let whiteListedSelectors = [];
-  let replacementSelectors = {};
+  // Extract selectors from the imported file and
+  // only import the given selectors.
+  if (selectorFilters && filePath) {
+    let whiteListedSelectors = selectorFilters;
+    let replacementSelectors = {};
 
-  if (selectors) {
-    selectors = selectors[1].split(',').map(Function.prototype.call, String.prototype.trim);
-    selectors.map((currentValue, index) => {
+    whiteListedSelectors.map((currentValue, index) => {
       const selectorAndReplacement = currentValue.split(' as ');
       if (selectorAndReplacement[1]) {
-        selectors[index] = selectorAndReplacement[0].trim();
+        whiteListedSelectors[index] = selectorAndReplacement[0].trim();
         replacementSelectors[index] = selectorAndReplacement[1].trim();
       }
     });
-    whiteListedSelectors = selectors;
 
-    let scss = fs.readFileSync(filePath || url);
-    scss = postcss(postcss.plugin('postcss-remover', (options) => {
+    let contents = fs.readFileSync(filePath);
+    contents = postcss(postcss.plugin('postcss-extract-selectors', (options) => {
       return (css) => {
         css.walkRules((rule) => {
+          // Findout if the current rule has an whitelisted selector.
           let whiteListSelectorIndex = false;
           whiteListedSelectors.forEach((selector, index) => {
             let selectorArray = rule.selector.split(',');
             if (selectorArray.indexOf(selector) !== -1) {
+              // The index of the whitelisted selector is saved so we can
+              // replace the selector with a given replacement selector
               whiteListSelectorIndex = index;
               return;
             }
           });
           if (whiteListSelectorIndex === false) {
+            // Remove the selector.
             rule.remove();
           } else if (replacementSelectors[whiteListSelectorIndex]) {
+            // Change the selector to match the given replacement selector.
             rule.selector = replacementSelectors[whiteListSelectorIndex];
           }
         });
       };
-    })).process(scss, { syntax: postcssScss }).css;
+    })).process(contents, { syntax: postcssScss }).css;
 
     return {
-      contents: scss
+      contents: contents
     };
   }
 
   // Import files if they have no "*" in the URL and add
   // the path to the map of already imported paths.
-  if (!glob.hasMagic(url)) {
-    let fullPath = getFullPath(url, cwd);
+  if (!glob.hasMagic(cleanUrl)) {
+    let absoluteUrl = getAbsoluteUrl(cleanUrl);
+    importedSet.add(absoluteUrl);
     // The file is already imported.
-    if (importedSet.has(fullPath)) {
+    if (defaultOptions.importOnce && importedSet.has(absoluteUrl)) {
       return {
         contents: "\n"
       };
     }
 
-    importedSet.add(fullPath);
-
     return {
-      file: url
+      file: cleanUrl
     };
   }
 
-  glob(url, {cwd: cwd}, (err, files) => {
+  glob(cleanUrl, {cwd: cwd}, (err, files) => {
     if (err) {
       return console.error(err);
     }
@@ -149,13 +180,13 @@ module.exports = function(url, prev, done) {
     const imports = [];
     for (const file of files) {
       const parsedFile = path.parse(file);
-      // Skip files that are not stylesheets.
-      if (extensions.indexOf(parsedFile.ext) === -1) {
+      // Skip files which do not match the given extensions.
+      if (defaultOptions.extensions.indexOf(parsedFile.ext) === -1) {
         continue;
       }
 
-      let fullPath = getFullPath(file, cwd);
-      const escaped = fullPath.replace(/\\/g, "\\\\");
+      let absoluteUrl = getAbsoluteUrl(file);
+      const escaped = absoluteUrl.replace(/\\/g, "\\\\");
       imports.push(`@import "${escaped}";${this.options.linefeed}`);
     }
 
