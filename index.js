@@ -92,72 +92,72 @@ module.exports = function(url, prev, done) {
   // the selector filters from the import url.
   let { cleanUrl, selectorFilters } = parseUrl(url);
 
-  // Find the path to the file and
-  // search for matching files inside the "node_modules" directory.
-  const urlVariants = getUrlVariants(cleanUrl);
-  let filePath;
-  urlVariants.forEach((variantUrl) => {
-    let searchPath = findup(variantUrl, { cwd: cwd });
-    if (searchPath) {
-      filePath = searchPath;
-      return;
-    }
-    // Look for matching files inside the node_modules directory.
-    searchPath = findup(variantUrl, { cwd: './node_modules', nocase: true });
-    if (searchPath) {
-      filePath = cleanUrl = searchPath;
-      return;
-    }
-  });
-
-  // Extract selectors from the imported file and
-  // only import the given selectors.
-  if (selectorFilters && filePath) {
-    let whiteListedSelectors = selectorFilters;
-    let replacementSelectors = {};
-
-    whiteListedSelectors.map((currentValue, index) => {
-      const selectorAndReplacement = currentValue.split(' as ');
-      if (selectorAndReplacement[1]) {
-        whiteListedSelectors[index] = selectorAndReplacement[0].trim();
-        replacementSelectors[index] = selectorAndReplacement[1].trim();
-      }
-    });
-
-    let contents = fs.readFileSync(filePath);
-    contents = postcss(postcss.plugin('postcss-extract-selectors', (options) => {
-      return (css) => {
-        css.walkRules((rule) => {
-          // Findout if the current rule has an whitelisted selector.
-          let whiteListSelectorIndex = false;
-          whiteListedSelectors.forEach((selector, index) => {
-            let selectorArray = rule.selector.split(',');
-            if (selectorArray.indexOf(selector) !== -1) {
-              // The index of the whitelisted selector is saved so we can
-              // replace the selector with a given replacement selector
-              whiteListSelectorIndex = index;
-              return;
-            }
-          });
-          if (whiteListSelectorIndex === false) {
-            // Remove the selector.
-            rule.remove();
-          } else if (replacementSelectors[whiteListSelectorIndex]) {
-            // Change the selector to match the given replacement selector.
-            rule.selector = replacementSelectors[whiteListSelectorIndex];
-          }
-        });
-      };
-    })).process(contents, { syntax: postcssScss }).css;
-
-    return {
-      contents: contents
-    };
-  }
-
   // Import files if they have no "*" in the URL and add
   // the path to the map of already imported paths.
   if (!glob.hasMagic(cleanUrl)) {
+    // Find the path to the file and
+    // search for matching files inside the "node_modules" directory.
+    const urlVariants = getUrlVariants(cleanUrl);
+    let filePath;
+    urlVariants.forEach((variantUrl) => {
+      let searchPath = findup(variantUrl, { cwd: cwd });
+      if (searchPath) {
+        filePath = searchPath;
+        return;
+      }
+      // Look for matching files inside the node_modules directory.
+      searchPath = findup(variantUrl, { cwd: './node_modules', nocase: true });
+      if (searchPath) {
+        filePath = cleanUrl = searchPath;
+        return;
+      }
+    });
+
+    // Extract selectors from the imported file and
+    // only import the given selectors.
+    if (selectorFilters && filePath) {
+      let whiteListedSelectors = selectorFilters;
+      let replacementSelectors = {};
+
+      whiteListedSelectors.map((currentValue, index) => {
+        const selectorAndReplacement = currentValue.split(' as ');
+        if (selectorAndReplacement[1]) {
+          whiteListedSelectors[index] = selectorAndReplacement[0].trim();
+          replacementSelectors[index] = selectorAndReplacement[1].trim();
+        }
+      });
+
+      let contents = fs.readFileSync(filePath);
+      contents = postcss(postcss.plugin('postcss-extract-selectors', (options) => {
+        return (css) => {
+          css.walkRules((rule) => {
+            // Findout if the current rule has an whitelisted selector.
+            let whiteListSelectorIndex = false;
+            whiteListedSelectors.forEach((selector, index) => {
+              let selectorArray = rule.selector.split(',');
+              if (selectorArray.indexOf(selector) !== -1) {
+                // The index of the whitelisted selector is saved so we can
+                // replace the selector with a given replacement selector
+                whiteListSelectorIndex = index;
+                return;
+              }
+            });
+            if (whiteListSelectorIndex === false) {
+              // Remove the selector.
+              rule.remove();
+            } else if (replacementSelectors[whiteListSelectorIndex]) {
+              // Change the selector to match the given replacement selector.
+              rule.selector = replacementSelectors[whiteListSelectorIndex];
+            }
+          });
+        };
+      })).process(contents, { syntax: postcssScss }).css;
+
+      return {
+        contents: contents
+      };
+    }
+
     let absoluteUrl = getAbsoluteUrl(cleanUrl);
     // The file is already imported.
     if (defaultOptions.importOnce && importedSet.has(absoluteUrl)) {
