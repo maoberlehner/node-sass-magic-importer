@@ -13,7 +13,7 @@ const postcssScss = require('postcss-scss');
 // Keep track of imported files.
 const importedMap = new Map();
 
-// Default ptions.
+// Default options.
 const defaultOptions = {
   importOnce: true,
   cssImport: true,
