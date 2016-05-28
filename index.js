@@ -189,8 +189,12 @@ module.exports = function(url, prev, done) {
       }
 
       let absoluteUrl = getAbsoluteUrl(file);
+      let selectorFiltersString = '';
       const escaped = absoluteUrl.replace(/\\/g, "\\\\");
-      imports.push(`@import "${escaped}";${this.options.linefeed}`);
+      if (selectorFilters) {
+        selectorFiltersString = `{ ${selectorFilters.join(',')} } from `;
+      }
+      imports.push(`@import "${selectorFiltersString}${escaped}";${this.options.linefeed}`);
     }
 
     // Add the @import statements with files found via the
