@@ -77,7 +77,7 @@ module.exports = function(url, prev, done) {
     cwd = path.dirname(prev);
   }
 
-  // Add ".css" to the allowed extensions if CSS import is enabled.+
+  // Add ".css" to the allowed extensions if CSS import is enabled.
   if (defaultOptions.cssImport && defaultOptions.extensions.indexOf('.css') === -1) {
     defaultOptions.extensions.push('.css');
   }
