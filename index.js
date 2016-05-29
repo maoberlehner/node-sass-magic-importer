@@ -36,23 +36,24 @@ const parseUrl = (url) => {
   return { cleanUrl, selectorFilters };
 };
 
-// Normalizes an import url for storage.
-const normalizeUrl = (url) => {
-  // Normalize a path, taking care of '..' and '.' parts.
-  url = path.normalize(url);
-  const parsed = path.parse(url);
-  // Rremove the file extension.
-  url = url.slice(0, url.length - parsed.ext.length);
-  return url;
-};
-
 // Find the absolute path for a given url.
 const getAbsoluteUrl = (url) => {
   let absoluteUrl = url;
   if (!path.isAbsolute(url)) {
     absoluteUrl = path.join(cwd, url);
   }
-  return normalizeUrl(absoluteUrl);
+  return absoluteUrl;
+};
+
+// Normalizes an import url for storage.
+const normalizeUrl = (url) => {
+  url = getAbsoluteUrl(url);
+  // Normalize a path, taking care of '..' and '.' parts.
+  url = path.normalize(url);
+  const parsed = path.parse(url);
+  // Rremove the file extension.
+  url = url.slice(0, url.length - parsed.ext.length);
+  return url;
 };
 
 // Return possible import url variations.
@@ -161,14 +162,14 @@ module.exports = function(url, prev, done) {
       };
     }
 
-    let absoluteUrl = getAbsoluteUrl(cleanUrl);
+    let normalizedUrl = normalizeUrl(cleanUrl);
     // The file is already imported.
-    if (defaultOptions.importOnce && importedSet.has(absoluteUrl)) {
+    if (defaultOptions.importOnce && importedSet.has(normalizedUrl)) {
       return {
         contents: "\n"
       };
     }
-    importedSet.add(absoluteUrl);
+    importedSet.add(normalizedUrl);
 
     return {
       file: cleanUrl
@@ -188,9 +189,9 @@ module.exports = function(url, prev, done) {
         continue;
       }
 
-      let absoluteUrl = getAbsoluteUrl(file);
+      let normalizedUrl = normalizeUrl(file);
       let selectorFiltersString = '';
-      const escaped = absoluteUrl.replace(/\\/g, "\\\\");
+      const escaped = normalizedUrl.replace(/\\/g, "\\\\");
       if (selectorFilters) {
         selectorFiltersString = `{ ${selectorFilters.join(',')} } from `;
       }
