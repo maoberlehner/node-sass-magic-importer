@@ -208,6 +208,7 @@ console.time('benchmark');
   if (!filePath) {
     // Add the url to the imported urls.
     importedSet.add(cleanUrl);
+console.timeEnd('benchmark');
     return {
       file: cleanUrl
     };
@@ -227,10 +228,12 @@ console.time('benchmark');
     if (selectorFilters) {
       contents = processSelectorFilters(contents, selectorFilters);
     }
+console.timeEnd('benchmark');
     return {
       contents: contents
     };
   }
+console.timeEnd('benchmark');
   return {
     file: cleanUrl
   };
