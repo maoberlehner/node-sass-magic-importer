@@ -13,12 +13,13 @@ const postcssScss = require('postcss-scss');
 // Keep track of imported files.
 const importedMap = new Map();
 
-// Default options.
+// Options.
 const defaultOptions = {
   importOnce: true,
   cssImport: true,
   extensions: ['.scss']
 };
+let options = {};
 
 // Find selectors in the import url and
 // return a cleaned up url and the selectors.
@@ -64,7 +65,7 @@ const getFilePathVariants = (filePath) => {
   if (parsedFilePath.ext) {
     filePathVariants.push(filePath);
   } else {
-    defaultOptions.extensions.forEach((extension) => {
+    options.extensions.forEach((extension) => {
       filePathVariants.push(`${path.join(parsedFilePath.dir, parsedFilePath.base)}${extension}`);
       filePathVariants.push(`${path.join(parsedFilePath.dir, '_' + parsedFilePath.base)}${extension}`);
     });
@@ -145,9 +146,12 @@ const processSelectorFilters = (contents, selectorFilters) => {
 
 module.exports = function(url, prev, done) {
 console.time('benchmark');
+  const customOptions = this.options.magicImporter || {};
+  Object.assign(options, defaultOptions, customOptions);
+
   // Add ".css" to the allowed extensions if CSS import is enabled.
-  if (defaultOptions.cssImport && defaultOptions.extensions.indexOf('.css') === -1) {
-    defaultOptions.extensions.push('.css');
+  if (options.cssImport && options.extensions.indexOf('.css') === -1) {
+    options.extensions.push('.css');
   }
 
   // Keep track of imported files.
@@ -197,7 +201,7 @@ console.time('benchmark');
   }
 
   // Check if the file is already imported.
-  if (defaultOptions.importOnce && (importedSet.has(filePath) || importedSet.has(cleanUrl))) {
+  if (options.importOnce && (importedSet.has(filePath) || importedSet.has(cleanUrl))) {
     return {
       contents: "\n"
     };
@@ -222,7 +226,7 @@ console.timeEnd('benchmark');
 
   // Load the file contents if the file has a .css ending
   // or selectors were found.
-  if (selectorFilters || (defaultOptions.cssImport && path.parse(cleanUrl).ext == '.css')) {
+  if (selectorFilters || (options.cssImport && path.parse(cleanUrl).ext == '.css')) {
     let contents = fs.readFileSync(cleanUrl).toString();
     // Filter and (optionally) replace selectors.
     if (selectorFilters) {
