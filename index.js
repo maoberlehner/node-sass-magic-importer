@@ -91,13 +91,36 @@ const getFilePath = (url, includePaths) => {
 };
 
 const getModuleFilePath = (url) => {
-// @TODO: Find main file
-// @TODO: Find style file
   let searchPath = false;
   let filePath = false;
-  // Search for the index file if only the module name is given.
+  // If only the module name is given, we look in the modules package.json file
+  // for "sass", "style" or "main" declarations.
   if (!path.parse(url).dir) {
-    url = path.join(url, 'index');
+    // Search the modules package.json file.
+    const packageJsonUrl = path.join(url, 'package.json');
+    const packageJsonPath = findup(packageJsonUrl, { cwd: './node_modules' });
+    let packageUrl;
+    if (packageJsonPath) {
+      const moduleDir = path.parse(packageJsonPath).dir;
+      const packageJson = require(packageJsonPath);
+      if (packageJson.sass) {
+        packageUrl = path.join(moduleDir, packageJson.sass);
+      } else if (packageJson.style) {
+        packageUrl = path.join(moduleDir, packageJson.style);
+      } else if (packageJson.main) {
+        const mainFile = path.join(moduleDir, packageJson.main);
+        // Only load the main file if the extensions matches allowed extensions.
+        if (options.extensions.indexOf(path.parse(mainFile).ext) !== -1) {
+          packageUrl = mainFile;
+        }
+      }
+    }
+    // If no matching file is found in the modules package.json we default to
+    // a index file in the modules root directory.
+    if (!packageUrl) {
+      packageUrl = path.join(url, 'index');
+    }
+    url = packageUrl;
   }
   const filePathVariants = getFilePathVariants(url);
   filePathVariants.some((filePathVariant) => {
