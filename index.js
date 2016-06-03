@@ -228,7 +228,8 @@ module.exports = function(url, prev, done) {
   // Check if the file is already imported.
   if (options.importOnce && (importedSet.has(filePath) || importedSet.has(cleanUrl))) {
     return {
-      contents: "\n"
+      file: '',
+      contents: ''
     };
   }
 
