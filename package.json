@@ -1,6 +1,6 @@
 {
   "name": "node-sass-magic-importer",
-  "description": "Custom importer for node-sass for selector specific imports, module importing, globbing support, import files only once and importing of files with .css extension",
+  "description": "Custom node-sass importer for selector specific imports, module importing, globbing support, import files only once and importing of files with .css extension",
   "main": "index.js",
   "version": "0.0.1",
   "author": "Markus Oberlehner",
