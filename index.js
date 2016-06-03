@@ -168,7 +168,6 @@ const processSelectorFilters = (contents, selectorFilters) => {
 };
 
 module.exports = function(url, prev, done) {
-console.time('benchmark');
   const customOptions = this.options.magicImporter || {};
   Object.assign(options, defaultOptions, customOptions);
 
@@ -238,7 +237,6 @@ console.time('benchmark');
   if (!filePath) {
     // Add the url to the imported urls.
     importedSet.add(cleanUrl);
-console.timeEnd('benchmark');
     return {
       file: cleanUrl
     };
@@ -258,12 +256,10 @@ console.timeEnd('benchmark');
     if (selectorFilters) {
       contents = processSelectorFilters(contents, selectorFilters);
     }
-console.timeEnd('benchmark');
     return {
       contents: contents
     };
   }
-console.timeEnd('benchmark');
   return {
     file: cleanUrl
   };
