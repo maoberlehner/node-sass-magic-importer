@@ -185,7 +185,10 @@ console.time('benchmark');
 
   // Get a clean url (without selector filters) and
   // the selector filters from the import url.
-  let { cleanUrl, selectorFilters, prioritizeModules } = parseUrl(url);
+  const urlSettings = parseUrl(url);
+  let cleanUrl = urlSettings.cleanUrl;
+  const selectorFilters = urlSettings.selectorFilters;
+  const prioritizeModules = urlSettings.prioritizeModules;
 
   // Create an array of all paths to search for files.
   let includePaths = [];
