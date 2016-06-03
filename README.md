@@ -3,6 +3,9 @@ Custom node-sass importer for selector specific imports, module importing,
 globbing support, import files only once and importing of files with .css
 extension.
 
+**WARNING: This is a 0.x.x release, there may be bugs and unexpected behaviour.
+Use at you own Risk.**
+
 ## Features
 once, globbing
 
