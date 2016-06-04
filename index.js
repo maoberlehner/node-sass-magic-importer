@@ -135,31 +135,38 @@ const getModuleFilePath = (url) => {
 
 const processSelectorFilters = (contents, selectorFilters) => {
   return postcss(postcss.plugin('postcss-extract-selectors', (options) => {
+    const searchSelectorFilters = [];
+    const replacementSelectorFilters = [];
+    // Split the selector filters in tow arrays, one array with selectors to
+    // search for and the other array with replacements for the filtered
+    // selectors.
+    selectorFilters.forEach((selectorFilter) => {
+      let searchSelector = selectorFilter[0];
+      let replacementSelector = selectorFilter[1];
+      searchSelectorFilters.push(searchSelector);
+      replacementSelectorFilters.push(replacementSelector || searchSelector);
+    });
+
     return (css) => {
       css.walkRules((rule) => {
-        let removeRule = false;
-        // Findout if the current rule has an whitelisted selector.
-        selectorFilters.some((selectorFilter) => {
-          removeRule = false
-          let searchSelector = selectorFilter[0];
-          let replacementSelector = selectorFilter[1];
-          let selectorArray = rule.selector.split(',');
-          let matchingSelectorIndex = selectorArray.indexOf(searchSelector);
-          // Check if there is a matching selector in the current rule.
-          if (matchingSelectorIndex > -1) {
-            if (replacementSelector) {
-              // Change the selector to match the given replacement selector.
-              selectorArray[matchingSelectorIndex] = replacementSelector;
-              rule.selector = selectorArray.join(',');
-            }
-            // Stop search and do not remove the rule.
-            return true;
+        // Split combined selectors into an array.
+        let ruleSelectors = rule.selector.split(',').map((ruleSelector) => ruleSelector.replace('\n', '').trim());
+        // Find whitelisted selectors and remove others.
+        ruleSelectors.forEach((ruleSelector, index) => {
+          let selectorFilterIndex = searchSelectorFilters.indexOf(ruleSelector);
+          if (selectorFilterIndex != -1) {
+            ruleSelectors[index] = replacementSelectorFilters[selectorFilterIndex];
+          } else {
+            // Set an empty value for the selector to mark it for deletion.
+            ruleSelectors[index] = '';
           }
-          // Current rule is not whitelisted, remove the rule.
-          removeRule = true;
         });
-        // Remove the rule.
-        if (removeRule) {
+        // Remove empty selectors.
+        ruleSelectors = ruleSelectors.filter((ruleSelector) => ruleSelector.length > 0 || false);
+        if (ruleSelectors.length) {
+          rule.selector = ruleSelectors.join(',');
+        } else {
+          // Remove the rule.
           rule.remove();
         }
       });
