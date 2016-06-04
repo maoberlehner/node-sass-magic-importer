@@ -110,7 +110,7 @@ const getModuleFilePath = (url) => {
       } else if (packageJson.main) {
         const mainFile = path.join(moduleDir, packageJson.main);
         // Only load the main file if the extensions matches allowed extensions.
-        if (options.extensions.indexOf(path.parse(mainFile).ext) !== -1) {
+        if (options.extensions.includes(path.parse(mainFile).ext)) {
           packageUrl = mainFile;
         }
       }
@@ -172,7 +172,7 @@ module.exports = function(url, prev, done) {
   Object.assign(options, defaultOptions, customOptions);
 
   // Add ".css" to the allowed extensions if CSS import is enabled.
-  if (options.cssImport && options.extensions.indexOf('.css') === -1) {
+  if (options.cssImport && !options.extensions.includes('.css')) {
     options.extensions.push('.css');
   }
 
