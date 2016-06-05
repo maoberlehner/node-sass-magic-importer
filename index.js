@@ -29,7 +29,7 @@ const parseUrl = (url) => {
   const selectorFiltersMatch = url.match(/{([^}]+)}/);
   let prioritizeModules = false;
   if (selectorFiltersMatch) {
-    cleanUrl = url.split(' from ')[1].trim();
+    cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
     // Create an array with selectors and replacement as one value.
     selectorFilters = selectorFiltersMatch[1].split(',');
     // Trim unnecessary whitespace.
