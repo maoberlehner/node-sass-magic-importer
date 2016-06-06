@@ -116,8 +116,8 @@ file. If all of this fails, the module is not compatible with this importer.
 @import '~bootstrap/scss/alert';
 ```
 
-The "~" is optional, it is a hint for the importer and other developers that
-this is a module path.
+The "~" is optional, it is a hint for the importer and developers that this is a
+module path.
 
 ### Globbing
 Globbing allows pattern matching operators to be used to match multiple files at
