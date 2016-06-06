@@ -54,7 +54,7 @@ Bootstrap but your project uses the BEM syntax for writing class names. Selector
 filtering and transforming can help with that.
 
 ```scss
-// This example uses the v4 dev version of the Bootstrap *alert* component:
+// This example uses the v4 dev version of the Bootstrap `alert` component:
 // https://github.com/twbs/bootstrap/blob/v4-dev/scss/_alert.scss
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins/border-radius';
