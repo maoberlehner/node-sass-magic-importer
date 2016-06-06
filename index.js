@@ -150,7 +150,7 @@ const processSelectorFilters = (contents, selectorFilters) => {
     return (css) => {
       css.walkRules((rule) => {
         // Split combined selectors into an array.
-        let ruleSelectors = rule.selector.split(',').map((ruleSelector) => ruleSelector.replace('\n', '').trim());
+        let ruleSelectors = rule.selector.split(',').map((ruleSelector) => ruleSelector.replace(/(\r\n|\n|\r)/gm, '').trim());
         // Find whitelisted selectors and remove others.
         ruleSelectors.forEach((ruleSelector, index) => {
           let selectorFilterIndex = searchSelectorFilters.indexOf(ruleSelector);
