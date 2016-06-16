@@ -2,10 +2,10 @@ const fs = require('fs');
 const sass = require('node-sass');
 const magicImporter = require('../index.js');
 
-const outFile = './css/dist/combined.css';
+const outFile = 'css/dist/combined.css';
 
 sass.render({
-  file: './css/combined.scss',
+  file: 'css/combined.scss',
   importer: magicImporter,
   outFile: outFile,
   magicImporter: {

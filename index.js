@@ -98,7 +98,7 @@ const getModuleFilePath = (url) => {
   if (!path.parse(url).dir) {
     // Search the modules package.json file.
     const packageJsonUrl = path.join(url, 'package.json');
-    const packageJsonPath = findup(packageJsonUrl, { cwd: './node_modules' });
+    const packageJsonPath = findup(packageJsonUrl, { cwd: 'node_modules' });
     let packageUrl;
     if (packageJsonPath) {
       const moduleDir = path.parse(packageJsonPath).dir;
@@ -124,7 +124,7 @@ const getModuleFilePath = (url) => {
   }
   const filePathVariants = getFilePathVariants(url);
   filePathVariants.some((filePathVariant) => {
-    searchPath = findup(filePathVariant, { cwd: './node_modules' });
+    searchPath = findup(filePathVariant, { cwd: 'node_modules' });
     if (searchPath) {
       filePath = searchPath;
       return true;
