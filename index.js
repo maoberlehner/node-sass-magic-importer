@@ -1,8 +1,6 @@
 /**
  * node-sass-magic-importer
  */
-'use strict';
-
 const cssSelectorExtract = require('css-selector-extract');
 const findup = require('findup-sync');
 const fs = require('fs');
