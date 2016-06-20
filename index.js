@@ -1,14 +1,11 @@
 /**
  * node-sass-magic-importer
  */
-'use strict';
-
+const cssSelectorExtract = require('css-selector-extract');
 const findup = require('findup-sync');
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
-const postcss = require('postcss');
-const postcssScss = require('postcss-scss');
 
 // Keep track of imported files.
 const importedMap = new Map();
@@ -98,7 +95,7 @@ const getModuleFilePath = (url) => {
   if (!path.parse(url).dir) {
     // Search the modules package.json file.
     const packageJsonUrl = path.join(url, 'package.json');
-    const packageJsonPath = findup(packageJsonUrl, { cwd: './node_modules' });
+    const packageJsonPath = findup(packageJsonUrl, { cwd: 'node_modules' });
     let packageUrl;
     if (packageJsonPath) {
       const moduleDir = path.parse(packageJsonPath).dir;
@@ -124,54 +121,13 @@ const getModuleFilePath = (url) => {
   }
   const filePathVariants = getFilePathVariants(url);
   filePathVariants.some((filePathVariant) => {
-    searchPath = findup(filePathVariant, { cwd: './node_modules' });
+    searchPath = findup(filePathVariant, { cwd: 'node_modules' });
     if (searchPath) {
       filePath = searchPath;
       return true;
     }
   });
   return filePath;
-};
-
-const processSelectorFilters = (contents, selectorFilters) => {
-  return postcss(postcss.plugin('postcss-extract-selectors', (options) => {
-    const searchSelectorFilters = [];
-    const replacementSelectorFilters = [];
-    // Split the selector filters in tow arrays, one array with selectors to
-    // search for and the other array with replacements for the filtered
-    // selectors.
-    selectorFilters.forEach((selectorFilter) => {
-      let searchSelector = selectorFilter[0];
-      let replacementSelector = selectorFilter[1];
-      searchSelectorFilters.push(searchSelector);
-      replacementSelectorFilters.push(replacementSelector || searchSelector);
-    });
-
-    return (css) => {
-      css.walkRules((rule) => {
-        // Split combined selectors into an array.
-        let ruleSelectors = rule.selector.split(',').map((ruleSelector) => ruleSelector.replace(/(\r\n|\n|\r)/gm, '').trim());
-        // Find whitelisted selectors and remove others.
-        ruleSelectors.forEach((ruleSelector, index) => {
-          let selectorFilterIndex = searchSelectorFilters.indexOf(ruleSelector);
-          if (selectorFilterIndex != -1) {
-            ruleSelectors[index] = replacementSelectorFilters[selectorFilterIndex];
-          } else {
-            // Set an empty value for the selector to mark it for deletion.
-            ruleSelectors[index] = '';
-          }
-        });
-        // Remove empty selectors.
-        ruleSelectors = ruleSelectors.filter((ruleSelector) => ruleSelector.length > 0 || false);
-        if (ruleSelectors.length) {
-          rule.selector = ruleSelectors.join(',');
-        } else {
-          // Remove the rule.
-          rule.remove();
-        }
-      });
-    };
-  })).process(contents, { syntax: postcssScss }).css;
 };
 
 module.exports = function(url, prev, done) {
@@ -262,7 +218,15 @@ module.exports = function(url, prev, done) {
     let contents = fs.readFileSync(cleanUrl).toString();
     // Filter and (optionally) replace selectors.
     if (selectorFilters) {
-      contents = processSelectorFilters(contents, selectorFilters);
+      let selectors = [];
+      let replacementSelectors = {};
+      selectorFilters.forEach((selectorArr) => {
+        selectors.push(selectorArr[0]);
+        if (selectorArr[1]) {
+          replacementSelectors[selectorArr[0]] = selectorArr[1];
+        }
+      });
+      contents = cssSelectorExtract.processSync(contents, selectors, replacementSelectors);
     }
     return {
       contents: contents
