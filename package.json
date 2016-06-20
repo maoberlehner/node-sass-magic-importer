@@ -14,10 +14,9 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
+    "css-selector-extract": "^0.1.0",
     "findup-sync": "^0.4.1",
-    "glob": "^7.0.3",
-    "postcss": "^5.0.21",
-    "postcss-scss": "^0.1.8"
+    "glob": "^7.0.3"
   },
   "devDependencies": {
     "bootstrap": "^4.0.0-alpha.2",
