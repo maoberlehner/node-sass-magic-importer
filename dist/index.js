@@ -3,10 +3,11 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
-var findup = _interopDefault(require('findup-sync'));
+var findupSync = require('findup-sync');
 var fs = _interopDefault(require('fs'));
 var glob = _interopDefault(require('glob'));
 var path = _interopDefault(require('path'));
+var resolve = _interopDefault(require('resolve'));
 
 class NodeSassMagicImporter {
   constructor() {
@@ -204,47 +205,78 @@ class NodeSassMagicImporter {
     return filePath;
   }
 
+  // @TODO: move to separate package.
   _getModuleFilePath(url) {
-    let searchPath = false;
-    let filePath = false;
-    // If only the module name is given, we look in the modules package.json file
-    // for "sass", "style" or "main" declarations.
-    if (!path.parse(url).dir) {
-      // Search the modules package.json file.
-      const packageJsonUrl = path.join(url, 'package.json');
-      const packageJsonPath = findup(packageJsonUrl, { cwd: 'node_modules' });
-      let packageUrl;
-      if (packageJsonPath) {
-        const moduleDir = path.parse(packageJsonPath).dir;
-        const packageJson = require(packageJsonPath);
-        if (packageJson.sass) {
-          packageUrl = path.join(moduleDir, packageJson.sass);
-        } else if (packageJson.style) {
-          packageUrl = path.join(moduleDir, packageJson.style);
-        } else if (packageJson.main) {
-          const mainFile = path.join(moduleDir, packageJson.main);
-          // Only load the main file if the extensions matches allowed extensions.
-          if (options.extensions.indexOf(path.parse(mainFile).ext) != -1) {
-            packageUrl = mainFile;
+    const urlArr = url.split('/');
+    const moduleName = urlArr[0];
+    let resolvedPath = url;
+    if (urlArr.length > 1) {
+      urlArr.shift();
+      const urlSubPath = urlArr.join('/');
+      const filePathVariants = this._getFilePathVariants(urlSubPath);
+      filePathVariants.some(filePathVariant => {
+        console.log(filePathVariant);
+        resolvedPath = resolve.sync(moduleName, {
+          basedir: process.cwd(),
+          extensions: this.options.extensions,
+          packageFilter: (pkg, pkgfile) => {
+            pkg.main = filePathVariant;
           }
+        });
+        if (resolvedPath) {
+          return true;
         }
-      }
-      // If no matching file is found in the modules package.json we default to
-      // a index file in the modules root directory.
-      if (!packageUrl) {
-        packageUrl = path.join(url, 'index');
-      }
-      url = packageUrl;
+      });
+    } else {
+      resolvedPath = resolve.sync(moduleName, {
+        basedir: process.cwd(),
+        extensions: this.options.extensions,
+        packageFilter: (pkg, pkgfile) => {
+          pkg.main = pkg.sass || pkg.style || pkg.main;
+        }
+      });
     }
-    const filePathVariants = this._getFilePathVariants(url);
-    filePathVariants.some(filePathVariant => {
-      searchPath = findup(filePathVariant, { cwd: 'node_modules' });
-      if (searchPath) {
-        filePath = searchPath;
-        return true;
-      }
-    });
-    return filePath;
+    console.log(resolvedPath);
+    return resolvedPath;
+    // let filePath = false;
+    // // If only the module name is given, we look in the modules package.json
+    // // file for "sass", "style" or "main" declarations.
+    // if (!path.parse(url).dir) {
+    //   // Search the modules package.json file.
+    //   const packageJsonUrl = path.join(url, 'package.json');
+    //   const packageJsonPath = findup(packageJsonUrl, { cwd: 'node_modules' });
+    //   let packageUrl;
+    //   if (packageJsonPath) {
+    //     const moduleDir = path.parse(packageJsonPath).dir;
+    //     const packageJson = require(packageJsonPath);
+    //     if (packageJson.sass) {
+    //       packageUrl = path.join(moduleDir, packageJson.sass);
+    //     } else if (packageJson.style) {
+    //       packageUrl = path.join(moduleDir, packageJson.style);
+    //     } else if (packageJson.main) {
+    //       const mainFile = path.join(moduleDir, packageJson.main);
+    //       // Only load the main file if the extensions matches allowed extensions.
+    //       if (options.extensions.indexOf(path.parse(mainFile).ext) != -1) {
+    //         packageUrl = mainFile;
+    //       }
+    //     }
+    //   }
+    //   // If no matching file is found in the modules package.json we default to
+    //   // a index file in the modules root directory.
+    //   if (!packageUrl) {
+    //     packageUrl = path.join(url, 'index');
+    //   }
+    //   url = packageUrl;
+    // }
+    // const filePathVariants = this._getFilePathVariants(url);
+    // filePathVariants.some((filePathVariant) => {
+    //   let searchPath = findup(filePathVariant, { cwd: 'node_modules' });
+    //   if (searchPath) {
+    //     filePath = searchPath;
+    //     return true;
+    //   }
+    // });
+    // return filePath;
   }
 
   _configure(magicImporterOptions) {

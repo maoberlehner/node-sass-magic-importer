@@ -15,7 +15,8 @@
   "dependencies": {
     "css-selector-extract": "^0.1.0",
     "findup-sync": "^0.4.1",
-    "glob": "^7.0.3"
+    "glob": "^7.0.3",
+    "resolve": "^1.1.7"
   },
   "devDependencies": {
     "bootstrap": "^4.0.0-alpha.2",
