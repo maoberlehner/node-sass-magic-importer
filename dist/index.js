@@ -1,13 +1,12 @@
 'use strict';
 
-/**
- * node-sass-magic-importer
- */
-var cssSelectorExtract = require('css-selector-extract');
-var findup = require('findup-sync');
-var fs = require('fs');
-var glob = require('glob');
-var path = require('path');
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
+var findup = _interopDefault(require('findup-sync'));
+var fs = _interopDefault(require('fs'));
+var glob = _interopDefault(require('glob'));
+var path = _interopDefault(require('path'));
 
 // Keep track of imported files.
 var importedMap = new Map();

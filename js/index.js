@@ -1,11 +1,11 @@
 /**
  * node-sass-magic-importer
  */
-const cssSelectorExtract = require('css-selector-extract');
-const findup = require('findup-sync');
-const fs = require('fs');
-const glob = require('glob');
-const path = require('path');
+import cssSelectorExtract from 'css-selector-extract';
+import findup from 'findup-sync';
+import fs from 'fs';
+import glob from 'glob';
+import path from 'path';
 
 // Keep track of imported files.
 const importedMap = new Map();
