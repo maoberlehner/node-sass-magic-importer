@@ -13,16 +13,17 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "css-selector-extract": "^0.1.0",
+    "css-selector-extract": "^0.3.1",
     "findup-sync": "^0.4.1",
-    "glob": "^7.0.3"
+    "glob": "^7.0.5",
+    "postcss-scss": "^0.1.8"
   },
   "devDependencies": {
     "bootstrap": "^4.0.0-alpha.2",
     "jshint": "^2.9.2",
-    "node-sass": "^3.7.0",
-    "rollup": "^0.32.0",
-    "rollup-plugin-buble": "^0.11.0"
+    "node-sass": "^3.8.0",
+    "rollup": "^0.33.0",
+    "rollup-plugin-buble": "^0.12.1"
   },
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
