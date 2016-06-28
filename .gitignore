@@ -26,5 +26,4 @@ Thumbs.db
 
 # Folders to ignore
 bower_components
-tests/css/dist
 node_modules
