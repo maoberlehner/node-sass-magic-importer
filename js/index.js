@@ -4,8 +4,8 @@
 // import cssSelectorExtract from 'css-selector-extract';
 // import findup from 'findup-sync';
 // import fs from 'fs';
-// import glob from 'glob';
-// import path from 'path';
+import glob from 'glob';
+import path from 'path';
 
 export class NodeSassMagicImporter {
   constructor() {
@@ -50,8 +50,21 @@ export class NodeSassMagicImporter {
     };
   }
 
-  _resolveGlob() {
-
+  _resolveGlob(url, includePaths = [process.cwd()]) {
+    if (glob.hasMagic(url)) {
+      let imports = [];
+      [...includePaths].some((includePath) => {
+        let files = glob.sync(url, { cwd: includePath });
+        files.forEach((file) => {
+          imports.push(`@import '${path.join(includePath, file)}';`);
+        });
+        if (files.length) {
+          return true;
+        }
+      });
+      return imports.join('\n');
+    }
+    return false;
   }
 
   _resolveModule() {

@@ -5,7 +5,7 @@
 //    Check if the url pattern matches globbing and return content with imports
 //    of found urls
 // 3. Module importing
-//    Find path to module file and return as url
+//    Find path to module file and return as url (findup / resolve / resolve-dir)
 // 4. Once check - ignore if url imported
 // 5. Selector filtering
 //    Load CSS file and run css-selector-extract on it and return as content
@@ -16,6 +16,7 @@ const expect = require('chai').expect;
 const fs = require('fs');
 const sass = require('node-sass');
 const NodeSassMagicImporter = require('../').NodeSassMagicImporter;
+const path = require('path');
 
 describe('MagicImporter', function () {
   it('should be a function', () => {
@@ -43,6 +44,25 @@ describe('MagicImporter', function () {
   });
 
   describe('#_resolveGlob()', function () {
+    it('should be a function', () => {
+      expect(typeof nodeSassMagicImporter._resolveGlob).to.equal('function');
+    });
+
+    it('should return false', () => {
+      let url = 'style.scss';
+      let expectedResult = false;
+
+      expect(nodeSassMagicImporter._resolveGlob(url)).to.equal(expectedResult);
+    });
+
+    it('should return content string with @import statements', () => {
+      let url = 'css/resolve-glob/**/*.scss';
+      let includePath = path.join(process.cwd(), 'test');
+      let expectedResult = `@import '${path.join(includePath, 'css/resolve-glob/style1.scss')}';
+@import '${path.join(includePath, 'css/resolve-glob/style2.scss')}';`;
+
+      expect(nodeSassMagicImporter._resolveGlob(url, [includePath])).to.equal(expectedResult);
+    });
   });
 
   describe('#_resolveModule()', function () {

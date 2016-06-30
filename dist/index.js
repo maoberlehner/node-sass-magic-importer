@@ -2,27 +2,21 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-/**
- * node-sass-magic-importer
- */
-// import cssSelectorExtract from 'css-selector-extract';
-// import findup from 'findup-sync';
-// import fs from 'fs';
-// import glob from 'glob';
-// import path from 'path';
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var glob = _interopDefault(require('glob'));
+var path = _interopDefault(require('path'));
 
 var NodeSassMagicImporter = function NodeSassMagicImporter() {
 };
 
 NodeSassMagicImporter.prototype._parseUrl = function _parseUrl (url) {
-  //let originalUrl = url;
   var selectorFilterMatch = url.match(/{([^}]+)}/);
   var selectorFilters = [];
   var selectorReplacements = {};
   var prioritizeModuleResolve = false;
 
   if (selectorFilterMatch) {
-    // Create an array with selectors and replacement as one value.
     var filterString = selectorFilterMatch[1];
     var filtersAndReplacements = filterString.split(',');
     // Trim unnecessary whitespace.
@@ -46,27 +40,7 @@ NodeSassMagicImporter.prototype._parseUrl = function _parseUrl (url) {
     url = url.slice(1);
     prioritizeModuleResolve = true;
   }
-// let cleanUrl = url;
-// let selectorFilters;
-// const selectorFiltersMatch = url.match(/{([^}]+)}/);
-// let prioritizeModules = false;
-// if (selectorFiltersMatch) {
-//   cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
-//   // Create an array with selectors and replacement as one value.
-//   selectorFilters = selectorFiltersMatch[1].split(',');
-//   // Trim unnecessary whitespace.
-//   selectorFilters = selectorFilters.map(Function.prototype.call, String.prototype.trim);
-//   // Split selectors and replacement selectors into an array.
-//   selectorFilters = selectorFilters.map((currentValue, index) => {
-//     return currentValue.split(' as ').map(Function.prototype.call, String.prototype.trim);
-//   });
-// }
-// if (cleanUrl.charAt(0) == '~') {
-//   cleanUrl = cleanUrl.slice(1);
-//   prioritizeModules = true;
-// }
-// return { cleanUrl, selectorFilters, prioritizeModules };
-// }
+
   return {
     url: url,
     selectorFilters: selectorFilters,
@@ -75,8 +49,23 @@ NodeSassMagicImporter.prototype._parseUrl = function _parseUrl (url) {
   };
 };
 
-NodeSassMagicImporter.prototype._resolveGlob = function _resolveGlob () {
+NodeSassMagicImporter.prototype._resolveGlob = function _resolveGlob (url, includePaths) {
+    if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
+  if (glob.hasMagic(url)) {
+    var imports = [];
+    [].concat( includePaths ).some(function (includePath) {
+      var files = glob.sync(url, { cwd: includePath });
+      files.forEach(function (file) {
+        imports.push(("@import '" + (path.join(includePath, file)) + "';"));
+      });
+      if (files.length) {
+        return true;
+      }
+    });
+    return imports.join('\n');
+  }
+  return false;
 };
 
 NodeSassMagicImporter.prototype._resolveModule = function _resolveModule () {
