@@ -18,7 +18,28 @@ const sass = require('node-sass');
 const NodeSassMagicImporter = require('../').NodeSassMagicImporter;
 
 describe('MagicImporter', function () {
+  it('should be a function', () => {
+    expect(typeof NodeSassMagicImporter).to.equal('function');
+  });
+
+  const nodeSassMagicImporter = new NodeSassMagicImporter();
+
   describe('#_parseUrl()', function () {
+    it('should be a function', () => {
+      expect(typeof nodeSassMagicImporter._parseUrl).to.equal('function');
+    });
+
+    it('should return an object with expected values', () => {
+      let url = '{ .test1 as .test1-replaced, .test2 } from ~style.scss';
+      let expectedResult = {
+        url: 'style.scss',
+        selectorFilters: ['.test1', '.test2'],
+        selectorReplacements: { '.test1': '.test1-replaced' },
+        prioritizeModuleResolve: true
+      };
+
+      expect(nodeSassMagicImporter._parseUrl(url)).to.deep.equal(expectedResult);
+    });
   });
 
   describe('#_resolveGlob()', function () {

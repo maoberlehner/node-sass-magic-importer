@@ -11,8 +11,43 @@ export class NodeSassMagicImporter {
   constructor() {
   }
 
-  _parseUrl() {
+  _parseUrl(url) {
+    let selectorFilterMatch = url.match(/{([^}]+)}/);
+    let selectorFilters = [];
+    let selectorReplacements = {};
+    let prioritizeModuleResolve = false;
 
+    if (selectorFilterMatch) {
+      let filterString = selectorFilterMatch[1];
+      let filtersAndReplacements = filterString.split(',');
+      // Trim unnecessary whitespace.
+      filtersAndReplacements = filtersAndReplacements.map(Function.prototype.call, String.prototype.trim);
+      // Split selectors and replacement selectors into an array.
+      filtersAndReplacements.forEach((currentValue, index) => {
+        let filterAndReplacement = currentValue.split(' as ').map(Function.prototype.call, String.prototype.trim);
+        let selector = filterAndReplacement[0];
+        let replacement = filterAndReplacement[1] || null;
+        selectorFilters.push(selector);
+        if (replacement) {
+          selectorReplacements[selector] = replacement;
+        }
+      });
+
+      // Remove EOL and split into filters and url.
+      url = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+    }
+
+    if (url.charAt(0) == '~') {
+      url = url.slice(1);
+      prioritizeModuleResolve = true;
+    }
+
+    return {
+      url: url,
+      selectorFilters: selectorFilters,
+      selectorReplacements: selectorReplacements,
+      prioritizeModuleResolve: prioritizeModuleResolve
+    };
   }
 
   _resolveGlob() {

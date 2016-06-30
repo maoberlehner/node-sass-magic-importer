@@ -14,8 +14,65 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var NodeSassMagicImporter = function NodeSassMagicImporter() {
 };
 
-NodeSassMagicImporter.prototype._parseUrl = function _parseUrl () {
+NodeSassMagicImporter.prototype._parseUrl = function _parseUrl (url) {
+  //let originalUrl = url;
+  var selectorFilterMatch = url.match(/{([^}]+)}/);
+  var selectorFilters = [];
+  var selectorReplacements = {};
+  var prioritizeModuleResolve = false;
 
+  if (selectorFilterMatch) {
+    // Create an array with selectors and replacement as one value.
+    var filterString = selectorFilterMatch[1];
+    var filtersAndReplacements = filterString.split(',');
+    // Trim unnecessary whitespace.
+    filtersAndReplacements = filtersAndReplacements.map(Function.prototype.call, String.prototype.trim);
+    // Split selectors and replacement selectors into an array.
+    filtersAndReplacements.forEach(function (currentValue, index) {
+      var filterAndReplacement = currentValue.split(' as ').map(Function.prototype.call, String.prototype.trim);
+      var selector = filterAndReplacement[0];
+      var replacement = filterAndReplacement[1] || null;
+      selectorFilters.push(selector);
+      if (replacement) {
+        selectorReplacements[selector] = replacement;
+      }
+    });
+
+    // Remove EOL and split into filters and url.
+    url = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+  }
+
+  if (url.charAt(0) == '~') {
+    url = url.slice(1);
+    prioritizeModuleResolve = true;
+  }
+// let cleanUrl = url;
+// let selectorFilters;
+// const selectorFiltersMatch = url.match(/{([^}]+)}/);
+// let prioritizeModules = false;
+// if (selectorFiltersMatch) {
+//   cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+//   // Create an array with selectors and replacement as one value.
+//   selectorFilters = selectorFiltersMatch[1].split(',');
+//   // Trim unnecessary whitespace.
+//   selectorFilters = selectorFilters.map(Function.prototype.call, String.prototype.trim);
+//   // Split selectors and replacement selectors into an array.
+//   selectorFilters = selectorFilters.map((currentValue, index) => {
+//     return currentValue.split(' as ').map(Function.prototype.call, String.prototype.trim);
+//   });
+// }
+// if (cleanUrl.charAt(0) == '~') {
+//   cleanUrl = cleanUrl.slice(1);
+//   prioritizeModules = true;
+// }
+// return { cleanUrl, selectorFilters, prioritizeModules };
+// }
+  return {
+    url: url,
+    selectorFilters: selectorFilters,
+    selectorReplacements: selectorReplacements,
+    prioritizeModuleResolve: prioritizeModuleResolve
+  };
 };
 
 NodeSassMagicImporter.prototype._resolveGlob = function _resolveGlob () {
