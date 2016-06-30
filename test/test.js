@@ -56,10 +56,10 @@ describe('MagicImporter', function () {
     });
 
     it('should return content string with @import statements', () => {
-      let url = 'css/resolve-glob/**/*.scss';
+      let url = 'files/resolve-glob/**/*.scss';
       let includePath = path.join(process.cwd(), 'test');
-      let expectedResult = `@import '${path.join(includePath, 'css/resolve-glob/style1.scss')}';
-@import '${path.join(includePath, 'css/resolve-glob/style2.scss')}';`;
+      let expectedResult = `@import '${path.join(includePath, 'files/resolve-glob/style1.scss')}';
+@import '${path.join(includePath, 'files/resolve-glob/style2.scss')}';`;
 
       expect(nodeSassMagicImporter._resolveGlob(url, [includePath])).to.equal(expectedResult);
     });
