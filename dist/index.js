@@ -88,7 +88,7 @@ NodeSassMagicImporter.prototype._resolveModule = function _resolveModule (url, c
       }
     } else if (!parsedUrl.ext) {
       // No file ending provided, assume SASS partial naming.
-      var partialFileName = '?(_)' + parsedUrl.name + '.@(scss|sass|css)';
+      var partialFileName = "?(_)" + (parsedUrl.name) + ".@(scss|sass|css)";
       var globPattern = path.join(parsedUrl.dir, partialFileName);
       var globResult$1 = glob.sync(path.join('**', globPattern), { cwd: path.join(cwd, 'node_modules') });
       if (globResult$1.length) {
