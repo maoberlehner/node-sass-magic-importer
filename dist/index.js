@@ -54,7 +54,7 @@ NodeSassMagicImporter.prototype._resolveGlob = function _resolveGlob (url, inclu
 
   if (glob.hasMagic(url)) {
     var imports = [];
-    [].concat( includePaths ).some(function (includePath) {
+    includePaths.some(function (includePath) {
       var files = glob.sync(url, { cwd: includePath });
       files.forEach(function (file) {
         imports.push(("@import '" + (path.join(includePath, file)) + "';"));

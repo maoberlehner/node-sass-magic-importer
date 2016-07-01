@@ -53,7 +53,7 @@ export class NodeSassMagicImporter {
   _resolveGlob(url, includePaths = [process.cwd()]) {
     if (glob.hasMagic(url)) {
       let imports = [];
-      [...includePaths].some((includePath) => {
+      includePaths.some((includePath) => {
         let files = glob.sync(url, { cwd: includePath });
         files.forEach((file) => {
           imports.push(`@import '${path.join(includePath, file)}';`);
