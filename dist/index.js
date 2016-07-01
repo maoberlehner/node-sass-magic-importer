@@ -122,7 +122,7 @@ NodeSassMagicImporter.prototype._selectorFilter = function _selectorFilter () {
 
 };
 
-NodeSassMagicImporter.prototype.importer = function importer () {
+  NodeSassMagicImporter.prototype.importer = function importer () {
 };
 
 var nodeSassMagicImporter = new NodeSassMagicImporter();

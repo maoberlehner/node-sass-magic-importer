@@ -43,10 +43,10 @@ export class NodeSassMagicImporter {
     }
 
     return {
-      url: url,
-      selectorFilters: selectorFilters,
-      selectorReplacements: selectorReplacements,
-      prioritizeModuleResolve: prioritizeModuleResolve
+      url,
+      selectorFilters,
+      selectorReplacements,
+      prioritizeModuleResolve
     };
   }
 
