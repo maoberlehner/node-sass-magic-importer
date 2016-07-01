@@ -66,6 +66,86 @@ describe('MagicImporter', function () {
   });
 
   describe('#_resolveModule()', function () {
+    it('should be a function', () => {
+      expect(typeof nodeSassMagicImporter._resolveModule).to.equal('function');
+    });
+
+    it('should return error message', (done) => {
+      let url = 'non-existent-module';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = `Module path "${url}" could not be resolved.`;
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then(null, (error) => {
+        expect(error).to.equal(expectedResult);
+        done();
+      });
+    });
+
+    it('should return absolute path to sass file defined in package.json', (done) => {
+      let url = 'test-module';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = path.join(cwd, 'node_modules/test-module/scss/style.scss');
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then((url) => {
+        expect(url).to.equal(expectedResult);
+        done();
+      });
+    });
+
+    it('should return absolute path to sass file', (done) => {
+      let url = 'test-module/scss/_partial.scss';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = path.join(cwd, 'node_modules/test-module/scss/_partial.scss');
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then((url) => {
+        expect(url).to.equal(expectedResult);
+        done();
+      });
+    });
+
+    it('should return absolute path to partial sass file', (done) => {
+      let url = 'test-module/scss/partial';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = path.join(cwd, 'node_modules/test-module/scss/_partial.scss');
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then((url) => {
+        expect(url).to.equal(expectedResult);
+        done();
+      });
+    });
+
+    it('should return absolute path to sass file defined in package.json of nested module', (done) => {
+      let url = 'nested-test-module';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = path.join(cwd, 'node_modules/test-module/node_modules/nested-test-module/scss/style.scss');
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then((url) => {
+        expect(url).to.equal(expectedResult);
+        done();
+      });
+    });
+
+    it('should return absolute path to sass file of nested module', (done) => {
+      let url = 'nested-test-module/scss/_partial.scss';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = path.join(cwd, 'node_modules/test-module/node_modules/nested-test-module/scss/_partial.scss');
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then((url) => {
+        expect(url).to.equal(expectedResult);
+        done();
+      });
+    });
+
+    it('should return absolute path to partial sass file of nested module', (done) => {
+      let url = 'nested-test-module/scss/partial';
+      let cwd = path.join(process.cwd(), 'test/files/resolve-module');
+      let expectedResult = path.join(cwd, 'node_modules/test-module/node_modules/nested-test-module/scss/_partial.scss');
+
+      nodeSassMagicImporter._resolveModule(url, cwd).then((url) => {
+        expect(url).to.equal(expectedResult);
+        done();
+      });
+    });
   });
 
   describe('#_importOnceTrack()', function () {

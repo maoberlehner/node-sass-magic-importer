@@ -68,8 +68,46 @@ NodeSassMagicImporter.prototype._resolveGlob = function _resolveGlob (url, inclu
   return false;
 };
 
-NodeSassMagicImporter.prototype._resolveModule = function _resolveModule () {
+NodeSassMagicImporter.prototype._resolveModule = function _resolveModule (url, cwd) {
+    if ( cwd === void 0 ) cwd = process.cwd();
 
+  return new Promise(function (promiseResolve, promiseReject) {
+    var resolvedUrl;
+    var parsedUrl = path.parse(url);
+    var urlArray = url.split('/');
+    var moduleName = urlArray[0];
+    if (urlArray.length == 1) {
+      // Only module name given, search for style file
+      // in the package.json of the module.
+      var globResult = glob.sync(path.join('**', moduleName, 'package.json'), { cwd: path.join(cwd, 'node_modules') });
+      if (globResult.length) {
+        var packagePath = path.join(cwd, 'node_modules', globResult[0]);
+        var packageJson = require(packagePath);
+        var fileName = packageJson.sass || packageJson['main.sass'] || packageJson['main.scss'] || packageJson.style || 'index.scss';
+        resolvedUrl = path.join(path.dirname(packagePath), fileName);
+      }
+    } else if (!parsedUrl.ext) {
+      // No file ending provided, assume SASS partial naming.
+      var partialFileName = '?(_)' + parsedUrl.name + '.@(scss|sass|css)';
+      var globPattern = path.join(parsedUrl.dir, partialFileName);
+      var globResult$1 = glob.sync(path.join('**', globPattern), { cwd: path.join(cwd, 'node_modules') });
+      if (globResult$1.length) {
+        resolvedUrl = path.join(cwd, 'node_modules', globResult$1[0]);
+      }
+    } else {
+      // Load given file from module.
+      var globResult$2 = glob.sync(path.join('**', url), { cwd: path.join(cwd, 'node_modules') });
+      if (globResult$2.length) {
+        resolvedUrl = path.join(cwd, 'node_modules', globResult$2[0]);
+      }
+    }
+    // Finish the promise call.
+    if (resolvedUrl) {
+      promiseResolve(resolvedUrl);
+    } else {
+      promiseReject(("Module path \"" + url + "\" could not be resolved."));
+    }
+  });
 };
 
 NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack () {

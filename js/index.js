@@ -67,8 +67,44 @@ export class NodeSassMagicImporter {
     return false;
   }
 
-  _resolveModule() {
-
+  _resolveModule(url, cwd = process.cwd()) {
+    return new Promise((promiseResolve, promiseReject) => {
+      let resolvedUrl;
+      let parsedUrl = path.parse(url);
+      let urlArray = url.split('/');
+      let moduleName = urlArray[0];
+      if (urlArray.length == 1) {
+        // Only module name given, search for style file
+        // in the package.json of the module.
+        let globResult = glob.sync(path.join('**', moduleName, 'package.json'), { cwd: path.join(cwd, 'node_modules') });
+        if (globResult.length) {
+          let packagePath = path.join(cwd, 'node_modules', globResult[0]);
+          let packageJson = require(packagePath);
+          let fileName = packageJson.sass || packageJson['main.sass'] || packageJson['main.scss'] || packageJson.style || 'index.scss';
+          resolvedUrl = path.join(path.dirname(packagePath), fileName);
+        }
+      } else if (!parsedUrl.ext) {
+        // No file ending provided, assume SASS partial naming.
+        let partialFileName = '?(_)' + parsedUrl.name + '.@(scss|sass|css)';
+        let globPattern = path.join(parsedUrl.dir, partialFileName);
+        let globResult = glob.sync(path.join('**', globPattern), { cwd: path.join(cwd, 'node_modules') });
+        if (globResult.length) {
+          resolvedUrl = path.join(cwd, 'node_modules', globResult[0]);
+        }
+      } else {
+        // Load given file from module.
+        let globResult = glob.sync(path.join('**', url), { cwd: path.join(cwd, 'node_modules') });
+        if (globResult.length) {
+          resolvedUrl = path.join(cwd, 'node_modules', globResult[0]);
+        }
+      }
+      // Finish the promise call.
+      if (resolvedUrl) {
+        promiseResolve(resolvedUrl);
+      } else {
+        promiseReject(`Module path "${url}" could not be resolved.`);
+      }
+    });
   }
 
   _importOnceTrack() {
