@@ -51,20 +51,28 @@ export class NodeSassMagicImporter {
   }
 
   _resolveGlob(url, includePaths = [process.cwd()]) {
-    if (glob.hasMagic(url)) {
-      let imports = [];
-      includePaths.some((includePath) => {
-        let files = glob.sync(url, { cwd: includePath });
-        files.forEach((file) => {
-          imports.push(`@import '${path.join(includePath, file)}';`);
+    return new Promise((promiseResolve, promiseReject) => {
+      let contents;
+      if (glob.hasMagic(url)) {
+        let imports = [];
+        includePaths.some((includePath) => {
+          let files = glob.sync(url, { cwd: includePath });
+          files.forEach((file) => {
+            imports.push(`@import '${path.join(includePath, file)}';`);
+          });
+          if (files.length) {
+            return true;
+          }
         });
-        if (files.length) {
-          return true;
-        }
-      });
-      return imports.join('\n');
-    }
-    return false;
+        contents = imports.join('\n');
+      }
+      // Finish the promise call.
+      if (contents) {
+        promiseResolve(contents);
+      } else {
+        promiseReject(`No glob pattern found.`);
+      }
+    });
   }
 
   _resolveModule(url, cwd = process.cwd()) {

@@ -48,11 +48,14 @@ describe('MagicImporter', function () {
       expect(typeof nodeSassMagicImporter._resolveGlob).to.equal('function');
     });
 
-    it('should return false', () => {
+    it('should return error message', (done) => {
       let url = 'style.scss';
-      let expectedResult = false;
+      let expectedResult = 'No glob pattern found.';
 
-      expect(nodeSassMagicImporter._resolveGlob(url)).to.equal(expectedResult);
+      nodeSassMagicImporter._resolveGlob(url).then(null, (error) => {
+        expect(error).to.equal(expectedResult);
+        done();
+      });
     });
 
     it('should return content string with @import statements', () => {
@@ -61,7 +64,10 @@ describe('MagicImporter', function () {
       let expectedResult = `@import '${path.join(includePath, 'files/resolve-glob/style1.scss')}';
 @import '${path.join(includePath, 'files/resolve-glob/style2.scss')}';`;
 
-      expect(nodeSassMagicImporter._resolveGlob(url, [includePath])).to.equal(expectedResult);
+      nodeSassMagicImporter._resolveGlob(url, [includePath]).then(null, (error) => {
+        expect(error).to.equal(expectedResult);
+        done();
+      });
     });
   });
 

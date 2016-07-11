@@ -52,20 +52,28 @@ NodeSassMagicImporter.prototype._parseUrl = function _parseUrl (url) {
 NodeSassMagicImporter.prototype._resolveGlob = function _resolveGlob (url, includePaths) {
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
-  if (glob.hasMagic(url)) {
-    var imports = [];
-    includePaths.some(function (includePath) {
-      var files = glob.sync(url, { cwd: includePath });
-      files.forEach(function (file) {
-        imports.push(("@import '" + (path.join(includePath, file)) + "';"));
+  return new Promise(function (promiseResolve, promiseReject) {
+    var contents;
+    if (glob.hasMagic(url)) {
+      var imports = [];
+      includePaths.some(function (includePath) {
+        var files = glob.sync(url, { cwd: includePath });
+        files.forEach(function (file) {
+          imports.push(("@import '" + (path.join(includePath, file)) + "';"));
+        });
+        if (files.length) {
+          return true;
+        }
       });
-      if (files.length) {
-        return true;
-      }
-    });
-    return imports.join('\n');
-  }
-  return false;
+      contents = imports.join('\n');
+    }
+    // Finish the promise call.
+    if (contents) {
+      promiseResolve(contents);
+    } else {
+      promiseReject("No glob pattern found.");
+    }
+  });
 };
 
 NodeSassMagicImporter.prototype._resolveModule = function _resolveModule (url, cwd) {
