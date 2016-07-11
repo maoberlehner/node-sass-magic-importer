@@ -34,7 +34,7 @@ describe('MagicImporter', function () {
       expect(typeof nodeSassMagicImporter._parseUrl).to.equal('function');
     });
 
-    it('should return an object with expected values', () => {
+    it('should return an object with expected values', (done) => {
       let url = '{ .test1 as .test1-replaced, .test2 } from ~style.scss';
       let expectedResult = {
         url: 'style.scss',
@@ -43,7 +43,7 @@ describe('MagicImporter', function () {
         prioritizeModuleResolve: true
       };
 
-      expect(nodeSassMagicImporter._parseUrl(url)).to.deep.equal(expectedResult);
+      return expect(nodeSassMagicImporter._parseUrl(url)).to.eventually.deep.equal(expectedResult).notify(done);
     });
   });
 
