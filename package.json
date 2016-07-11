@@ -19,6 +19,7 @@
   "devDependencies": {
     "bootstrap": "^4.0.0-alpha.2",
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "jshint": "^2.9.2",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
