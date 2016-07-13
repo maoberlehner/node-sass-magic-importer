@@ -8,7 +8,7 @@
 //    Find path to module file and return as url (findup / resolve / resolve-dir)
 // 4. Once check - ignore if url imported
 // 5. Selector filtering
-//    Load CSS file and run css-selector-extract on it and return as content
+//    Load CSS file, run css-selector-extract on it and return as content
 // 6. Once
 //    Track imported files and selectors
 
