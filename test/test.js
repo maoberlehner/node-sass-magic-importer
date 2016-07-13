@@ -131,13 +131,13 @@ describe('MagicImporter', function () {
     });
   });
 
+  describe('#_selectorFilter()', function () {
+  });
+
   describe('#_importOnceTrack()', function () {
   });
 
   describe('#_importOnceCheck()', function () {
-  });
-
-  describe('#_selectorFilter()', function () {
   });
 
   describe('#importer()', function () {

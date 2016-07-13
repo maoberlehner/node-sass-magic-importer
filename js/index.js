@@ -117,15 +117,15 @@ export class NodeSassMagicImporter {
     });
   }
 
+  _selectorFilter() {
+
+  }
+
   _importOnceTrack() {
 
   }
 
   _importOnceCheck() {
-
-  }
-
-  _selectorFilter() {
 
   }
 
