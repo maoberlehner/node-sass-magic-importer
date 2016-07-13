@@ -1,9 +1,8 @@
 /**
  * node-sass-magic-importer
  */
-// import cssSelectorExtract from 'css-selector-extract';
-// import findup from 'findup-sync';
-// import fs from 'fs';
+import cssSelectorExtract from 'css-selector-extract';
+import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
 
@@ -117,8 +116,16 @@ export class NodeSassMagicImporter {
     });
   }
 
-  _selectorFilter() {
-
+  _selectorFilter(filePath, selectorFilters, selectorReplacements = null) {
+    return new Promise((promiseResolve, promiseReject) => {
+      fs.readFile(filePath, 'utf8', (error, contents) => {
+        if (error) {
+          promiseReject(`File "${filePath}" not found.`);
+        } else {
+          promiseResolve(cssSelectorExtract.processSync(contents, selectorFilters, selectorReplacements));
+        }
+      });
+    });
   }
 
   _importOnceTrack() {

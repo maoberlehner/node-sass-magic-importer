@@ -4,6 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
+var fs = _interopDefault(require('fs'));
 var glob = _interopDefault(require('glob'));
 var path = _interopDefault(require('path'));
 
@@ -120,15 +122,25 @@ NodeSassMagicImporter.prototype._resolveModule = function _resolveModule (url, c
   });
 };
 
+NodeSassMagicImporter.prototype._selectorFilter = function _selectorFilter (filePath, selectorFilters, selectorReplacements) {
+    if ( selectorReplacements === void 0 ) selectorReplacements = null;
+
+  return new Promise(function (promiseResolve, promiseReject) {
+      fs.readFile(filePath, 'utf8', function (error, contents) {
+      if (error) {
+        promiseReject(("File \"" + filePath + "\" not found."));
+      } else {
+        promiseResolve(cssSelectorExtract.processSync(contents, selectorFilters, selectorReplacements));
+      }
+    });
+  });
+};
+
 NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack () {
 
 };
 
 NodeSassMagicImporter.prototype._importOnceCheck = function _importOnceCheck () {
-
-};
-
-NodeSassMagicImporter.prototype._selectorFilter = function _selectorFilter () {
 
 };
 

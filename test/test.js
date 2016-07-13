@@ -132,6 +132,25 @@ describe('MagicImporter', function () {
   });
 
   describe('#_selectorFilter()', function () {
+    it('should be a function', () => {
+      expect(typeof nodeSassMagicImporter._selectorFilter).to.equal('function');
+    });
+
+    it('should return error message', (done) => {
+      let filePath = '/file/does/not/exist.scss';
+      let expectedResult = `File "${filePath}" not found.`;
+
+      return expect(nodeSassMagicImporter._selectorFilter(filePath)).to.eventually.be.rejectedWith(expectedResult).notify(done);
+    });
+
+    it('should return filtered content string', (done) => {
+      let filePath = path.join(process.cwd(), 'test/files/selector-filter/style.scss');
+      let selectorFilters = ['.test-selector1'];
+      let selectorReplacements = { '.test-selector1': '.test-selector-replaced1' };
+      let expectedResult = fs.readFileSync(path.join(process.cwd(), 'test/files/selector-filter/expected-result.scss'), { encoding: 'utf8' });
+
+      return expect(nodeSassMagicImporter._selectorFilter(filePath, selectorFilters, selectorReplacements)).to.eventually.equal(expectedResult).notify(done);
+    });
   });
 
   describe('#_importOnceTrack()', function () {
