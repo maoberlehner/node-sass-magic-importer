@@ -161,7 +161,7 @@ NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack (fi
 
   // return importData if everything should get imported
   // return FALSE if nothing should get imported
-  // return filePath and missing selectors if only 
+  // return filePath and missing selectors if only
   var importedFiles = this.importedStore.get(importerId);
   return false;
 };

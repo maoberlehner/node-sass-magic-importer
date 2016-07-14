@@ -24,14 +24,14 @@ chai.use(chaiAsPromised);
 
 describe('MagicImporter', () => {
   it('should be a function', () => {
-    expect(typeof NodeSassMagicImporter).to.equal('function');
+    expect(NodeSassMagicImporter).to.be.a('function');
   });
 
   const nodeSassMagicImporter = new NodeSassMagicImporter();
 
   describe('#_parseUrl()', () => {
     it('should be a function', () => {
-      expect(typeof nodeSassMagicImporter._parseUrl).to.equal('function');
+      expect(nodeSassMagicImporter._parseUrl).to.be.a('function');
     });
 
     it('should return an object with expected values', (done) => {
@@ -49,7 +49,7 @@ describe('MagicImporter', () => {
 
   describe('#_resolveGlob()', () => {
     it('should be a function', () => {
-      expect(typeof nodeSassMagicImporter._resolveGlob).to.equal('function');
+      expect(nodeSassMagicImporter._resolveGlob).to.be.a('function');
     });
 
     it('should return error message', (done) => {
@@ -71,7 +71,7 @@ describe('MagicImporter', () => {
 
   describe('#_resolveModule()', () => {
     it('should be a function', () => {
-      expect(typeof nodeSassMagicImporter._resolveModule).to.equal('function');
+      expect(nodeSassMagicImporter._resolveModule).to.be.a('function');
     });
 
     it('should return error message', (done) => {
@@ -133,7 +133,7 @@ describe('MagicImporter', () => {
 
   describe('#_selectorFilter()', () => {
     it('should be a function', () => {
-      expect(typeof nodeSassMagicImporter._selectorFilter).to.equal('function');
+      expect(nodeSassMagicImporter._selectorFilter).to.be.a('function');
     });
 
     it('should return error message', (done) => {
@@ -155,19 +155,18 @@ describe('MagicImporter', () => {
 
   describe('#_importOnceInit()', () => {
     it('should be a function', () => {
-      expect(typeof nodeSassMagicImporter._importOnceInit).to.equal('function');
+      expect(nodeSassMagicImporter._importOnceInit).to.be.a('function');
     });
 
     it('should set "this.importedStore" to empty object', () => {
       nodeSassMagicImporter._importOnceInit();
-      expect(nodeSassMagicImporter.importedStore).to.be.an('object');
-      expect(nodeSassMagicImporter.importedStore).to.be.empty;
+      expect(nodeSassMagicImporter.importedStore).to.be.an('object').and.to.be.empty;
     });
   });
 // _importOnceTrack(filePath, selectorFilters = [], importerId = 'default') {
   describe('#_importOnceTrack()', () => {
     it('should be a function', () => {
-      expect(typeof nodeSassMagicImporter._importOnceTrack).to.equal('function');
+      expect(nodeSassMagicImporter._importOnceTrack).to.be.a('function');
     });
 
     it('should track the imported filePaths and selectorFilters', () => {
