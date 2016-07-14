@@ -8,8 +8,11 @@ var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
 var fs = _interopDefault(require('fs'));
 var glob = _interopDefault(require('glob'));
 var path = _interopDefault(require('path'));
+var concat = _interopDefault(require('unique-concat'));
 
 var NodeSassMagicImporter = function NodeSassMagicImporter() {
+  // Keep track of imported files.
+  this._importOnceInit();
 };
 
 NodeSassMagicImporter.prototype._parseUrl = function _parseUrl (url) {
@@ -126,8 +129,8 @@ NodeSassMagicImporter.prototype._selectorFilter = function _selectorFilter (file
     if ( selectorReplacements === void 0 ) selectorReplacements = null;
 
   return new Promise(function (promiseResolve, promiseReject) {
-      fs.readFile(filePath, 'utf8', function (error, contents) {
-      if (error) {
+    fs.readFile(filePath, 'utf8', function (error, contents) {
+        if (error) {
         promiseReject(("File \"" + filePath + "\" not found."));
       } else {
         promiseResolve(cssSelectorExtract.processSync(contents, selectorFilters, selectorReplacements));
@@ -136,15 +139,40 @@ NodeSassMagicImporter.prototype._selectorFilter = function _selectorFilter (file
   });
 };
 
-NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack () {
-
+NodeSassMagicImporter.prototype._importOnceInit = function _importOnceInit () {
+  this.importedStore = {};
 };
 
-NodeSassMagicImporter.prototype._importOnceCheck = function _importOnceCheck () {
+NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack (filePath, selectorFilters, importerId) {
+    if ( selectorFilters === void 0 ) selectorFilters = [];
+    if ( importerId === void 0 ) importerId = 'default';
 
+  if (!this.importedStore[importerId]) {
+    this.importedStore[importerId] = {};
+  }
+  var importedFiles = this.importedStore[importerId];
+  var importedFile = importedFiles[filePath] || [];
+  importedFiles[filePath] = concat(importedFile, selectorFilters);
+  };
+
+  NodeSassMagicImporter.prototype._importOnceCheck = function _importOnceCheck (filePath, selectorFilters, importerId) {
+    if ( selectorFilters === void 0 ) selectorFilters = [];
+    if ( importerId === void 0 ) importerId = 'default';
+
+  // return importData if everything should get imported
+  // return FALSE if nothing should get imported
+  // return filePath and missing selectors if only 
+  var importedFiles = this.importedStore.get(importerId);
+  return false;
 };
 
 NodeSassMagicImporter.prototype.importer = function importer () {
+  var self = this;
+
+  return function (url, prev, done) {
+    var importer = this;
+    var importerId = importer.options.importer;
+  };
 };
 
 var nodeSassMagicImporter = new NodeSassMagicImporter();

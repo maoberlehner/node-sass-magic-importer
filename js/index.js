@@ -5,9 +5,12 @@ import cssSelectorExtract from 'css-selector-extract';
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
+import concat from 'unique-concat';
 
 export class NodeSassMagicImporter {
   constructor() {
+    // Keep track of imported files.
+    this._importOnceInit();
   }
 
   _parseUrl(url) {
@@ -128,15 +131,34 @@ export class NodeSassMagicImporter {
     });
   }
 
-  _importOnceTrack() {
-
+  _importOnceInit() {
+    this.importedStore = {};
   }
 
-  _importOnceCheck() {
+  _importOnceTrack(filePath, selectorFilters = [], importerId = 'default') {
+    if (!this.importedStore[importerId]) {
+      this.importedStore[importerId] = {};
+    }
+    let importedFiles = this.importedStore[importerId];
+    let importedFile = importedFiles[filePath] || [];
+    importedFiles[filePath] = concat(importedFile, selectorFilters);
+  }
 
+  _importOnceCheck(filePath, selectorFilters = [], importerId = 'default') {
+    // return importData if everything should get imported
+    // return FALSE if nothing should get imported
+    // return filePath and missing selectors if only
+    let importedFiles = this.importedStore.get(importerId);
+    return false;
   }
 
   importer() {
+    let self = this;
+
+    return function (url, prev, done) {
+      let importer = this;
+      let importerId = importer.options.importer;
+    };
   }
 }
 

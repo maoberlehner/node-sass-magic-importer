@@ -22,14 +22,14 @@ const path = require('path');
 
 chai.use(chaiAsPromised);
 
-describe('MagicImporter', function () {
+describe('MagicImporter', () => {
   it('should be a function', () => {
     expect(typeof NodeSassMagicImporter).to.equal('function');
   });
 
   const nodeSassMagicImporter = new NodeSassMagicImporter();
 
-  describe('#_parseUrl()', function () {
+  describe('#_parseUrl()', () => {
     it('should be a function', () => {
       expect(typeof nodeSassMagicImporter._parseUrl).to.equal('function');
     });
@@ -47,7 +47,7 @@ describe('MagicImporter', function () {
     });
   });
 
-  describe('#_resolveGlob()', function () {
+  describe('#_resolveGlob()', () => {
     it('should be a function', () => {
       expect(typeof nodeSassMagicImporter._resolveGlob).to.equal('function');
     });
@@ -69,7 +69,7 @@ describe('MagicImporter', function () {
     });
   });
 
-  describe('#_resolveModule()', function () {
+  describe('#_resolveModule()', () => {
     it('should be a function', () => {
       expect(typeof nodeSassMagicImporter._resolveModule).to.equal('function');
     });
@@ -131,7 +131,7 @@ describe('MagicImporter', function () {
     });
   });
 
-  describe('#_selectorFilter()', function () {
+  describe('#_selectorFilter()', () => {
     it('should be a function', () => {
       expect(typeof nodeSassMagicImporter._selectorFilter).to.equal('function');
     });
@@ -153,16 +153,56 @@ describe('MagicImporter', function () {
     });
   });
 
-  describe('#_importOnceTrack()', function () {
+  describe('#_importOnceInit()', () => {
+    it('should be a function', () => {
+      expect(typeof nodeSassMagicImporter._importOnceInit).to.equal('function');
+    });
+
+    it('should set "this.importedStore" to empty object', () => {
+      nodeSassMagicImporter._importOnceInit();
+      expect(nodeSassMagicImporter.importedStore).to.be.an('object');
+      expect(nodeSassMagicImporter.importedStore).to.be.empty;
+    });
+  });
+// _importOnceTrack(filePath, selectorFilters = [], importerId = 'default') {
+  describe('#_importOnceTrack()', () => {
+    it('should be a function', () => {
+      expect(typeof nodeSassMagicImporter._importOnceTrack).to.equal('function');
+    });
+
+    it('should track the imported filePaths and selectorFilters', () => {
+      let importerId = 'default';
+
+      let filePath1 = '/test/file.scss';
+      let selectorFilters1 = ['.test-selector-foo', '.test-selector-bar'];
+      nodeSassMagicImporter._importOnceTrack(filePath1, selectorFilters1, importerId);
+
+      let filePath2 = '/test/file.scss';
+      let selectorFilters2 = ['.test-selector-foo', '.test-selector-baz'];
+      nodeSassMagicImporter._importOnceTrack(filePath2, selectorFilters2, importerId);
+
+      let filePath3 = '/another/test/file.scss';
+      let selectorFilters3 = ['.test-selector-foo'];
+      nodeSassMagicImporter._importOnceTrack(filePath3, selectorFilters3, importerId);
+
+      let expectedResult = {
+        'default': {
+          '/test/file.scss': ['.test-selector-foo', '.test-selector-bar', '.test-selector-baz'],
+          '/another/test/file.scss': ['.test-selector-foo']
+        }
+      };
+
+      expect(nodeSassMagicImporter.importedStore).to.deep.equal(expectedResult);
+    });
   });
 
-  describe('#_importOnceCheck()', function () {
+  describe('#_importOnceCheck()', () => {
   });
 
-  describe('#importer()', function () {
+  describe('#importer()', () => {
   });
 
-  // describe('Test imports', function () {
+  // describe('Test imports', () => {
   //   const defaultImportTest = function (testName, done) {
   //     const referenceCss = fs.readFileSync('test/css/' + testName + '-reference.css').toString();
 
