@@ -310,6 +310,24 @@ describe('MagicImporter', () => {
    */
   describe('#importer()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
+    let importTest = (testName, done) => {
+      let referenceCss = fs.readFileSync(`test/files/importer/${testName}-reference.css`, { 'encoding': 'utf8' });
+
+      sass.render({
+        file: `test/files/importer/${testName}.scss`,
+        importer: nodeSassMagicImporter.importer()
+      }, (error, result) => {
+        if (!error) {
+          expect(result.css.toString()).to.equal(referenceCss);
+          done();
+        }
+      });
+    };
+
+    it('should resolve glob import', (done) => {
+      const testName = 'globbing';
+      importTest(testName, done);
+    });
   });
 
   // describe('Test imports', () => {

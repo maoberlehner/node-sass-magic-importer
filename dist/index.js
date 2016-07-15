@@ -151,7 +151,6 @@ NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack (fi
     this.importedStore[importerId] = {};
   }
   var importedFiles = this.importedStore[importerId];
-  // @TODO: rename
   var importedFileSelectors = importedFiles[filePath] || [];
   importedFiles[filePath] = concat(importedFileSelectors, selectorFilters);
 };
@@ -182,6 +181,29 @@ NodeSassMagicImporter.prototype.importer = function importer () {
   return function (url, prev, done) {
     var importer = this;
     var importerId = importer.options.importer;
+
+    // Create a set of all paths to search for files.
+    var includePaths = [];
+    if (path.isAbsolute(prev)) {
+      includePaths.push(path.dirname(prev));
+    }
+    // @TODO: cleanup array.
+    includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
+
+    var importerWatcher = [];
+
+    var globImporter = self._resolveGlob(url, includePaths).then(function (contents) {
+      done({
+        contents: contents
+      });
+    });
+    importerWatcher.push(globImporter);
+
+    Promise.all(importerWatcher)/*.then()*/.catch(function () {
+      done({
+        file: url
+      });
+    });
   };
 };
 

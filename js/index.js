@@ -167,6 +167,30 @@ export class NodeSassMagicImporter {
     return function (url, prev, done) {
       let importer = this;
       let importerId = importer.options.importer;
+
+      // Create a set of all paths to search for files.
+      let includePaths = [];
+      if (path.isAbsolute(prev)) {
+        includePaths.push(path.dirname(prev));
+      }
+      // @TODO: cleanup array.
+      includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
+
+      let importerWatcher = [];
+
+      let globImporter = self._resolveGlob(url, includePaths).then((contents) => {
+        done({
+          contents
+        });
+      });
+      importerWatcher.push(globImporter);
+
+      // Return the default url when all importers are rejected.
+      Promise.all(importerWatcher)/*.then()*/.catch(() => {
+        done({
+          file: url
+        });
+      });
     };
   }
 }
