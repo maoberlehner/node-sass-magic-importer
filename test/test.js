@@ -27,9 +27,9 @@ describe('MagicImporter', () => {
     expect(NodeSassMagicImporter).to.be.a('function');
   });
 
-  const nodeSassMagicImporter = new NodeSassMagicImporter();
-
   describe('#_parseUrl()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
+
     it('should be a function', () => {
       expect(nodeSassMagicImporter._parseUrl).to.be.a('function');
     });
@@ -48,6 +48,8 @@ describe('MagicImporter', () => {
   });
 
   describe('#_resolveGlob()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
+
     it('should be a function', () => {
       expect(nodeSassMagicImporter._resolveGlob).to.be.a('function');
     });
@@ -70,6 +72,8 @@ describe('MagicImporter', () => {
   });
 
   describe('#_resolveModule()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
+
     it('should be a function', () => {
       expect(nodeSassMagicImporter._resolveModule).to.be.a('function');
     });
@@ -132,6 +136,8 @@ describe('MagicImporter', () => {
   });
 
   describe('#_selectorFilter()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
+
     it('should be a function', () => {
       expect(nodeSassMagicImporter._selectorFilter).to.be.a('function');
     });
@@ -154,6 +160,8 @@ describe('MagicImporter', () => {
   });
 
   describe('#_importOnceInit()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
+
     it('should be a function', () => {
       expect(nodeSassMagicImporter._importOnceInit).to.be.a('function');
     });
@@ -163,8 +171,10 @@ describe('MagicImporter', () => {
       expect(nodeSassMagicImporter.importedStore).to.be.an('object').and.to.be.empty;
     });
   });
-// _importOnceTrack(filePath, selectorFilters = [], importerId = 'default') {
+
   describe('#_importOnceTrack()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
+
     it('should be a function', () => {
       expect(nodeSassMagicImporter._importOnceTrack).to.be.a('function');
     });
@@ -196,9 +206,11 @@ describe('MagicImporter', () => {
   });
 
   describe('#_importOnceCheck()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
   });
 
   describe('#importer()', () => {
+    let nodeSassMagicImporter = new NodeSassMagicImporter();
   });
 
   // describe('Test imports', () => {
