@@ -27,6 +27,9 @@ describe('MagicImporter', () => {
     expect(NodeSassMagicImporter).to.be.a('function');
   });
 
+  /**
+   * _parseUrl()
+   */
   describe('#_parseUrl()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
 
@@ -47,6 +50,9 @@ describe('MagicImporter', () => {
     });
   });
 
+  /**
+   * _resolveGlob()
+   */
   describe('#_resolveGlob()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
 
@@ -71,6 +77,9 @@ describe('MagicImporter', () => {
     });
   });
 
+  /**
+   * _resolveModule()
+   */
   describe('#_resolveModule()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
 
@@ -135,6 +144,9 @@ describe('MagicImporter', () => {
     });
   });
 
+  /**
+   * _selectorFilter()
+   */
   describe('#_selectorFilter()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
 
@@ -159,6 +171,9 @@ describe('MagicImporter', () => {
     });
   });
 
+  /**
+   * _importOnceInit()
+   */
   describe('#_importOnceInit()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
 
@@ -172,6 +187,9 @@ describe('MagicImporter', () => {
     });
   });
 
+  /**
+   * _importOnceTrack()
+   */
   describe('#_importOnceTrack()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
 
@@ -205,10 +223,16 @@ describe('MagicImporter', () => {
     });
   });
 
+  /**
+   * _importOnceCheck()
+   */
   describe('#_importOnceCheck()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
   });
 
+  /**
+   * importer()
+   */
   describe('#importer()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
   });
