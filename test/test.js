@@ -198,6 +198,8 @@ describe('MagicImporter', () => {
     });
 
     it('should track the imported filePaths and selectorFilters', () => {
+      nodeSassMagicImporter._importOnceInit();
+
       let importerId = 'default';
 
       let filePath1 = '/test/file.scss';
@@ -228,6 +230,79 @@ describe('MagicImporter', () => {
    */
   describe('#_importOnceCheck()', () => {
     let nodeSassMagicImporter = new NodeSassMagicImporter();
+
+    it('should be a function', () => {
+      expect(nodeSassMagicImporter._importOnceCheck).to.be.a('function');
+    });
+
+    it('should return false because file is already imported', () => {
+      nodeSassMagicImporter._importOnceInit();
+
+      let filePath = '/test/file.scss';
+      let expectedResult = false;
+
+      nodeSassMagicImporter._importOnceTrack(filePath);
+
+      expect(nodeSassMagicImporter._importOnceCheck(filePath)).to.equal(expectedResult);
+    });
+
+    it('should return an importData object', () => {
+      nodeSassMagicImporter._importOnceInit();
+
+      let filePath = '/test/file.scss';
+      let expectedResult = {
+        filePath,
+        'selectorFilters': []
+      };
+
+      expect(nodeSassMagicImporter._importOnceCheck(filePath)).to.deep.equal(expectedResult);
+    });
+
+    it('should return an importData object with selectorFilters', () => {
+      nodeSassMagicImporter._importOnceInit();
+
+      let filePath = '/test/file.scss';
+      let selectorFilters = ['.test-selector-foo', '.test-selector-bar'];
+      let expectedResult = {
+        filePath,
+        selectorFilters
+      };
+
+      expect(nodeSassMagicImporter._importOnceCheck(filePath, selectorFilters)).to.deep.equal(expectedResult);
+    });
+
+    it('should return an importData object with some selectorFilters', () => {
+      nodeSassMagicImporter._importOnceInit();
+
+      let filePath = '/test/file.scss';
+      let selectorFilters = ['.test-selector-foo', '.test-selector-bar'];
+      let extraSelectorFilter = '.test-selector-baz';
+
+      nodeSassMagicImporter._importOnceTrack(filePath, selectorFilters);
+      selectorFilters.push(extraSelectorFilter);
+
+      let expectedResult = {
+        filePath,
+        'selectorFilters': [extraSelectorFilter]
+      };
+
+      expect(nodeSassMagicImporter._importOnceCheck(filePath, selectorFilters)).to.deep.equal(expectedResult);
+    });
+
+    it('should return an importData object with empty selectorFilters', () => {
+      nodeSassMagicImporter._importOnceInit();
+
+      let filePath1 = '/test/file.scss';
+      let filePath2 = '/another/test/file.scss';
+      let expectedResult = {
+        'filePath': filePath2,
+        'selectorFilters': []
+      };
+
+      nodeSassMagicImporter._importOnceTrack(filePath1);
+
+      expect(nodeSassMagicImporter._importOnceCheck(filePath2)).to.deep.equal(expectedResult);
+    });
   });
 
   /**

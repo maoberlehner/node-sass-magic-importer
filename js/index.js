@@ -140,16 +140,25 @@ export class NodeSassMagicImporter {
       this.importedStore[importerId] = {};
     }
     let importedFiles = this.importedStore[importerId];
-    let importedFile = importedFiles[filePath] || [];
-    importedFiles[filePath] = concat(importedFile, selectorFilters);
+    let importedFileSelectors = importedFiles[filePath] || [];
+    importedFiles[filePath] = concat(importedFileSelectors, selectorFilters);
   }
 
   _importOnceCheck(filePath, selectorFilters = [], importerId = 'default') {
-    // return importData if everything should get imported
-    // return FALSE if nothing should get imported
-    // return filePath and missing selectors if only
-    let importedFiles = this.importedStore.get(importerId);
-    return false;
+    let importedFiles = this.importedStore[importerId];
+    if (importedFiles) {
+      let importedFileSelectors = importedFiles[filePath];
+      if (importedFileSelectors) {
+        selectorFilters = selectorFilters.filter((selectorFilter) => importedFileSelectors.indexOf(selectorFilter) == -1);
+        if (selectorFilters.length === 0) {
+          return false;
+        }
+      }
+    }
+    return {
+      filePath,
+      selectorFilters
+    };
   }
 
   importer() {

@@ -151,19 +151,29 @@ NodeSassMagicImporter.prototype._importOnceTrack = function _importOnceTrack (fi
     this.importedStore[importerId] = {};
   }
   var importedFiles = this.importedStore[importerId];
-  var importedFile = importedFiles[filePath] || [];
-  importedFiles[filePath] = concat(importedFile, selectorFilters);
-  };
+  // @TODO: rename
+  var importedFileSelectors = importedFiles[filePath] || [];
+  importedFiles[filePath] = concat(importedFileSelectors, selectorFilters);
+};
 
-  NodeSassMagicImporter.prototype._importOnceCheck = function _importOnceCheck (filePath, selectorFilters, importerId) {
+NodeSassMagicImporter.prototype._importOnceCheck = function _importOnceCheck (filePath, selectorFilters, importerId) {
     if ( selectorFilters === void 0 ) selectorFilters = [];
     if ( importerId === void 0 ) importerId = 'default';
 
-  // return importData if everything should get imported
-  // return FALSE if nothing should get imported
-  // return filePath and missing selectors if only
-  var importedFiles = this.importedStore.get(importerId);
-  return false;
+  var importedFiles = this.importedStore[importerId];
+  if (importedFiles) {
+    var importedFileSelectors = importedFiles[filePath];
+    if (importedFileSelectors) {
+      selectorFilters = selectorFilters.filter(function (selectorFilter) { return importedFileSelectors.indexOf(selectorFilter) == -1; });
+      if (selectorFilters.length === 0) {
+        return false;
+      }
+    }
+  }
+  return {
+    filePath: filePath,
+    selectorFilters: selectorFilters
+  };
 };
 
 NodeSassMagicImporter.prototype.importer = function importer () {
