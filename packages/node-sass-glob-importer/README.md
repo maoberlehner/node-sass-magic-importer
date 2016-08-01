@@ -1,8 +1,7 @@
 # node-sass-glob-importer
 Custom node-sass importer to allow you to use glob syntax in imports.
 
-Globbing allows pattern matching operators to be used to match multiple files at
-once.
+Globbing allows pattern matching operators to be used to match multiple files at once.
 
 ```scss
 // Import all files inside the `scss` directory and subdirectories.
