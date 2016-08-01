@@ -13,7 +13,7 @@ describe('GlobImporter', () => {
   it('should be a function', () => {
     return expect(GlobImporter).to.be.a('function');
   });
-  
+
   /**
    * resolve()
    */
@@ -23,7 +23,7 @@ describe('GlobImporter', () => {
       const expectedResult = null;
       return expect(GlobImporter.resolve(url)).to.eventually.deep.equal(expectedResult).notify(done);
     });
-     
+
     it('should return object with contents property with @import statements', (done) => {
       const url = 'files/test-resolve/**/*.scss';
       const includePath = path.join(process.cwd(), 'test');
@@ -45,6 +45,43 @@ describe('GlobImporter', () => {
        sass.render({
          file: 'test/files/glob.scss',
          importer: globImporter.importer()
+       }, (error, result) => {
+         if (!error) {
+           expect(result.css.toString()).to.equal(expectedResult);
+           done();
+         } else {
+           console.log(error);
+         }
+       });
+     });
+
+     it('should resolve glob import with include path', (done) => {
+       const testName = 'globbing';
+       const expectedResult = fs.readFileSync('test/files/include-path-reference.css', { 'encoding': 'utf8' });
+       sass.render({
+         file: 'test/files/include-path.scss',
+         importer: globImporter.importer(),
+         includePaths: [
+           'some/other/include-path',
+           'test/files/test-imports'
+         ],
+       }, (error, result) => {
+         if (!error) {
+           expect(result.css.toString()).to.equal(expectedResult);
+           done();
+         } else {
+           console.log(error);
+         }
+       });
+     });
+
+     it('should resolve glob import with absolute include path', (done) => {
+       const testName = 'globbing';
+       const expectedResult = fs.readFileSync('test/files/include-path-reference.css', { 'encoding': 'utf8' });
+       sass.render({
+         file: 'test/files/include-path.scss',
+         importer: globImporter.importer(),
+         includePaths: [process.cwd() + '/test/files/test-imports'],
        }, (error, result) => {
          if (!error) {
            expect(result.css.toString()).to.equal(expectedResult);
