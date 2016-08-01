@@ -3,10 +3,7 @@ import glob from 'glob';
 import path from 'path';
 
 export class GlobImporter {
-  static resolveSync(
-    url,
-    includePaths = [process.cwd()]
-  ) {
+  static resolveSync(url, includePaths = [process.cwd()]) {
     if (glob.hasMagic(url)) {
       const absolutePaths = includePaths.reduce((absolutePathStore, includePath) => {
         // Try to resolve the glob pattern.
@@ -23,10 +20,7 @@ export class GlobImporter {
     return null;
   }
 
-  static resolve(
-    url,
-    includePaths = [process.cwd()]
-  ) {
+  static resolve(url, includePaths = [process.cwd()]) {
     return new Promise((promiseResolve) => {
       promiseResolve(GlobImporter.resolveSync(url, includePaths));
     });
