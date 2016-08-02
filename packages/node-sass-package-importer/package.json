@@ -1,0 +1,55 @@
+{
+  "name": "node-sass-package-importer",
+  "description": "Custom importer for node-sass to import packages from node_modules or bower_components directories",
+  "keywords": [
+    "node-sass",
+    "sass",
+    "npm",
+    "bower"
+  ],
+  "version": "0.0.1",
+  "author": "Markus Oberlehner",
+  "homepage": "https://github.com/maoberlehner/node-sass-package-importer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoberlehner/node-sass-package-importer"
+  },
+  "bugs": {
+    "url": "https://github.com/maoberlehner/node-sass-package-importer/issues"
+  },
+  "dependencies": {
+    "glob": "^7.0.5",
+    "unique-concat": "^0.2.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "eslint": "^3.1.1",
+    "eslint-config-modularis": "0.0.1",
+    "eslint-plugin-import": "^1.12.0",
+    "mocha": "^2.5.3",
+    "node-sass": "^3.8.0",
+    "pre-git": "^3.10.0",
+    "rollup": "^0.34.1",
+    "rollup-plugin-buble": "^0.12.1"
+  },
+  "main": "dist/index.js",
+  "jsnext:main": "js/index.js",
+  "scripts": {
+    "scripts:lint": "eslint js/index.js",
+    "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js",
+    "scripts": "npm run scripts:lint && npm run scripts:bundle",
+    "test": "mocha"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": [
+        "npm run scripts:lint"
+      ],
+      "pre-push": [
+        "npm test"
+      ]
+    }
+  }
+}
