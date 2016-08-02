@@ -19,10 +19,10 @@
     "url": "https://github.com/maoberlehner/node-sass-package-importer/issues"
   },
   "dependencies": {
-    "glob": "^7.0.5",
-    "unique-concat": "^0.2.2"
+    "glob": "^7.0.5"
   },
   "devDependencies": {
+    "bootstrap": "4.0.0-alpha.3",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "eslint": "^3.1.1",
@@ -37,10 +37,10 @@
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
   "scripts": {
-    "scripts:lint": "eslint js/index.js",
+    "scripts:lint": "eslint js/index.js || exit 0",
     "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js",
     "scripts": "npm run scripts:lint && npm run scripts:bundle",
-    "test": "mocha"
+    "test": "npm run scripts && mocha"
   },
   "config": {
     "pre-git": {
