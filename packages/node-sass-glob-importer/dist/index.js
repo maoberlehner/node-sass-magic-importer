@@ -10,10 +10,7 @@ var path = _interopDefault(require('path'));
 
 var GlobImporter = function GlobImporter () {};
 
-GlobImporter.resolveSync = function resolveSync (
-  url,
-  includePaths
-) {
+GlobImporter.resolveSync = function resolveSync (url, includePaths) {
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   if (glob.hasMagic(url)) {
@@ -32,10 +29,7 @@ GlobImporter.resolveSync = function resolveSync (
   return null;
 };
 
-GlobImporter.resolve = function resolve (
-  url,
-  includePaths
-) {
+GlobImporter.resolve = function resolve (url, includePaths) {
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   return new Promise(function (promiseResolve) {
