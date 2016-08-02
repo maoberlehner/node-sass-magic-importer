@@ -19,7 +19,7 @@ describe('GlobImporter', () => {
    */
   describe('resolve()', () => {
     it('should return null', (done) => {
-      const url = 'path/without/glob/pattern.js';
+      const url = 'path/without/glob/pattern.scss';
       const expectedResult = null;
       return expect(GlobImporter.resolve(url)).to.eventually.deep.equal(expectedResult).notify(done);
     });
