@@ -40,7 +40,6 @@ describe('GlobImporter', () => {
      const globImporter = new GlobImporter();
 
      it('should resolve glob import', (done) => {
-       const testName = 'globbing';
        const expectedResult = fs.readFileSync('test/files/glob-reference.css', { 'encoding': 'utf8' });
        sass.render({
          file: 'test/files/glob.scss',
@@ -56,7 +55,6 @@ describe('GlobImporter', () => {
      });
 
      it('should resolve glob import with include path', (done) => {
-       const testName = 'globbing';
        const expectedResult = fs.readFileSync('test/files/include-path-reference.css', { 'encoding': 'utf8' });
        sass.render({
          file: 'test/files/include-path.scss',
@@ -76,7 +74,6 @@ describe('GlobImporter', () => {
      });
 
      it('should resolve glob import with absolute include path', (done) => {
-       const testName = 'globbing';
        const expectedResult = fs.readFileSync('test/files/include-path-reference.css', { 'encoding': 'utf8' });
        sass.render({
          file: 'test/files/include-path.scss',
