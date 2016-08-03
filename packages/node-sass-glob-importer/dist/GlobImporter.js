@@ -51,6 +51,4 @@ GlobImporter.importer = function importer () {
   };
 };
 
-var index = GlobImporter.importer();
-
-module.exports = index;
+module.exports = GlobImporter;
