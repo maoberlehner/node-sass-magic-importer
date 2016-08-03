@@ -3,6 +3,7 @@
 // @TODO: treat every *.json object as possible array
 // @TODO: make search order configurable (and maybe possible to modify with the import url) 
 
+import concat from 'unique-concat';
 import glob from 'glob';
 import path from 'path';
 
@@ -76,20 +77,7 @@ export class PackageImporter {
     });
   }
 
-  importer(
-    directories = ['node_modules', 'bower_components'],
-    packageKey = [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
-    ]
-  ) {
+  static importer(directories, packageKeys) {
     return function nodeSassImporter(url, prev, done) {
       const importer = this;
       // Create a set of all paths to search for files.
@@ -106,5 +94,18 @@ export class PackageImporter {
   }
 }
 
-const packageImporter = new PackageImporter();
-export default packageImporter.importer();
+const defaultDirectories = ['node_modules', 'bower_components'];
+const defaultPackageKeys = [
+  'sass',
+  'scss',
+  'style',
+  'css',
+  'main.sass',
+  'main.scss',
+  'main.style',
+  'main.css',
+  'main'
+];
+
+export default (directories = defaultDirectories, packageKeys = defaultPackageKeys) =>
+  PackageImporter.importer(directories, packageKeys);

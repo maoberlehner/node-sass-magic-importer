@@ -19,7 +19,8 @@
     "url": "https://github.com/maoberlehner/node-sass-package-importer/issues"
   },
   "dependencies": {
-    "glob": "^7.0.5"
+    "glob": "^7.0.5",
+    "unique-concat": "^0.2.2"
   },
   "devDependencies": {
     "bootstrap": "4.0.0-alpha.3",

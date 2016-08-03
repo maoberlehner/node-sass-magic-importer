@@ -5,13 +5,14 @@ const fs = require('fs');
 const sass = require('node-sass');
 const path = require('path');
 
-const PackageImporter = require('../').PackageImporter;
+const packageImporter = require('../')['default'];
+const PackageImporterClass = require('../').PackageImporter;
 
 chai.use(chaiAsPromised);
 
-describe('PackageImporter', () => {
+describe('PackageImporterClass', () => {
   it('should be a function', () => {
-    return expect(PackageImporter).to.be.a('function');
+    return expect(PackageImporterClass).to.be.a('function');
   });
 
   /**
@@ -21,21 +22,21 @@ describe('PackageImporter', () => {
     it('should return null', (done) => {
       const url = 'path/that/does/not/exist.scss';
       const expectedResult = null;
-      return expect(PackageImporter.resolve(url)).to.eventually.deep.equal(expectedResult).notify(done);
+      return expect(PackageImporterClass.resolve(url)).to.eventually.deep.equal(expectedResult).notify(done);
     });
 
     it('should return object with @import statement for the test-module main sass file', (done) => {
       const url = 'test-module';
       const includePath = path.join(process.cwd(), 'test/files/test-resolve');
       const expectedResult = { contents: `@import '${path.join(includePath, 'node_modules/test-module/scss/style.scss')}';` };
-      return expect(PackageImporter.resolve(url, [includePath])).to.eventually.deep.equal(expectedResult).notify(done);
+      return expect(PackageImporterClass.resolve(url, [includePath])).to.eventually.deep.equal(expectedResult).notify(done);
     });
 
     it('should return object with @import statement for the test-module partial file', (done) => {
       const url = 'test-module/scss/partial';
       const includePath = path.join(process.cwd(), 'test/files/test-resolve');
       const expectedResult = { contents: `@import '${path.join(includePath, 'node_modules/test-module/scss/_partial.scss')}';` };
-      return expect(PackageImporter.resolve(url, [includePath])).to.eventually.deep.equal(expectedResult).notify(done);
+      return expect(PackageImporterClass.resolve(url, [includePath])).to.eventually.deep.equal(expectedResult).notify(done);
     });
   });
 
@@ -98,4 +99,25 @@ describe('PackageImporter', () => {
   //      });
   //    });
   //  });
+});
+
+describe('packageImporter', () => {
+  it('should be a function', () => {
+    return expect(packageImporter).to.be.a('function');
+  });
+
+  it('should resolve module import', (done) => {
+     const expectedResult = fs.readFileSync('test/files/module-reference.css', { 'encoding': 'utf8' });
+     sass.render({
+       file: 'test/files/module.scss',
+       importer: packageImporter
+     }, (error, result) => {
+       if (!error) {
+         expect(result.css.toString()).to.equal(expectedResult);
+         done();
+       } else {
+         console.log(error);
+       }
+     });
+   });
 });

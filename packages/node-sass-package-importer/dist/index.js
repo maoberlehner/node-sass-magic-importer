@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var concat = _interopDefault(require('unique-concat'));
 var glob = require('glob');
 var path = _interopDefault(require('path'));
 
@@ -42,23 +43,7 @@ PackageImporter.resolve = function resolve (
   });
 };
 
-PackageImporter.prototype.importer = function importer (
-  directories,
-  packageKey
-) {
-    if ( directories === void 0 ) directories = ['node_modules', 'bower_components'];
-    if ( packageKey === void 0 ) packageKey = [
-    'sass',
-    'scss',
-    'style',
-    'css',
-    'main.sass',
-    'main.scss',
-    'main.style',
-    'main.css',
-    'main'
-  ];
-
+PackageImporter.importer = function importer (directories, packageKeys) {
   return function nodeSassImporter(url, prev, done) {
     var importer = this;
     // Create a set of all paths to search for files.
@@ -74,8 +59,25 @@ PackageImporter.prototype.importer = function importer (
   };
 };
 
-var packageImporter = new PackageImporter();
-var index = packageImporter.importer();
+var defaultDirectories = ['node_modules', 'bower_components'];
+var defaultPackageKeys = [
+  'sass',
+  'scss',
+  'style',
+  'css',
+  'main.sass',
+  'main.scss',
+  'main.style',
+  'main.css',
+  'main'
+];
+
+function index (directories, packageKeys) {
+    if ( directories === void 0 ) directories = defaultDirectories;
+    if ( packageKeys === void 0 ) packageKeys = defaultPackageKeys;
+
+    return PackageImporter.importer(directories, packageKeys);
+};
 
 exports.PackageImporter = PackageImporter;
 exports['default'] = index;
