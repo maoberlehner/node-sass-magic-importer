@@ -5,13 +5,35 @@ const fs = require('fs');
 const sass = require('node-sass');
 const path = require('path');
 
-const GlobImporter = require('../').GlobImporter;
+const globImporter = require('../');
+const GlobImporterClass = require('../dist/GlobImporter.js');
 
 chai.use(chaiAsPromised);
 
-describe('GlobImporter', () => {
+describe('globImporter', () => {
   it('should be a function', () => {
-    return expect(GlobImporter).to.be.a('function');
+    return expect(globImporter).to.be.a('function');
+  });
+
+  it('should resolve glob import', (done) => {
+     const expectedResult = fs.readFileSync('test/files/glob-reference.css', { 'encoding': 'utf8' });
+     sass.render({
+       file: 'test/files/glob.scss',
+       importer: globImporter
+     }, (error, result) => {
+       if (!error) {
+         expect(result.css.toString()).to.equal(expectedResult);
+         done();
+       } else {
+         console.log(error);
+       }
+     });
+   });
+});
+
+describe('GlobImporterClass', () => {
+  it('should be a function', () => {
+    return expect(GlobImporterClass).to.be.a('function');
   });
 
   /**
@@ -19,9 +41,9 @@ describe('GlobImporter', () => {
    */
   describe('resolve()', () => {
     it('should return null', (done) => {
-      const url = 'path/without/glob/pattern.js';
+      const url = 'path/without/glob/pattern.scss';
       const expectedResult = null;
-      return expect(GlobImporter.resolve(url)).to.eventually.deep.equal(expectedResult).notify(done);
+      return expect(GlobImporterClass.resolve(url)).to.eventually.deep.equal(expectedResult).notify(done);
     });
 
     it('should return object with contents property with @import statements', (done) => {
@@ -29,7 +51,7 @@ describe('GlobImporter', () => {
       const includePath = path.join(process.cwd(), 'test');
       const expectedResult = { contents: `@import '${path.join(includePath, 'files/test-resolve/style1.scss')}';
 @import '${path.join(includePath, 'files/test-resolve/style2.scss')}';` };
-      return expect(GlobImporter.resolve(url, [includePath])).to.eventually.deep.equal(expectedResult).notify(done);
+      return expect(GlobImporterClass.resolve(url, [includePath])).to.eventually.deep.equal(expectedResult).notify(done);
     });
   });
 
@@ -37,14 +59,11 @@ describe('GlobImporter', () => {
    * importer()
    */
    describe('importer()', () => {
-     const globImporter = new GlobImporter();
-
      it('should resolve glob import', (done) => {
-       const testName = 'globbing';
        const expectedResult = fs.readFileSync('test/files/glob-reference.css', { 'encoding': 'utf8' });
        sass.render({
          file: 'test/files/glob.scss',
-         importer: globImporter.importer()
+         importer: GlobImporterClass.importer()
        }, (error, result) => {
          if (!error) {
            expect(result.css.toString()).to.equal(expectedResult);
@@ -56,11 +75,10 @@ describe('GlobImporter', () => {
      });
 
      it('should resolve glob import with include path', (done) => {
-       const testName = 'globbing';
        const expectedResult = fs.readFileSync('test/files/include-path-reference.css', { 'encoding': 'utf8' });
        sass.render({
          file: 'test/files/include-path.scss',
-         importer: globImporter.importer(),
+         importer: GlobImporterClass.importer(),
          includePaths: [
            'some/other/include-path',
            'test/files/test-imports'
@@ -76,11 +94,10 @@ describe('GlobImporter', () => {
      });
 
      it('should resolve glob import with absolute include path', (done) => {
-       const testName = 'globbing';
        const expectedResult = fs.readFileSync('test/files/include-path-reference.css', { 'encoding': 'utf8' });
        sass.render({
          file: 'test/files/include-path.scss',
-         importer: globImporter.importer(),
+         importer: GlobImporterClass.importer(),
          includePaths: [process.cwd() + '/test/files/test-imports'],
        }, (error, result) => {
          if (!error) {
