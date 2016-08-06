@@ -10,6 +10,7 @@ In modern day web development, packages are everywhere. There is no way around [
 // https://github.com/twbs/bootstrap/blob/v4-dev/scss/bootstrap.scss
 @import '~bootstrap';
 ```
+
 ```scss
 // Import only specific files:
 @import '~bootstrap/scss/variables';
