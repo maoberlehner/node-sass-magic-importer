@@ -79,12 +79,4 @@ PackageImporter.prototype.resolve = function resolve$1 (url) {
   });
 };
 
-var packageImporter = new PackageImporter();
-function index (url, prev, done) {
-  if (this.options.packageImporter) {
-    packageImporter.options = Object.assign(packageImporter.options, this.options.packageImporter);
-  }
-  packageImporter.resolve(url).then(function (data) { return done(data); });
-}
-
-module.exports = index;
+module.exports = PackageImporter;
