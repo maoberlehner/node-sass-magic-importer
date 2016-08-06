@@ -7,7 +7,7 @@
     "npm",
     "bower"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-package-importer",
   "license": "MIT",
