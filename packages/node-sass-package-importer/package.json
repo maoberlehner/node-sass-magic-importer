@@ -4,8 +4,7 @@
   "keywords": [
     "node-sass",
     "sass",
-    "npm",
-    "bower"
+    "npm"
   ],
   "version": "0.0.2",
   "author": "Markus Oberlehner",
