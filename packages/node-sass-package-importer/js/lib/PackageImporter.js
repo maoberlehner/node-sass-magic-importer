@@ -2,6 +2,10 @@ import resolve from 'resolve';
 import path from 'path';
 
 export default class PackageImporter {
+  /**
+   * Import packages from the `node_modules` directory.
+   * @param {Object} options - Configuration options.
+   */
   constructor(options = {}) {
     const defaultOptions = {
       cwd: process.cwd(),
@@ -24,6 +28,11 @@ export default class PackageImporter {
     this.options = Object.assign(defaultOptions, options);
   }
 
+  /**
+   * Synchronously resolve the path to a node-sass import url.
+   * @param {string} url - Import url from node-sass.
+   * @return {mixed} Import object for node-sass or null.
+   */
   resolveSync(url) {
     // Remove tilde symbol from the beginning
     // of urls (except home "~/" directory).
@@ -64,6 +73,11 @@ export default class PackageImporter {
     return data;
   }
 
+  /**
+   * Asynchronously resolve the path to a node-sass import url.
+   * @param {string} url - Import url from node-sass.
+   * @return {mixed} Import object for node-sass or null.
+   */
   resolve(url) {
     return new Promise((promiseResolve) => {
       promiseResolve(this.resolveSync(url));
