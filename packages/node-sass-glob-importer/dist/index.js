@@ -27,6 +27,12 @@ GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
   return null;
 };
 
+/**
+ * Asynchronously resolve the path to a node-sass import url.
+ * @param {string} url - Import url from node-sass.
+ * @param {Array} includePaths - Paths to consider for importing files.
+ * @return {Promise} Promise for a fully resolved import url.
+ */
 GlobImporter.prototype.resolve = function resolve (url, includePaths) {
     var this$1 = this;
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
@@ -36,10 +42,13 @@ GlobImporter.prototype.resolve = function resolve (url, includePaths) {
   });
 };
 
+/**
+ * @return {function} Returns a node-sass importer function.
+ */
 GlobImporter.prototype.importer = function importer () {
-  var self = this;
+    var self = this;
   return function nodeSassImporter(url, prev, done) {
-      var importer = this;
+    var importer = this;
     // Create a set of all paths to search for files.
     var includePaths = [];
     if (path.isAbsolute(prev)) {

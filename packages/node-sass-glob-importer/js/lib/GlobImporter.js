@@ -3,6 +3,12 @@ import glob from 'glob';
 import path from 'path';
 
 export default class GlobImporter {
+  /**
+   * Synchronously resolve the path to a node-sass import url.
+   * @param {string} url - Import url from node-sass.
+   * @param {Array} includePaths - Paths to consider for importing files.
+   * @return {Array} Fully resolved import urls or null.
+   */
   resolveSync(url, includePaths = [process.cwd()]) {
     if (glob.hasMagic(url)) {
       const absolutePaths = includePaths.reduce((absolutePathStore, includePath) => {
@@ -20,12 +26,21 @@ export default class GlobImporter {
     return null;
   }
 
+  /**
+   * Asynchronously resolve the path to a node-sass import url.
+   * @param {string} url - Import url from node-sass.
+   * @param {Array} includePaths - Paths to consider for importing files.
+   * @return {Promise} Promise for a fully resolved import url.
+   */
   resolve(url, includePaths = [process.cwd()]) {
     return new Promise((promiseResolve) => {
       promiseResolve(this.resolveSync(url, includePaths));
     });
   }
 
+  /**
+   * @return {function} Returns a node-sass importer function.
+   */
   importer() {
     const self = this;
     return function nodeSassImporter(url, prev, done) {
