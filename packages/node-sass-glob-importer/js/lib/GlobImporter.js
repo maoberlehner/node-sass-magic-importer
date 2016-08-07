@@ -30,7 +30,7 @@ export default class GlobImporter {
    * Asynchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
    * @param {Array} includePaths - Paths to consider for importing files.
-   * @return {Promise} Promise for a fully resolved import url.
+   * @return {Promise} Promise for an array of fully resolved import urls.
    */
   resolve(url, includePaths = [process.cwd()]) {
     return new Promise((promiseResolve) => {
