@@ -1,3 +1,4 @@
 import GlobImporter from './lib/GlobImporter.js';
 
-export default GlobImporter.importer();
+const globImporter = new GlobImporter();
+export default globImporter.importer();

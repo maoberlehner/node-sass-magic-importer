@@ -3,7 +3,7 @@ import glob from 'glob';
 import path from 'path';
 
 export default class GlobImporter {
-  static resolveSync(url, includePaths = [process.cwd()]) {
+  resolveSync(url, includePaths = [process.cwd()]) {
     if (glob.hasMagic(url)) {
       const absolutePaths = includePaths.reduce((absolutePathStore, includePath) => {
         // Try to resolve the glob pattern.
@@ -20,13 +20,14 @@ export default class GlobImporter {
     return null;
   }
 
-  static resolve(url, includePaths = [process.cwd()]) {
+  resolve(url, includePaths = [process.cwd()]) {
     return new Promise((promiseResolve) => {
-      promiseResolve(GlobImporter.resolveSync(url, includePaths));
+      promiseResolve(this.resolveSync(url, includePaths));
     });
   }
 
-  static importer() {
+  importer() {
+    const self = this;
     return function nodeSassImporter(url, prev, done) {
       const importer = this;
       // Create a set of all paths to search for files.
@@ -36,9 +37,7 @@ export default class GlobImporter {
       }
       includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
       // Try to resolve the url.
-      GlobImporter.resolve(url, includePaths).then((data) => {
-        done(data);
-      });
+      self.resolve(url, includePaths).then(data => done(data));
     };
   }
 }

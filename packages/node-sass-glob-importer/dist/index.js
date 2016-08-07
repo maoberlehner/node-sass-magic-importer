@@ -8,7 +8,7 @@ var path = _interopDefault(require('path'));
 
 var GlobImporter = function GlobImporter () {};
 
-GlobImporter.resolveSync = function resolveSync (url, includePaths) {
+GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   if (glob.hasMagic(url)) {
@@ -27,17 +27,19 @@ GlobImporter.resolveSync = function resolveSync (url, includePaths) {
   return null;
 };
 
-GlobImporter.resolve = function resolve (url, includePaths) {
+GlobImporter.prototype.resolve = function resolve (url, includePaths) {
+    var this$1 = this;
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   return new Promise(function (promiseResolve) {
-    promiseResolve(GlobImporter.resolveSync(url, includePaths));
+    promiseResolve(this$1.resolveSync(url, includePaths));
   });
 };
 
-GlobImporter.importer = function importer () {
+GlobImporter.prototype.importer = function importer () {
+  var self = this;
   return function nodeSassImporter(url, prev, done) {
-    var importer = this;
+      var importer = this;
     // Create a set of all paths to search for files.
     var includePaths = [];
     if (path.isAbsolute(prev)) {
@@ -45,12 +47,11 @@ GlobImporter.importer = function importer () {
     }
     includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
     // Try to resolve the url.
-    GlobImporter.resolve(url, includePaths).then(function (data) {
-      done(data);
-    });
+    self.resolve(url, includePaths).then(function (data) { return done(data); });
   };
 };
 
-var index = GlobImporter.importer();
+var globImporter = new GlobImporter();
+var index = globImporter.importer();
 
 module.exports = index;
