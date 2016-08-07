@@ -45,7 +45,7 @@ describe('PackageImporterClass', () => {
       const url = 'path/that/does/not/exist.scss';
       const expectedResult = null;
       return expect(packageImporterInstance.resolve(url))
-        .to.eventually.deep.equal(expectedResult)
+        .to.eventually.equal(expectedResult)
         .notify(done);
     });
 
@@ -53,11 +53,12 @@ describe('PackageImporterClass', () => {
       const options = { cwd: path.join(process.cwd(), 'test/files') };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = 'test-module';
-      const expectedResult = { file:
-        `${path.join(options.cwd, 'node_modules/test-module/scss/style.scss')}`
-      };
+      const expectedResult = `${path.join(
+        options.cwd,
+        'node_modules/test-module/scss/style.scss'
+      )}`;
       return expect(packageImporterInstance.resolve(url))
-        .to.eventually.deep.equal(expectedResult)
+        .to.eventually.equal(expectedResult)
         .notify(done);
     });
 
@@ -65,11 +66,12 @@ describe('PackageImporterClass', () => {
       const options = { cwd: path.join(process.cwd(), 'test/files') };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = 'test-module/scss/partial';
-      const expectedResult = {
-        file: `${path.join(options.cwd, 'node_modules/test-module/scss/_partial.scss')}`
-      };
+      const expectedResult = `${path.join(
+        options.cwd,
+        'node_modules/test-module/scss/_partial.scss'
+      )}`;
       return expect(packageImporterInstance.resolve(url))
-        .to.eventually.deep.equal(expectedResult)
+        .to.eventually.equal(expectedResult)
         .notify(done);
     });
   });
