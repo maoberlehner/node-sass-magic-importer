@@ -31,12 +31,12 @@ export default class PackageImporter {
   /**
    * Synchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {mixed} Import object for node-sass or null.
+   * @return {string} Fully resolved import url or null.
    */
   resolveSync(url) {
     const cleanUrl = this.cleanUrl(url);
     const urlVariants = this.urlVariants(cleanUrl);
-    let data = null;
+    let file = null;
     // Find a url variant that can be resolved.
     urlVariants.some(urlVariant => {
       try {
@@ -45,15 +45,13 @@ export default class PackageImporter {
           packageFilter: pkg => this.resolveFilter(pkg)
         });
         if (resolvedPath) {
-          data = {
-            file: resolvedPath
-          };
+          file = resolvedPath;
           return true;
         }
       } catch (e) {}
       return false;
     });
-    return data;
+    return file;
   }
 
   /**

@@ -32,14 +32,14 @@ var PackageImporter = function PackageImporter(options) {
 /**
  * Synchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
- * @return {mixed} Import object for node-sass or null.
+ * @return {string} Fully resolved import url or null.
  */
 PackageImporter.prototype.resolveSync = function resolveSync (url) {
     var this$1 = this;
 
   var cleanUrl = this.cleanUrl(url);
   var urlVariants = this.urlVariants(cleanUrl);
-  var data = null;
+  var file = null;
   // Find a url variant that can be resolved.
   urlVariants.some(function (urlVariant) {
     try {
@@ -48,15 +48,13 @@ PackageImporter.prototype.resolveSync = function resolveSync (url) {
         packageFilter: function (pkg) { return this$1.resolveFilter(pkg); }
       });
       if (resolvedPath) {
-        data = {
-          file: resolvedPath
-        };
+        file = resolvedPath;
         return true;
       }
     } catch (e) {}
     return false;
   });
-  return data;
+  return file;
 };
 
 /**
@@ -120,7 +118,7 @@ function index (url, prev, done) {
   if (this.options.packageImporter) {
     packageImporter.options = Object.assign(packageImporter.options, this.options.packageImporter);
   }
-  packageImporter.resolve(url).then(function (data) { return done(data); });
+  packageImporter.resolve(url).then(function (file) { return done({ file: file }); });
 }
 
 module.exports = index;
