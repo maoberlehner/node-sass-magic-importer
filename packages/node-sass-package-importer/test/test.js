@@ -73,4 +73,95 @@ describe('PackageImporterClass', () => {
         .notify(done);
     });
   });
+
+  /**
+   * cleanUrl()
+   */
+  describe('cleanUrl()', () => {
+    it('should return the url unmodified', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const url = 'normal/path/without/tilde';
+      const expectedResult = url;
+      return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
+    });
+
+    it('should return the unmodified home path relative url', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const url = '~/home/path/with/tilde';
+      const expectedResult = url;
+      return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
+    });
+
+    it('should return a cleaned up url without tilde', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const url = '~path/with/tilde';
+      const expectedResult = 'path/with/tilde';
+      return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
+    });
+  });
+
+  /**
+   * urlVariants()
+   */
+  describe('urlVariants()', () => {
+    it('should return array with single url (module name)', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const url = 'module-name-url';
+      const expectedResult = [url];
+      return expect(packageImporterInstance.urlVariants(url)).to.deep.equal(expectedResult);
+    });
+
+    it('should return array with single url (specific file)', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const url = 'module-name/specific/file.scss';
+      const expectedResult = [url];
+      return expect(packageImporterInstance.urlVariants(url)).to.deep.equal(expectedResult);
+    });
+
+    it('should return array with partial file naming variants and extensions', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const url = 'module-name/partial/file';
+      const expectedResult = [
+        url,
+        'module-name/partial/file.scss',
+        'module-name/partial/_file.scss',
+        'module-name/partial/file.sass',
+        'module-name/partial/_file.sass'
+      ];
+      return expect(packageImporterInstance.urlVariants(url)).to.deep.equal(expectedResult);
+    });
+  });
+
+  /**
+   * resolveFilter()
+   */
+  describe('resolveFilter()', () => {
+    it('should return package object with value from `sass` as value for `main`', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const pkg = {
+        main: 'index.js',
+        sass: 'sass.scss',
+        scss: 'scss.scss'
+      };
+      const expectedResult = {
+        main: 'sass.scss',
+        sass: 'sass.scss',
+        scss: 'scss.scss'
+      };
+      return expect(packageImporterInstance.resolveFilter(pkg)).to.deep.equal(expectedResult);
+    });
+
+    it('should return package object with value from `scss` as value for `main`', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      const pkg = {
+        main: 'index.js',
+        scss: 'scss.scss'
+      };
+      const expectedResult = {
+        main: 'scss.scss',
+        scss: 'scss.scss'
+      };
+      return expect(packageImporterInstance.resolveFilter(pkg)).to.deep.equal(expectedResult);
+    });
+  });
 });
