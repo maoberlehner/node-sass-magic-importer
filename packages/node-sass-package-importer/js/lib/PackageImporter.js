@@ -57,7 +57,7 @@ export default class PackageImporter {
   /**
    * Asynchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for node-sass importer return object.
+   * @return {Promise} Promise for a fully resolved import url.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {

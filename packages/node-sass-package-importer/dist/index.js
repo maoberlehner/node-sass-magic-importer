@@ -60,7 +60,7 @@ PackageImporter.prototype.resolveSync = function resolveSync (url) {
 /**
  * Asynchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for node-sass importer return object.
+ * @return {Promise} Promise for a fully resolved import url.
  */
 PackageImporter.prototype.resolve = function resolve$1 (url) {
     var this$1 = this;
@@ -118,7 +118,7 @@ function index (url, prev, done) {
   if (this.options.packageImporter) {
     packageImporter.options = Object.assign(packageImporter.options, this.options.packageImporter);
   }
-  packageImporter.resolve(url).then(function (file) { return done({ file: file }); });
+  packageImporter.resolve(url).then(function (file) { return done(file ? { file: file } : null); });
 }
 
 module.exports = index;
