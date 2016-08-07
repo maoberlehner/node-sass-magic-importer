@@ -5,7 +5,7 @@
     "node-sass",
     "sass"
   ],
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-glob-importer",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "eslint": "^3.1.1",
-    "eslint-config-modularis": "0.0.1",
+    "eslint-config-modularis": "^0.2.0",
     "eslint-plugin-import": "^1.12.0",
     "mocha": "^2.5.3",
     "node-sass": "^3.8.0",
@@ -35,7 +35,7 @@
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
   "scripts": {
-    "scripts:lint": "eslint js/index.js js/lib/GlobImporter.js",
+    "scripts:lint": "eslint js/* test/*",
     "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/GlobImporter.js js/lib/GlobImporter.js",
     "scripts": "npm run scripts:lint && npm run scripts:bundle",
     "test": "mocha"

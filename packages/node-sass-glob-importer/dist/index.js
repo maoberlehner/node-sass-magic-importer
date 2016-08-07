@@ -8,7 +8,7 @@ var path = _interopDefault(require('path'));
 
 var GlobImporter = function GlobImporter () {};
 
-GlobImporter.resolveSync = function resolveSync (url, includePaths) {
+GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   if (glob.hasMagic(url)) {
@@ -16,26 +16,37 @@ GlobImporter.resolveSync = function resolveSync (url, includePaths) {
       // Try to resolve the glob pattern.
       var newAbsolutePaths = glob
         .sync(url, { cwd: includePath })
-        .map(function (relativePath) { return ("@import '" + (path.resolve(includePath, relativePath)) + "';"); });
+        .map(function (relativePath) { return path.resolve(includePath, relativePath); });
       // Merge new paths with previously found ones.
       return concat(absolutePathStore, newAbsolutePaths);
     }, []);
     if (absolutePaths.length) {
-      return { contents: absolutePaths.join('\n') };
+      return absolutePaths;
     }
   }
   return null;
 };
 
-GlobImporter.resolve = function resolve (url, includePaths) {
+/**
+ * Asynchronously resolve the path to a node-sass import url.
+ * @param {string} url - Import url from node-sass.
+ * @param {Array} includePaths - Paths to consider for importing files.
+ * @return {Promise} Promise for a fully resolved import url.
+ */
+GlobImporter.prototype.resolve = function resolve (url, includePaths) {
+    var this$1 = this;
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   return new Promise(function (promiseResolve) {
-    promiseResolve(GlobImporter.resolveSync(url, includePaths));
+    promiseResolve(this$1.resolveSync(url, includePaths));
   });
 };
 
-GlobImporter.importer = function importer () {
+/**
+ * @return {function} Returns a node-sass importer function.
+ */
+GlobImporter.prototype.importer = function importer () {
+  var self = this;
   return function nodeSassImporter(url, prev, done) {
     var importer = this;
     // Create a set of all paths to search for files.
@@ -45,12 +56,18 @@ GlobImporter.importer = function importer () {
     }
     includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
     // Try to resolve the url.
-    GlobImporter.resolve(url, includePaths).then(function (data) {
-      done(data);
+    self.resolve(url, includePaths).then(function (files) {
+      if (files) {
+        var contents = files.map(function (x) { return ("@import '" + x + "';"); }).join('\n');
+        done({ contents: contents });
+      } else {
+        done(null);
+      }
     });
   };
 };
 
-var index = GlobImporter.importer();
+var globImporter = new GlobImporter();
+var index = globImporter.importer();
 
 module.exports = index;
