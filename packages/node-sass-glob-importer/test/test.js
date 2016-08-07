@@ -49,13 +49,14 @@ describe('GlobImporterClass', () => {
         .notify(done);
     });
 
-    it('should return object with contents property with @import statements', (done) => {
+    it('should return array of resolved urls', (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = 'files/test-resolve/**/*.scss';
       const includePath = path.join(process.cwd(), 'test');
-      const expectedResult = {
-        contents: `@import '${path.join(includePath, 'files/test-resolve/style1.scss')}';
-@import '${path.join(includePath, 'files/test-resolve/style2.scss')}';` };
+      const expectedResult = [
+        path.join(includePath, 'files/test-resolve/style1.scss'),
+        path.join(includePath, 'files/test-resolve/style2.scss')
+      ];
       return expect(globImporterInstance.resolve(url, [includePath]))
         .to.eventually.deep.equal(expectedResult)
         .notify(done);

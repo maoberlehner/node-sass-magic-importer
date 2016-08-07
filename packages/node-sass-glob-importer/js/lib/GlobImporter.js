@@ -15,12 +15,12 @@ export default class GlobImporter {
         // Try to resolve the glob pattern.
         const newAbsolutePaths = glob
           .sync(url, { cwd: includePath })
-          .map(relativePath => `@import '${path.resolve(includePath, relativePath)}';`);
+          .map(relativePath => path.resolve(includePath, relativePath));
         // Merge new paths with previously found ones.
         return concat(absolutePathStore, newAbsolutePaths);
       }, []);
       if (absolutePaths.length) {
-        return { contents: absolutePaths.join('\n') };
+        return absolutePaths;
       }
     }
     return null;
@@ -52,7 +52,14 @@ export default class GlobImporter {
       }
       includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
       // Try to resolve the url.
-      self.resolve(url, includePaths).then(data => done(data));
+      self.resolve(url, includePaths).then(files => {
+        if (files) {
+          const contents = files.map(x => `@import '${x}';`).join('\n');
+          done({ contents });
+        } else {
+          done(null);
+        }
+      });
     };
   }
 }

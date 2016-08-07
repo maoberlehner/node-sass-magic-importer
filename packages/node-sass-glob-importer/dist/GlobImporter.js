@@ -16,12 +16,12 @@ GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
       // Try to resolve the glob pattern.
       var newAbsolutePaths = glob
         .sync(url, { cwd: includePath })
-        .map(function (relativePath) { return ("@import '" + (path.resolve(includePath, relativePath)) + "';"); });
+        .map(function (relativePath) { return path.resolve(includePath, relativePath); });
       // Merge new paths with previously found ones.
       return concat(absolutePathStore, newAbsolutePaths);
     }, []);
     if (absolutePaths.length) {
-      return { contents: absolutePaths.join('\n') };
+      return absolutePaths;
     }
   }
   return null;
@@ -46,7 +46,7 @@ GlobImporter.prototype.resolve = function resolve (url, includePaths) {
  * @return {function} Returns a node-sass importer function.
  */
 GlobImporter.prototype.importer = function importer () {
-    var self = this;
+  var self = this;
   return function nodeSassImporter(url, prev, done) {
     var importer = this;
     // Create a set of all paths to search for files.
@@ -56,7 +56,14 @@ GlobImporter.prototype.importer = function importer () {
     }
     includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
     // Try to resolve the url.
-    self.resolve(url, includePaths).then(function (data) { return done(data); });
+    self.resolve(url, includePaths).then(function (files) {
+      if (files) {
+        var contents = files.map(function (x) { return ("@import '" + x + "';"); }).join('\n');
+        done({ contents: contents });
+      } else {
+        done(null);
+      }
+    });
   };
 };
 
