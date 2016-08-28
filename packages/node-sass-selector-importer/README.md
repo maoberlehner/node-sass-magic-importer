@@ -2,7 +2,6 @@
 With selector importing, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
 
 ## Usage
-
 ```scss
 // Example:
 @import '{ .btn, .btn-alert } from style.scss';
@@ -63,7 +62,7 @@ Bootstrap but your project uses the BEM syntax for writing class names.
 
 ### CLI
 ```bash
-node-sass --importer node_modules/node-sass-package-importer -o dist src/index.scss
+node-sass --importer node_modules/node-sass-selector-importer -o dist src/index.scss
 ```
 
 ## About

@@ -17,7 +17,7 @@
     "url": "https://github.com/maoberlehner/node-sass-selector-importer/issues"
   },
   "devDependencies": {
-    "bootstrap": "4.0.0-alpha.4",
+    "bootstrap": "4.0.0-alpha.3",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "eslint": "^3.1.1",

@@ -1,4 +1,3 @@
-import resolve from 'resolve';
 import path from 'path';
 
 export default class PackageImporter {
