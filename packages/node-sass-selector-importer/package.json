@@ -16,6 +16,9 @@
   "bugs": {
     "url": "https://github.com/maoberlehner/node-sass-selector-importer/issues"
   },
+  "dependencies": {
+    "css-selector-extract": "^0.3.5"
+  },
   "devDependencies": {
     "bootstrap": "4.0.0-alpha.3",
     "chai": "^3.5.0",
