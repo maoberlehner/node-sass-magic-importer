@@ -1,0 +1,4 @@
+@import '../../node_modules/bootstrap/scss/variables';
+@import '../../node_modules/bootstrap/scss/mixins/border-radius';
+@import '../../node_modules/bootstrap/scss/mixins/alert';
+@import '{ .alert, .alert-dismissible as .alert--dismissible, .close as .alert__close } from ../../node_modules/bootstrap/scss/alert';
