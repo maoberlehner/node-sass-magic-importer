@@ -39,6 +39,37 @@ export default class SelectorImporter {
     return file;
   }
 
+  parseUrl(url) {
+    // Find selectors in the import url and
+    // return a cleaned up url and the selectors.
+    let cleanUrl = this.cleanUrl(url);
+    let selectorFilters;
+    const selectorFiltersMatch = url.match(/{([^}]+)}/);
+    if (selectorFiltersMatch) {
+      cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+      // Create an array with selectors and replacement as one value.
+      selectorFilters = selectorFiltersMatch[1].split(',')
+        // Trim unnecessary whitespace.
+        .map(Function.prototype.call, String.prototype.trim)
+        // Split selectors and replacement selectors into an array.
+        .map((currentValue, index) => currentValue.split(' as ')
+          .map(Function.prototype.call, String.prototype.trim));
+    }
+    return { cleanUrl, selectorFilters };
+  }
+
+  /**
+   * Clean a node sass import url.
+   * @param {string} url - Import url from node-sass.
+   * @return {string} Cleaned url.
+   */
+  cleanUrl(url) {
+    // Remove tilde symbol from the beginning
+    // of urls (except home "~/" directory).
+    const re = new RegExp(`^~(?!${path.sep})`);
+    return url.replace(re, '');
+  }
+
   /**
    * Asynchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
