@@ -1,3 +1,4 @@
+import cssSelectorExtract from 'css-selector-extract';
 import path from 'path';
 
 export default class SelectorImporter {
