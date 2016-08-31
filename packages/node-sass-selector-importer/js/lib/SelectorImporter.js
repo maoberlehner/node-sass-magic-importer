@@ -1,4 +1,5 @@
 // import cssSelectorExtract from 'css-selector-extract';
+import fs from 'fs';
 import path from 'path';
 
 export default class SelectorImporter {
@@ -50,7 +51,15 @@ export default class SelectorImporter {
    * @return {string} Fully resolved import url or null.
    */
   resolveSync(url) {
-    return url;
+    const data = this.parseUrl(url);
+    const cleanUrl = data.url;
+    // const selectorFilters = data.selectorFilters;
+    // @TODO: include paths instead cwd.
+    const contents = fs.readFileSync(path.join(this.options.cwd, cleanUrl), { encoding: 'utf8' });
+    if (contents) {
+      console.log(contents);
+    }
+    return null;
   }
 
   /**
