@@ -1,11 +1,11 @@
 /* eslint-env node, mocha */
 /* eslint-disable no-console */
-const chai = require('chai');
+// const chai = require('chai');
 // const chaiAsPromised = require('chai-as-promised');
 const expect = require('chai').expect;
 const fs = require('fs');
 const sass = require('node-sass');
-const path = require('path');
+// const path = require('path');
 
 const selectorImporter = require('../');
 const SelectorImporterClass = require('../dist/SelectorImporter.js');

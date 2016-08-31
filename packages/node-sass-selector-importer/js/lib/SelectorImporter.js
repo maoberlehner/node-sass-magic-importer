@@ -1,4 +1,4 @@
-import cssSelectorExtract from 'css-selector-extract';
+// import cssSelectorExtract from 'css-selector-extract';
 import path from 'path';
 
 export default class SelectorImporter {
@@ -38,7 +38,7 @@ export default class SelectorImporter {
         // Trim unnecessary whitespace.
         .map(Function.prototype.call, String.prototype.trim)
         // Split selectors and replacement selectors into an array.
-        .map((currentValue, index) => currentValue.split(' as ')
+        .map((currentValue) => currentValue.split(' as ')
           .map(Function.prototype.call, String.prototype.trim));
     }
     return { cleanUrl, selectorFilters };
@@ -50,24 +50,7 @@ export default class SelectorImporter {
    * @return {string} Fully resolved import url or null.
    */
   resolveSync(url) {
-    const cleanUrl = this.cleanUrl(url);
-    const urlVariants = this.urlVariants(cleanUrl);
-    let file = null;
-    // Find a url variant that can be resolved.
-    urlVariants.some(urlVariant => {
-      try {
-        const resolvedPath = resolve.sync(urlVariant, {
-          basedir: this.options.cwd,
-          packageFilter: pkg => this.resolveFilter(pkg)
-        });
-        if (resolvedPath) {
-          file = resolvedPath;
-          return true;
-        }
-      } catch (e) {}
-      return false;
-    });
-    return file;
+    return url;
   }
 
   /**
