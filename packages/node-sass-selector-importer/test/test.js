@@ -70,10 +70,44 @@ describe('SelectorImporterClass', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'path/without/selector/filters.scss';
       const expectedResult = {
-        cleanUrl: url,
-        selectorFilters: null
+        url,
+        selectorFilters: undefined
       };
-      return expect(selectorImporterInstance.parseUrl(url)).to.equal(expectedResult);
+      return expect(selectorImporterInstance.parseUrl(url)).to.deep.equal(expectedResult);
+    });
+
+    it('should return object with url and selector filters', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const url = 'path/with/selector/filters.scss';
+      const selectorFilters = [
+        ['.selector1'],
+        ['.selector2']
+      ];
+      const selectorFilterString = selectorFilters.map((x) => x.join(' as ')).join(', ');
+      const urlWithSelectorFilters = `{ ${selectorFilterString} } from ${url}`;
+      const expectedResult = {
+        url,
+        selectorFilters
+      };
+      return expect(selectorImporterInstance.parseUrl(urlWithSelectorFilters))
+        .to.deep.equal(expectedResult);
+    });
+
+    it('should return object with url and selector filters with replacements', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const url = 'path/with/selector/filters/and/replacements.scss';
+      const selectorFilters = [
+        ['.selector1', '.replacement1'],
+        ['.selector2', '.replacement1']
+      ];
+      const selectorFilterString = selectorFilters.map((x) => x.join(' as ')).join(', ');
+      const urlWithSelectorFilters = `{ ${selectorFilterString} } from ${url}`;
+      const expectedResult = {
+        url,
+        selectorFilters
+      };
+      return expect(selectorImporterInstance.parseUrl(urlWithSelectorFilters))
+        .to.deep.equal(expectedResult);
     });
   });
 

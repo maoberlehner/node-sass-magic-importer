@@ -41,7 +41,7 @@ export default class SelectorImporter {
         .map((currentValue) => currentValue.split(' as ')
           .map(Function.prototype.call, String.prototype.trim));
     }
-    return { cleanUrl, selectorFilters };
+    return { url: cleanUrl, selectorFilters };
   }
 
   /**
