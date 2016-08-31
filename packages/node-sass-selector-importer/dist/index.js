@@ -2,72 +2,15 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var resolve = _interopDefault(require('resolve'));
 var path = _interopDefault(require('path'));
+var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
+var fs = _interopDefault(require('fs'));
 
-var PackageImporter = function PackageImporter(options) {
+var SelectorImporter = function SelectorImporter(options) {
   if ( options === void 0 ) options = {};
 
-  var defaultOptions = {
-    cwd: process.cwd(),
-    extensions: [
-      '.scss',
-      '.sass'
-    ],
-    packageKeys: [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
-    ]
-  };
-  this.options = Object.assign(defaultOptions, options);
-};
-
-/**
- * Synchronously resolve the path to a node-sass import url.
- * @param {string} url - Import url from node-sass.
- * @return {string} Fully resolved import url or null.
- */
-PackageImporter.prototype.resolveSync = function resolveSync (url) {
-    var this$1 = this;
-
-  var cleanUrl = this.cleanUrl(url);
-  var urlVariants = this.urlVariants(cleanUrl);
-  var file = null;
-  // Find a url variant that can be resolved.
-  urlVariants.some(function (urlVariant) {
-    try {
-      var resolvedPath = resolve.sync(urlVariant, {
-        basedir: this$1.options.cwd,
-        packageFilter: function (pkg) { return this$1.resolveFilter(pkg); }
-      });
-      if (resolvedPath) {
-        file = resolvedPath;
-        return true;
-      }
-    } catch (e) {}
-    return false;
-  });
-  return file;
-};
-
-/**
- * Asynchronously resolve the path to a node-sass import url.
- * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for a fully resolved import url.
- */
-PackageImporter.prototype.resolve = function resolve$1 (url) {
-    var this$1 = this;
-
-  return new Promise(function (promiseResolve) {
-    promiseResolve(this$1.resolveSync(url));
-  });
+  var defaultOptions = {};
+  this.options = Object.assign({}, defaultOptions, options);
 };
 
 /**
@@ -75,50 +18,96 @@ PackageImporter.prototype.resolve = function resolve$1 (url) {
  * @param {string} url - Import url from node-sass.
  * @return {string} Cleaned url.
  */
-PackageImporter.prototype.cleanUrl = function cleanUrl (url) {
+SelectorImporter.prototype.cleanUrl = function cleanUrl (url) {
   // Remove tilde symbol from the beginning
   // of urls (except home "~/" directory).
   var re = new RegExp(("^~(?!" + (path.sep) + ")"));
   return url.replace(re, '');
 };
 
+SelectorImporter.prototype.parseUrl = function parseUrl (url) {
+  // Find selectors in the import url and
+  // return a cleaned up url and the selectors.
+  var cleanUrl = this.cleanUrl(url);
+  var selectorFilters;
+  var selectorFiltersMatch = url.match(/{([^}]+)}/);
+  if (selectorFiltersMatch) {
+    cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+    // Create an array with selectors and replacement as one value.
+    selectorFilters = selectorFiltersMatch[1].split(',')
+      // Trim unnecessary whitespace.
+      .map(Function.prototype.call, String.prototype.trim)
+      // Split selectors and replacement selectors into an array.
+      .map(function (currentValue) { return currentValue.split(' as ')
+        .map(Function.prototype.call, String.prototype.trim); });
+  }
+  return { url: cleanUrl, selectorFilters: selectorFilters };
+};
+
 /**
- * Create url variants for partial file matching (e.g. _file.scss).
+ * Synchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
- * @return {Array} Multiple variants of sass file names.
+ * @return {string} Fully resolved import url or null.
  */
-PackageImporter.prototype.urlVariants = function urlVariants (url) {
-  var parsedUrl = path.parse(url);
-  var urlVariants = [url];
-  if (parsedUrl.dir && !parsedUrl.ext) {
-    urlVariants = this.options.extensions.reduce(function (x, extension) {
-      x.push(path.join(parsedUrl.dir, ("" + (parsedUrl.name) + extension)));
-      x.push(path.join(parsedUrl.dir, ("_" + (parsedUrl.name) + extension)));
-      return x;
-    }, urlVariants);
+SelectorImporter.prototype.resolveSync = function resolveSync (url) {
+  var data = this.parseUrl(url);
+  var cleanUrl = data.url;
+  var selectorFilters = data.selectorFilters;
+  var selectors = [];
+  var replacementSelectors = {};
+  var contents = null;
+
+  if (!selectorFilters) {
+    return contents;
   }
-  return urlVariants;
+
+  // TODO: refactor.
+  selectorFilters.forEach(function (selectorFilter) {
+    selectors.push(selectorFilter[0]);
+    if (selectorFilter[1]) {
+      replacementSelectors[selectorFilter[0]] = selectorFilter[1];
+    }
+  });
+
+  this.options.includePaths.some(function (includePath) {
+    var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
+    if (css) {
+      contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
+      return true;
+    }
+    return false;
+  });
+
+  return contents;
 };
 
 /**
- * Find the first matching key in a package.json file
- * and set it as value for the `main` field.
- * @param{Object} pkg - Contents of a package.json.
- * @return {Object} A package.json object with a replaced main value.
+ * Asynchronously resolve the path to a node-sass import url.
+ * @param {string} url - Import url from node-sass.
+ * @return {Promise} Promise for a fully resolved import url.
  */
-PackageImporter.prototype.resolveFilter = function resolveFilter (pkg) {
-  var newPkg = pkg;
-  var pkgKey = this.options.packageKeys.find(function (x) { return pkg[x] !== undefined; });
-  newPkg.main = pkg[pkgKey];
-  return newPkg;
+SelectorImporter.prototype.resolve = function resolve (url) {
+    var this$1 = this;
+
+  return new Promise(function (promiseResolve) {
+    promiseResolve(this$1.resolveSync(url));
+  });
 };
 
-var packageImporter = new PackageImporter();
+var selectorImporter = new SelectorImporter();
 function index (url, prev, done) {
-  if (this.options.packageImporter) {
-    packageImporter.options = Object.assign(packageImporter.options, this.options.packageImporter);
+  // Create an array of all paths to search for files.
+  var includePaths = [];
+  if (path.isAbsolute(prev)) {
+    includePaths.push(path.dirname(prev));
   }
-  packageImporter.resolve(url).then(function (file) { return done(file ? { file: file } : null); });
+  selectorImporter.options.includePaths = includePaths
+    .concat(this.options.includePaths.split(path.delimiter));
+  // Merge default with custom options.
+  if (this.options.selectorImporter) {
+    Object.assign(selectorImporter.options, this.options.selectorImporter);
+  }
+  selectorImporter.resolve(url, prev).then(function (contents) { return done(contents ? { contents: contents } : null); });
 }
 
 module.exports = index;

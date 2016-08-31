@@ -1,4 +1,4 @@
-// import cssSelectorExtract from 'css-selector-extract';
+import cssSelectorExtract from 'css-selector-extract';
 import fs from 'fs';
 import path from 'path';
 
@@ -8,9 +8,7 @@ export default class SelectorImporter {
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {
-    const defaultOptions = {
-      cwd: process.cwd()
-    };
+    const defaultOptions = {};
     this.options = Object.assign({}, defaultOptions, options);
   }
 
@@ -53,13 +51,33 @@ export default class SelectorImporter {
   resolveSync(url) {
     const data = this.parseUrl(url);
     const cleanUrl = data.url;
-    // const selectorFilters = data.selectorFilters;
-    // @TODO: include paths instead cwd.
-    const contents = fs.readFileSync(path.join(this.options.cwd, cleanUrl), { encoding: 'utf8' });
-    if (contents) {
-      console.log(contents);
+    const selectorFilters = data.selectorFilters;
+    const selectors = [];
+    const replacementSelectors = {};
+    let contents = null;
+
+    if (!selectorFilters) {
+      return contents;
     }
-    return null;
+
+    // TODO: refactor.
+    selectorFilters.forEach((selectorFilter) => {
+      selectors.push(selectorFilter[0]);
+      if (selectorFilter[1]) {
+        replacementSelectors[selectorFilter[0]] = selectorFilter[1];
+      }
+    });
+
+    this.options.includePaths.some((includePath) => {
+      const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
+      if (css) {
+        contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
+        return true;
+      }
+      return false;
+    });
+
+    return contents;
   }
 
   /**
