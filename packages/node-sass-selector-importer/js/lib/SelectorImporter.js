@@ -4,7 +4,7 @@ import path from 'path';
 
 export default class SelectorImporter {
   /**
-   * Import packages from the `node_modules` directory.
+   * Import only certain CSS selectors form a file.
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {
