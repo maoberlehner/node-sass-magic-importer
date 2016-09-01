@@ -63,9 +63,11 @@ SelectorImporter.prototype.resolveSync = function resolveSync (url) {
 
   // TODO: refactor.
   selectorFilters.forEach(function (selectorFilter) {
-    selectors.push(selectorFilter[0]);
-    if (selectorFilter[1]) {
-      replacementSelectors[selectorFilter[0]] = selectorFilter[1];
+    var selector = selectorFilter[0];
+    var replacementSelector = selectorFilter[1];
+    selectors.push(selector);
+    if (replacementSelector) {
+      replacementSelectors[selector] = replacementSelector;
     }
   });
 
@@ -103,6 +105,7 @@ function index (url, prev, done) {
   }
   selectorImporter.options.includePaths = includePaths
     .concat(this.options.includePaths.split(path.delimiter));
+
   // Merge default with custom options.
   if (this.options.selectorImporter) {
     Object.assign(selectorImporter.options, this.options.selectorImporter);

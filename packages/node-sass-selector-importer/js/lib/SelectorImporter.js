@@ -60,11 +60,12 @@ export default class SelectorImporter {
       return contents;
     }
 
-    // TODO: refactor.
     selectorFilters.forEach((selectorFilter) => {
-      selectors.push(selectorFilter[0]);
-      if (selectorFilter[1]) {
-        replacementSelectors[selectorFilter[0]] = selectorFilter[1];
+      const selector = selectorFilter[0];
+      const replacementSelector = selectorFilter[1];
+      selectors.push(selector);
+      if (replacementSelector) {
+        replacementSelectors[selector] = replacementSelector;
       }
     });
 

@@ -63,9 +63,11 @@ SelectorImporter.prototype.resolveSync = function resolveSync (url) {
 
   // TODO: refactor.
   selectorFilters.forEach(function (selectorFilter) {
-    selectors.push(selectorFilter[0]);
-    if (selectorFilter[1]) {
-      replacementSelectors[selectorFilter[0]] = selectorFilter[1];
+    var selector = selectorFilter[0];
+    var replacementSelector = selectorFilter[1];
+    selectors.push(selector);
+    if (replacementSelector) {
+      replacementSelectors[selector] = replacementSelector;
     }
   });
 
