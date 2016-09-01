@@ -25,6 +25,11 @@ SelectorImporter.prototype.cleanUrl = function cleanUrl (url) {
   return url.replace(re, '');
 };
 
+/**
+ * Parse a url for selector filters.
+ * @param {string} url - Import url from node-sass.
+ * @return {Object} Cleaned up url and selector filter object.
+ */
 SelectorImporter.prototype.parseUrl = function parseUrl (url) {
   // Find selectors in the import url and
   // return a cleaned up url and the selectors.
@@ -45,9 +50,9 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
 };
 
 /**
- * Synchronously resolve the path to a node-sass import url.
+ * Synchronously extract selectors from a file with the given url.
  * @param {string} url - Import url from node-sass.
- * @return {string} Fully resolved import url or null.
+ * @return {string} Contents string or null.
  */
 SelectorImporter.prototype.resolveSync = function resolveSync (url) {
   var data = this.parseUrl(url);
@@ -61,7 +66,6 @@ SelectorImporter.prototype.resolveSync = function resolveSync (url) {
     return contents;
   }
 
-  // TODO: refactor.
   selectorFilters.forEach(function (selectorFilter) {
     var selector = selectorFilter[0];
     var replacementSelector = selectorFilter[1];
@@ -84,9 +88,9 @@ SelectorImporter.prototype.resolveSync = function resolveSync (url) {
 };
 
 /**
- * Asynchronously resolve the path to a node-sass import url.
+ * Asynchronously extract selectors from a file with the given url.
  * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for a fully resolved import url.
+ * @return {Promise} Promise for a contents string.
  */
 SelectorImporter.prototype.resolve = function resolve (url) {
     var this$1 = this;
