@@ -9,7 +9,9 @@ var path = _interopDefault(require('path'));
 var SelectorImporter = function SelectorImporter(options) {
   if ( options === void 0 ) options = {};
 
-  var defaultOptions = {};
+  var defaultOptions = {
+    includePaths: [process.cwd()]
+  };
   this.options = Object.assign({}, defaultOptions, options);
 };
 

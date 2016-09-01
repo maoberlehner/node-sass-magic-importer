@@ -8,7 +8,9 @@ export default class SelectorImporter {
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {
-    const defaultOptions = {};
+    const defaultOptions = {
+      includePaths: [process.cwd()]
+    };
     this.options = Object.assign({}, defaultOptions, options);
   }
 

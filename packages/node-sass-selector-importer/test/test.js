@@ -1,11 +1,15 @@
 /* eslint-env node, mocha */
 /* eslint-disable no-console */
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
 const expect = require('chai').expect;
 const fs = require('fs');
 const sass = require('node-sass');
 
 const selectorImporter = require('../');
 const SelectorImporterClass = require('../dist/SelectorImporter.js');
+
+chai.use(chaiAsPromised);
 
 describe('selectorImporter', () => {
   it('should be a function', () => expect(selectorImporter).to.be.a('function'));
@@ -110,6 +114,20 @@ describe('SelectorImporterClass', () => {
    * resolve()
    */
   describe('resolve()', () => {
-    // @TODO
+    it('should return null', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const url = 'path/without/selector/filters.scss';
+      const expectedResult = null;
+      return expect(selectorImporterInstance.resolve(url)).to.eventually.equal(expectedResult);
+    });
+
+    it('should return selector filtered contents', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const url = '{ .class1 as .class-1, .class3 as .class-3 } from test/files/resolve.scss';
+      const expectedResult = fs.readFileSync('test/files/resolve-reference.css', {
+        encoding: 'utf8'
+      });
+      return expect(selectorImporterInstance.resolve(url)).to.eventually.equal(expectedResult);
+    });
   });
 });
