@@ -15,11 +15,11 @@ describe('selectorImporter', () => {
   it('should be a function', () => expect(selectorImporter).to.be.a('function'));
 
   it('should resolve selector import', (done) => {
-    const expectedResult = fs.readFileSync('test/files/selectors-reference.css', {
+    const expectedResult = fs.readFileSync('test/files/importer-reference.css', {
       encoding: 'utf8'
     });
     sass.render({
-      file: 'test/files/selectors.scss',
+      file: 'test/files/importer.scss',
       importer: selectorImporter
     }, (error, result) => {
       if (!error) {
