@@ -24,6 +24,11 @@ export default class SelectorImporter {
     return url.replace(re, '');
   }
 
+  /**
+   * Parse a url for selector filters.
+   * @param {string} url - Import url from node-sass.
+   * @return {Object} Cleaned up url and selector filter object.
+   */
   parseUrl(url) {
     // Find selectors in the import url and
     // return a cleaned up url and the selectors.
@@ -44,9 +49,9 @@ export default class SelectorImporter {
   }
 
   /**
-   * Synchronously resolve the path to a node-sass import url.
+   * Synchronously extract selectors from a file with the given url.
    * @param {string} url - Import url from node-sass.
-   * @return {string} Fully resolved import url or null.
+   * @return {string} Contents string or null.
    */
   resolveSync(url) {
     const data = this.parseUrl(url);
@@ -82,9 +87,9 @@ export default class SelectorImporter {
   }
 
   /**
-   * Asynchronously resolve the path to a node-sass import url.
+   * Asynchronously extract selectors from a file with the given url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for a fully resolved import url.
+   * @return {Promise} Promise for a contents string.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
