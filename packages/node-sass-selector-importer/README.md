@@ -3,8 +3,8 @@ With selector importing, it is possible to import only certain CSS selectors for
 
 ## Usage
 ```node
-const sass = require('node-sass');
-const selectorImporter = require('node-sass-selector-importer');
+var sass = require('node-sass');
+var selectorImporter = require('node-sass-selector-importer');
 
 sass.render({
   ...
