@@ -26,7 +26,7 @@ var PackageImporter = function PackageImporter(options) {
       'main'
     ]
   };
-  this.options = Object.assign(defaultOptions, options);
+  this.options = Object.assign({}, defaultOptions, options);
 };
 
 /**
@@ -116,7 +116,7 @@ PackageImporter.prototype.resolveFilter = function resolveFilter (pkg) {
 var packageImporter = new PackageImporter();
 function index (url, prev, done) {
   if (this.options.packageImporter) {
-    packageImporter.options = Object.assign(packageImporter.options, this.options.packageImporter);
+    Object.assign(packageImporter.options, this.options.packageImporter);
   }
   packageImporter.resolve(url).then(function (file) { return done(file ? { file: file } : null); });
 }

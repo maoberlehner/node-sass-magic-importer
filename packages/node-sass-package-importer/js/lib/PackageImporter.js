@@ -25,7 +25,7 @@ export default class PackageImporter {
         'main'
       ]
     };
-    this.options = Object.assign(defaultOptions, options);
+    this.options = Object.assign({}, defaultOptions, options);
   }
 
   /**

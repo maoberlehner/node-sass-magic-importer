@@ -26,7 +26,7 @@ var PackageImporter = function PackageImporter(options) {
       'main'
     ]
   };
-  this.options = Object.assign(defaultOptions, options);
+  this.options = Object.assign({}, defaultOptions, options);
 };
 
 /**
