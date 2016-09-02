@@ -28,4 +28,5 @@ Thumbs.db
 app/*/
 bower_components
 node_modules
+!test/files/node_modules
 bitmaps_test
