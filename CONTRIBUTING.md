@@ -9,8 +9,7 @@ Remember, a bug is a _demonstrable problem_ caused by _our_ code.
 
 ## Submitting Pull Requests
 
-Pull requests are the greatest contributions, so be sure they are focused in
-scope, and do avoid unrelated commits.
+Pull requests are the greatest contributions, so be sure they are focused in scope, and do avoid unrelated commits.
 
 1. To begin, [fork this project], clone your fork, and add our upstream.
    ```bash
