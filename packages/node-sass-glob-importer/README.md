@@ -10,8 +10,8 @@ Globbing allows pattern matching operators to be used to match multiple files at
 
 ## Usage
 ```node
-const sass = require('node-sass');
-const glopImporter = require('node-sass-glob-importer');
+var sass = require('node-sass');
+var glopImporter = require('node-sass-glob-importer');
 
 sass.render({
   ...
