@@ -104,7 +104,7 @@ SelectorImporter.prototype.resolve = function resolve (url) {
 
 var selectorImporter = new SelectorImporter();
 function index (url, prev, done) {
-  // Create an array of all paths to search for files.
+  // Create an array of include paths to search for files.
   var includePaths = [];
   if (path.isAbsolute(prev)) {
     includePaths.push(path.dirname(prev));

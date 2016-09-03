@@ -3,7 +3,7 @@ import SelectorImporter from './lib/SelectorImporter.js';
 
 const selectorImporter = new SelectorImporter();
 export default function (url, prev, done) {
-  // Create an array of all paths to search for files.
+  // Create an array of include paths to search for files.
   const includePaths = [];
   if (path.isAbsolute(prev)) {
     includePaths.push(path.dirname(prev));
