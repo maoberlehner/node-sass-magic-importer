@@ -1,6 +1,6 @@
 import GlobImporter from 'node-sass-glob-importer/dist/GlobImporter.js';
-import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter.js';
 import PackageImporter from 'node-sass-package-importer/dist/PackageImporter.js';
+import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter.js';
 
 export default class MagicImporter {
   /**

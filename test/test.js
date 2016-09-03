@@ -15,11 +15,11 @@ describe('magicImporter', () => {
   it('should be a function', () => expect(magicImporter).to.be.a('function'));
 
   it('should resolve glob import', (done) => {
-    const expectedResult = fs.readFileSync('test/files/importer/glob-reference.css', {
+    const expectedResult = fs.readFileSync('test/files/glob-reference.css', {
       encoding: 'utf8'
     });
     sass.render({
-      file: 'test/files/importer/glob.scss',
+      file: 'test/files/glob.scss',
       importer: magicImporter
     }, (error, result) => {
       if (!error) {
