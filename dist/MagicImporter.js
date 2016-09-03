@@ -2,7 +2,6 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var path = _interopDefault(require('path'));
 var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImporter.js'));
 var nodeSassSelectorImporter_dist_SelectorImporter_js = require('node-sass-selector-importer/dist/SelectorImporter.js');
 var nodeSassPackageImporter_dist_PackageImporter_js = require('node-sass-package-importer/dist/PackageImporter.js');
@@ -48,21 +47,4 @@ MagicImporter.prototype.resolve = function resolve (url) {
   });
 };
 
-var magicImporter = new MagicImporter();
-function index (url, prev, done) {
-  // Create an array of include paths to search for files.
-  var includePaths = [];
-  if (path.isAbsolute(prev)) {
-    includePaths.push(path.dirname(prev));
-  }
-  magicImporter.options.includePaths = includePaths
-    .concat(this.options.includePaths.split(path.delimiter));
-
-  // Merge default with custom options.
-  if (this.options.magicImporter) {
-    Object.assign(magicImporter.options, this.options.magicImporter);
-  }
-  magicImporter.resolve(url).then(function (data) { return done(data); });
-}
-
-module.exports = index;
+module.exports = MagicImporter;
