@@ -30,6 +30,47 @@ sass.render({
 
 The "~" is optional, it is a hint for developers that this is a module path.
 
+### Path resolving
+If only the module name is given (e.g. `@import '~bootstrap'`) the importer looks in the `package.json` file of the module for the following keys: 'sass', 'scss', 'style', 'css', 'main.sass', 'main.scss', 'main.style', 'main.css' and 'main'. The first key that is found is used for resolving the path and importing the file into your sass code.
+
+To load only a certain file from a module you can specify the file in the import url (e.g. `@import '~bootstrap/scss/_alert.scss'`). This module also supports partial file name resolving so you can import files by only specifying their base name without prefix and extension (e.g. `@import '~bootstrap/scss/alert'`). Sadly bootstrap and most other frameworks do not load their dependencies directly in the concerned files. So you have to load all dependencies of a file manually like in the example above. I recommend you to do better and to import dependencies directly in the files that use them.
+
+### Options
+In the example below you can see the default configuration options.
+
+- `cwd`: Defines the path in which you `node_modules` directory is found.
+- `extensions`: Set which file extensions should get resolved.
+- `packageKeys`: You can define the `package.json` keys to search for and in which order.
+
+```node
+var sass = require('node-sass');
+var packageImporter = require('node-sass-package-importer');
+
+sass.render({
+  ...
+  importer: packageImporter,
+  packageImporter: {
+    cwd: process.cwd(),
+    extensions: [
+      '.scss',
+      '.sass'
+    ],
+    packageKeys: [
+      'sass',
+      'scss',
+      'style',
+      'css',
+      'main.sass',
+      'main.scss',
+      'main.style',
+      'main.css',
+      'main'
+    ]
+  }
+  ...
+});
+```
+
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-package-importer -o dist src/index.scss
