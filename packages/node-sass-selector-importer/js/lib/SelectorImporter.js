@@ -51,14 +51,12 @@ export default class SelectorImporter {
   }
 
   /**
-   * Synchronously extract selectors from a file with the given url.
-   * @param {string} url - Import url from node-sass.
+   * Extract and replace selectors from a file with the given url.
+   * @param {string} cleanUrl - Cleaned up import url from node-sass.
+   * @param {Object} selectorFilters - Selector filter object.
    * @return {string} Contents string or null.
    */
-  resolveSync(url) {
-    const data = this.parseUrl(url);
-    const cleanUrl = data.url;
-    const selectorFilters = data.selectorFilters;
+  extractSelectors(cleanUrl, selectorFilters) {
     const selectors = [];
     const replacementSelectors = {};
     let contents = null;
@@ -89,7 +87,20 @@ export default class SelectorImporter {
   }
 
   /**
-   * Asynchronously extract selectors from a file with the given url.
+   * Synchronously resolve filtered contentes from a file with the given url.
+   * @param {string} url - Import url from node-sass.
+   * @return {string} Contents string or null.
+   */
+  resolveSync(url) {
+    const data = this.parseUrl(url);
+    const cleanUrl = data.url;
+    const selectorFilters = data.selectorFilters;
+
+    return this.extractSelectors(cleanUrl, selectorFilters);
+  }
+
+  /**
+   * Asynchronously resolve filtered contentes from a file with the given url.
    * @param {string} url - Import url from node-sass.
    * @return {Promise} Promise for a contents string.
    */
