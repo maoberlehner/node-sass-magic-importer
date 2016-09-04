@@ -7,19 +7,18 @@ const fs = require('fs');
 const sass = require('node-sass');
 
 const magicImporter = require('../');
-const MagicImporterClass = require('../dist/MagicImporter.js');
 
 chai.use(chaiAsPromised);
 
 describe('magicImporter', () => {
   it('should be a function', () => expect(magicImporter).to.be.a('function'));
 
-  it('should resolve glob import', (done) => {
-    const expectedResult = fs.readFileSync('test/files/glob-reference.css', {
+  it('should convert a SASS file successfully to CSS', (done) => {
+    const expectedResult = fs.readFileSync('test/files/combined-reference.css', {
       encoding: 'utf8'
     });
     sass.render({
-      file: 'test/files/glob.scss',
+      file: 'test/files/combined.scss',
       importer: magicImporter
     }, (error, result) => {
       if (!error) {
@@ -29,15 +28,5 @@ describe('magicImporter', () => {
         console.log(error);
       }
     });
-  });
-});
-
-describe('MagicImporterClass', () => {
-  it('should be a function', () => expect(MagicImporterClass).to.be.a('function'));
-
-  /**
-   * resolve()
-   */
-  describe('resolve()', () => {
   });
 });

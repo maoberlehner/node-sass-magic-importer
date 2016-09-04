@@ -15,7 +15,7 @@
   "dependencies": {
     "node-sass-glob-importer": "^2.0.1",
     "node-sass-package-importer": "^1.0.5",
-    "node-sass-selector-importer": "^0.1.2"
+    "node-sass-selector-importer": "^0.2.1"
   },
   "devDependencies": {
     "bootstrap": "4.0.0-alpha.2",

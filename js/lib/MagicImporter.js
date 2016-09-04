@@ -20,13 +20,35 @@ export default class MagicImporter {
    * @return {string} Fully resolved import url or null.
    */
   resolveSync(url) {
-    const data = null;
+    let data = null;
+    let resolvedUrl = url;
 
     // Try to resolve glob pattern url.
     const globImporter = new GlobImporter();
     const globFiles = globImporter.resolveSync(url, this.options.includePaths);
     if (globFiles) {
       return { contents: globFiles.map(x => `@import '${x}';`).join('\n') };
+    }
+
+    // Parse url to eventually extract selector filters.
+    const selectorImporter = new SelectorImporter();
+    selectorImporter.options.includePaths = this.options.includePaths;
+    const urlData = selectorImporter.parseUrl(resolvedUrl);
+    const selectorFilters = urlData.selectorFilters;
+    resolvedUrl = urlData.url;
+
+    // Try to resolve a module url.
+    const packageImporter = new PackageImporter();
+    const packageFile = packageImporter.resolveSync(resolvedUrl);
+    if (packageFile) {
+      resolvedUrl = packageFile;
+      data = { file: resolvedUrl };
+    }
+
+    // Filter selectors.
+    const filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+    if (filteredContents) {
+      data = { contents: filteredContents };
     }
 
     return data;
