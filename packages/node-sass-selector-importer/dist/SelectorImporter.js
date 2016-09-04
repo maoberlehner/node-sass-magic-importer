@@ -76,11 +76,13 @@ SelectorImporter.prototype.extractSelectors = function extractSelectors (cleanUr
   });
 
   this.options.includePaths.some(function (includePath) {
-    var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
-    if (css) {
-      contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
-      return true;
-    }
+    try {
+      var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
+      if (css) {
+        contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
+        return true;
+      }
+    } catch (e) {}
     return false;
   });
 

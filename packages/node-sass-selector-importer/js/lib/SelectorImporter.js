@@ -75,11 +75,13 @@ export default class SelectorImporter {
     });
 
     this.options.includePaths.some((includePath) => {
-      const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
-      if (css) {
-        contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
-        return true;
-      }
+      try {
+        const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
+        if (css) {
+          contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
+          return true;
+        }
+      } catch (e) {}
       return false;
     });
 
