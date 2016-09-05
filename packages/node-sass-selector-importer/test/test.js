@@ -85,6 +85,34 @@ describe('SelectorImporterClass', () => {
   });
 
   /**
+   * extractSelectors()
+   */
+  describe('extractSelectors()', () => {
+    it('should return null', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const cleanUrl = 'some/url.scss';
+      const selectorFilters = null;
+      const expectedResult = null;
+      return expect(selectorImporterInstance.extractSelectors(cleanUrl, selectorFilters))
+        .to.equal(expectedResult);
+    });
+
+    it('should return selector filtered contents', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const cleanUrl = 'test/files/resolve.scss';
+      const selectorFilters = [
+        ['.class1', '.class-1'],
+        ['.class3', '.class-3']
+      ];
+      const expectedResult = fs.readFileSync('test/files/resolve-reference.css', {
+        encoding: 'utf8'
+      });
+      return expect(selectorImporterInstance.extractSelectors(cleanUrl, selectorFilters))
+        .to.equal(expectedResult);
+    });
+  });
+
+  /**
    * resolve()
    */
   describe('resolve()', () => {
