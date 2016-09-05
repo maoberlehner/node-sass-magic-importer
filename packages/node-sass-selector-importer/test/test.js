@@ -36,32 +36,6 @@ describe('SelectorImporterClass', () => {
   it('should be a function', () => expect(SelectorImporterClass).to.be.a('function'));
 
   /**
-   * cleanUrl()
-   */
-  describe('cleanUrl()', () => {
-    it('should return the url unmodified', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      const url = 'normal/path/without/tilde';
-      const expectedResult = url;
-      return expect(selectorImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-
-    it('should return the unmodified home path relative url', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      const url = '~/home/path/with/tilde';
-      const expectedResult = url;
-      return expect(selectorImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-
-    it('should return a cleaned up url without tilde', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      const url = '~path/with/tilde';
-      const expectedResult = 'path/with/tilde';
-      return expect(selectorImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-  });
-
-  /**
    * parseUrl()
    */
   describe('parseUrl()', () => {
