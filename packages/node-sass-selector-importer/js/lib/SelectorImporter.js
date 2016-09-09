@@ -1,6 +1,7 @@
 import cssSelectorExtract from 'css-selector-extract';
 import fs from 'fs';
 import path from 'path';
+import postcssScss from 'postcss-scss';
 
 export default class SelectorImporter {
   /**
@@ -29,7 +30,7 @@ export default class SelectorImporter {
   /**
    * Parse a url for selector filters.
    * @param {string} url - Import url from node-sass.
-   * @return {Object} Cleaned up url and selector filter object.
+   * @return {Object} Cleaned up url and selector filter array.
    */
   parseUrl(url) {
     // Find selectors in the import url and
@@ -53,32 +54,26 @@ export default class SelectorImporter {
   /**
    * Extract and replace selectors from a file with the given url.
    * @param {string} cleanUrl - Cleaned up import url from node-sass.
-   * @param {Object} selectorFilters - Selector filter object.
+   * @param {Array} selectorFilters - Selector filter array.
    * @return {string} Contents string or null.
    */
   extractSelectors(cleanUrl, selectorFilters) {
-    const selectors = [];
-    const replacementSelectors = {};
     let contents = null;
 
     if (!selectorFilters) {
       return contents;
     }
 
-    selectorFilters.forEach((selectorFilter) => {
-      const selector = selectorFilter[0];
-      const replacementSelector = selectorFilter[1];
-      selectors.push(selector);
-      if (replacementSelector) {
-        replacementSelectors[selector] = replacementSelector;
-      }
-    });
+    const preparedSelectorFilters = selectorFilters.map(selectorFilter => ({
+      selector: selectorFilter[0],
+      replacement: selectorFilter[1]
+    }));
 
     this.options.includePaths.some((includePath) => {
       try {
         const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
         if (css) {
-          contents = cssSelectorExtract.processSync(css, selectors, replacementSelectors);
+          contents = cssSelectorExtract.processSync(css, preparedSelectorFilters, postcssScss);
           return true;
         }
       } catch (e) {}
