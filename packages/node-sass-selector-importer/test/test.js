@@ -39,6 +39,11 @@ describe('SelectorImporterClass', () => {
 
   /** @test {SelectorImporter#cleanUrl} */
   describe('cleanUrl()', () => {
+    it('should be a function', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      expect(selectorImporterInstance.cleanUrl).to.be.a('function');
+    });
+
     it('should return the url unmodified', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'normal/path/without/tilde';
@@ -63,6 +68,11 @@ describe('SelectorImporterClass', () => {
 
   /** @test {SelectorImporter#parseUrl} */
   describe('parseUrl()', () => {
+    it('should be a function', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      expect(selectorImporterInstance.parseUrl).to.be.a('function');
+    });
+
     it('should return object with url and empty selector filters', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'path/without/selector/filters.scss';
@@ -108,8 +118,21 @@ describe('SelectorImporterClass', () => {
     });
   });
 
+  /** @test {SelectorImporter#resolveSync} */
+  describe('resolveSync()', () => {
+    it('should be a function', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      expect(selectorImporterInstance.resolveSync).to.be.a('function');
+    });
+  });
+
   /** @test {SelectorImporter#resolve} */
   describe('resolve()', () => {
+    it('should be a function', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      expect(selectorImporterInstance.resolve).to.be.a('function');
+    });
+
     it('should return null', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'path/without/selector/filters.scss';
