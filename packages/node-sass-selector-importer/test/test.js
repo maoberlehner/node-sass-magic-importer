@@ -11,6 +11,7 @@ const SelectorImporterClass = require('../dist/SelectorImporter.js');
 
 chai.use(chaiAsPromised);
 
+/** @test {index} */
 describe('selectorImporter', () => {
   it('should be a function', () => expect(selectorImporter).to.be.a('function'));
 
@@ -32,12 +33,11 @@ describe('selectorImporter', () => {
   });
 });
 
+/** @test {SelectorImporter} */
 describe('SelectorImporterClass', () => {
   it('should be a function', () => expect(SelectorImporterClass).to.be.a('function'));
 
-  /**
-   * cleanUrl()
-   */
+  /** @test {SelectorImporter#cleanUrl} */
   describe('cleanUrl()', () => {
     it('should return the url unmodified', () => {
       const selectorImporterInstance = new SelectorImporterClass();
@@ -61,9 +61,7 @@ describe('SelectorImporterClass', () => {
     });
   });
 
-  /**
-   * parseUrl()
-   */
+  /** @test {SelectorImporter#parseUrl} */
   describe('parseUrl()', () => {
     it('should return object with url and empty selector filters', () => {
       const selectorImporterInstance = new SelectorImporterClass();
@@ -110,9 +108,7 @@ describe('SelectorImporterClass', () => {
     });
   });
 
-  /**
-   * resolve()
-   */
+  /** @test {SelectorImporter#resolve} */
   describe('resolve()', () => {
     it('should return null', () => {
       const selectorImporterInstance = new SelectorImporterClass();

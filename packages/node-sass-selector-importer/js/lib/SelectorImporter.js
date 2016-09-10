@@ -3,15 +3,18 @@ import fs from 'fs';
 import path from 'path';
 import postcssScss from 'postcss-scss';
 
+/**
+ * Import only certain CSS selectors form a file.
+ */
 export default class SelectorImporter {
   /**
-   * Import only certain CSS selectors form a file.
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {
     const defaultOptions = {
       includePaths: [process.cwd()]
     };
+    /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
   }
 

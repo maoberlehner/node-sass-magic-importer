@@ -7,12 +7,16 @@ var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
 var fs = _interopDefault(require('fs'));
 var postcssScss = _interopDefault(require('postcss-scss'));
 
+/**
+ * Import only certain CSS selectors form a file.
+ */
 var SelectorImporter = function SelectorImporter(options) {
   if ( options === void 0 ) options = {};
 
   var defaultOptions = {
     includePaths: [process.cwd()]
   };
+  /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
 };
 
@@ -111,6 +115,12 @@ SelectorImporter.prototype.resolve = function resolve (url) {
 };
 
 var selectorImporter = new SelectorImporter();
+/**
+ * Selector importer for node-sass
+ * @param {string} url - The path in import as-is, which LibSass encountered.
+ * @param {string} prev - The previously resolved path.
+ * @param {Function} done - A callback function to invoke on async completion.
+ */
 function index (url, prev, done) {
   // Create an array of include paths to search for files.
   var includePaths = [];

@@ -7,12 +7,16 @@ var fs = _interopDefault(require('fs'));
 var path = _interopDefault(require('path'));
 var postcssScss = _interopDefault(require('postcss-scss'));
 
+/**
+ * Import only certain CSS selectors form a file.
+ */
 var SelectorImporter = function SelectorImporter(options) {
   if ( options === void 0 ) options = {};
 
   var defaultOptions = {
     includePaths: [process.cwd()]
   };
+  /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
 };
 
