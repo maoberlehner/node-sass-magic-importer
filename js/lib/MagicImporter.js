@@ -2,9 +2,12 @@ import GlobImporter from 'node-sass-glob-importer/dist/GlobImporter.js';
 import PackageImporter from 'node-sass-package-importer/dist/PackageImporter.js';
 import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter.js';
 
+/**
+ * Selector specific imports, module importing,
+ * globbing support, import files only once.
+ */
 export default class MagicImporter {
   /**
-   * DESCRIPTION
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {

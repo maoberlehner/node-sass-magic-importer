@@ -7,9 +7,11 @@ const fs = require('fs');
 const sass = require('node-sass');
 
 const magicImporter = require('../');
+const MagicImporterClass = require('../dist/MagicImporter.js');
 
 chai.use(chaiAsPromised);
 
+/** @test {index} */
 describe('magicImporter', () => {
   it('should be a function', () => expect(magicImporter).to.be.a('function'));
 
@@ -30,3 +32,25 @@ describe('magicImporter', () => {
     });
   });
 });
+
+/** @test {MagicImporter} */
+describe('SelectorImporterClass', () => {
+  it('should be a function', () => expect(MagicImporterClass).to.be.a('function'));
+
+  /** @test {MagicImporter#resolveSync} */
+  describe('resolveSync()', () => {
+    it('should be a function', () => {
+      const magicImporterInstance = new MagicImporterClass();
+      expect(magicImporterInstance.resolveSync).to.be.a('function');
+    });
+  });
+
+  /** @test {MagicImporter#resolve} */
+  describe('resolve()', () => {
+    it('should be a function', () => {
+      const magicImporterInstance = new MagicImporterClass();
+      expect(magicImporterInstance.resolve).to.be.a('function');
+    });
+  });
+});
+
