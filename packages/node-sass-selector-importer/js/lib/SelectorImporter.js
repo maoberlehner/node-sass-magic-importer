@@ -19,18 +19,6 @@ export default class SelectorImporter {
   }
 
   /**
-   * Clean a node sass import url.
-   * @param {string} url - Import url from node-sass.
-   * @return {string} Cleaned url.
-   */
-  cleanUrl(url) {
-    // Remove tilde symbol from the beginning
-    // of urls (except home "~/" directory).
-    const re = new RegExp(`^~(?!${path.sep})`);
-    return url.replace(re, '');
-  }
-
-  /**
    * Parse a url for selector filters.
    * @param {string} url - Import url from node-sass.
    * @return {Object} Cleaned up url and selector filter array.
@@ -38,7 +26,7 @@ export default class SelectorImporter {
   parseUrl(url) {
     // Find selectors in the import url and
     // return a cleaned up url and the selectors.
-    let cleanUrl = this.cleanUrl(url);
+    let cleanUrl = url;
     let selectorFilters;
     const selectorFiltersMatch = url.match(/{([^}]+)}/);
     if (selectorFiltersMatch) {

@@ -37,35 +37,6 @@ describe('selectorImporter', () => {
 describe('SelectorImporterClass', () => {
   it('should be a function', () => expect(SelectorImporterClass).to.be.a('function'));
 
-  /** @test {SelectorImporter#cleanUrl} */
-  describe('cleanUrl()', () => {
-    it('should be a function', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      expect(selectorImporterInstance.cleanUrl).to.be.a('function');
-    });
-
-    it('should return the url unmodified', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      const url = 'normal/path/without/tilde';
-      const expectedResult = url;
-      return expect(selectorImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-
-    it('should return the unmodified home path relative url', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      const url = '~/home/path/with/tilde';
-      const expectedResult = url;
-      return expect(selectorImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-
-    it('should return a cleaned up url without tilde', () => {
-      const selectorImporterInstance = new SelectorImporterClass();
-      const url = '~path/with/tilde';
-      const expectedResult = 'path/with/tilde';
-      return expect(selectorImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-  });
-
   /** @test {SelectorImporter#parseUrl} */
   describe('parseUrl()', () => {
     it('should be a function', () => {
@@ -115,6 +86,37 @@ describe('SelectorImporterClass', () => {
       };
       return expect(selectorImporterInstance.parseUrl(urlWithSelectorFilters))
         .to.deep.equal(expectedResult);
+    });
+  });
+
+  /** @test {SelectorImporter#extractSelectors} */
+  describe('extractSelectors()', () => {
+    it('should be a function', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      expect(selectorImporterInstance.extractSelectors).to.be.a('function');
+    });
+
+    it('should return null', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const cleanUrl = 'some/url.scss';
+      const selectorFilters = null;
+      const expectedResult = null;
+      return expect(selectorImporterInstance.extractSelectors(cleanUrl, selectorFilters))
+        .to.equal(expectedResult);
+    });
+
+    it('should return selector filtered contents', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const cleanUrl = 'test/files/resolve.scss';
+      const selectorFilters = [
+        ['.class1', '.class-1'],
+        ['.class3', '.class-3']
+      ];
+      const expectedResult = fs.readFileSync('test/files/resolve-reference.css', {
+        encoding: 'utf8'
+      });
+      return expect(selectorImporterInstance.extractSelectors(cleanUrl, selectorFilters))
+        .to.equal(expectedResult);
     });
   });
 
