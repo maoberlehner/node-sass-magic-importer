@@ -45,7 +45,8 @@ PackageImporter.prototype.resolveSync = function resolveSync (url) {
     try {
       var resolvedPath = resolve.sync(urlVariant, {
         basedir: this$1.options.cwd,
-        packageFilter: function (pkg) { return this$1.resolveFilter(pkg); }
+        packageFilter: function (pkg) { return this$1.resolveFilter(pkg); },
+        extensions: this$1.options.extensions
       });
       if (resolvedPath) {
         file = resolvedPath;
