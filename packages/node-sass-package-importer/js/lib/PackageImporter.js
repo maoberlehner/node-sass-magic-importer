@@ -42,7 +42,8 @@ export default class PackageImporter {
       try {
         const resolvedPath = resolve.sync(urlVariant, {
           basedir: this.options.cwd,
-          packageFilter: pkg => this.resolveFilter(pkg)
+          packageFilter: pkg => this.resolveFilter(pkg),
+          extensions: this.options.extensions
         });
         if (resolvedPath) {
           file = resolvedPath;
