@@ -19,7 +19,9 @@ var MagicImporter = function MagicImporter(options) {
   var defaultOptions = {
     includePaths: [process.cwd()]
   };
+  /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
+  /** @type {Object} */
   this.onceStore = {};
 };
 
@@ -135,7 +137,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
     };
   }
 
-    resolvedUrl = storedData.url;
+  resolvedUrl = storedData.url;
   selectorFilters = storedData.selectorFilters;
 
   // Filter selectors.

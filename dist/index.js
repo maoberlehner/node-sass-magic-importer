@@ -19,7 +19,9 @@ var MagicImporter = function MagicImporter(options) {
   var defaultOptions = {
     includePaths: [process.cwd()]
   };
+  /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
+  /** @type {Object} */
   this.onceStore = {};
 };
 
@@ -135,7 +137,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
     };
   }
 
-    resolvedUrl = storedData.url;
+  resolvedUrl = storedData.url;
   selectorFilters = storedData.selectorFilters;
 
   // Filter selectors.
@@ -161,6 +163,12 @@ MagicImporter.prototype.resolve = function resolve (url) {
 };
 
 var magicImporter = new MagicImporter();
+/**
+ * Magic importer for node-sass
+ * @param {string} url - The path in import as-is, which LibSass encountered.
+ * @param {string} prev - The previously resolved path.
+ * @param {Function} done - A callback function to invoke on async completion.
+ */
 function index (url, prev, done) {
   // Create an array of include paths to search for files.
   var includePaths = [];
