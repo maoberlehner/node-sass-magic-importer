@@ -15,7 +15,23 @@ export default class MagicImporter {
    */
   constructor(options = {}) {
     const defaultOptions = {
-      includePaths: [process.cwd()]
+      cwd: process.cwd(),
+      includePaths: [process.cwd()],
+      extensions: [
+        '.scss',
+        '.sass'
+      ],
+      packageKeys: [
+        'sass',
+        'scss',
+        'style',
+        'css',
+        'main.sass',
+        'main.scss',
+        'main.style',
+        'main.css',
+        'main'
+      ]
     };
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
@@ -111,13 +127,14 @@ export default class MagicImporter {
 
     // Parse url to eventually extract selector filters.
     const selectorImporter = new SelectorImporter();
-    selectorImporter.options.includePaths = this.options.includePaths;
+    selectorImporter.options = this.options;
     const urlData = selectorImporter.parseUrl(resolvedUrl);
     resolvedUrl = urlData.url;
     let selectorFilters = urlData.selectorFilters;
 
     // Try to resolve a module url.
     const packageImporter = new PackageImporter();
+    packageImporter.options = this.options;
     const packageFile = packageImporter.resolveSync(resolvedUrl);
     if (packageFile) {
       resolvedUrl = packageFile;

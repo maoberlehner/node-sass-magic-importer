@@ -17,7 +17,23 @@ var MagicImporter = function MagicImporter(options) {
   if ( options === void 0 ) options = {};
 
   var defaultOptions = {
-    includePaths: [process.cwd()]
+    cwd: process.cwd(),
+    includePaths: [process.cwd()],
+    extensions: [
+      '.scss',
+      '.sass'
+    ],
+    packageKeys: [
+      'sass',
+      'scss',
+      'style',
+      'css',
+      'main.sass',
+      'main.scss',
+      'main.style',
+      'main.css',
+      'main'
+    ]
   };
   /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
@@ -115,13 +131,14 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
 
   // Parse url to eventually extract selector filters.
   var selectorImporter = new SelectorImporter();
-  selectorImporter.options.includePaths = this.options.includePaths;
+  selectorImporter.options = this.options;
   var urlData = selectorImporter.parseUrl(resolvedUrl);
   resolvedUrl = urlData.url;
   var selectorFilters = urlData.selectorFilters;
 
   // Try to resolve a module url.
   var packageImporter = new PackageImporter();
+  packageImporter.options = this.options;
   var packageFile = packageImporter.resolveSync(resolvedUrl);
   if (packageFile) {
     resolvedUrl = packageFile;
@@ -150,7 +167,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
 };
 
 /**
- * Asynchronously resolve the path to a node-sass import url.
+   * Asynchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
  * @return {Promise} Promise for a fully resolved import url.
  */
