@@ -1,0 +1,17 @@
+// Glob import.
+@import 'test-imports/**/*.scss';
+
+// Import once.
+@import 'test-imports/test-import1.scss';
+
+// Module import.
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/border-radius';
+@import '~bootstrap/scss/mixins/alert';
+@import '~bootstrap/scss/alert';
+
+// Selector filtering.
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/border-radius';
+@import '~bootstrap/scss/mixins/alert';
+@import '{ .alert, .alert-dismissible as .alert--dismissible, .close as .alert__close } from ~bootstrap/scss/alert';

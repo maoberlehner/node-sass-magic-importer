@@ -1,8 +1,0 @@
-{
-  "curly": true,
-  "esversion": 6,
-  "node": true,
-  "undef": true,
-  "unused": "vars",
-  "varstmt": true
-}
