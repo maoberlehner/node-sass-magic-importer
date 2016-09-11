@@ -136,7 +136,7 @@ sass.render({
       '.scss',
       '.sass'
     ],
-    // Define the package.json keys to search for and in which order.
+    // Define the package.json keys and in which order to search for them.
     packageKeys: [
       'sass',
       'scss',
