@@ -1,13 +1,16 @@
 # node-sass-magic-importer
-Custom node-sass importer for selector specific imports, module importing, globbing support, import files only once and importing of files with `.css` extension.
+Custom node-sass importer for selector specific imports, module importing, globbing support and import files only once.
 
 ## Features
 This importer enables several comfort functions for importing SASS files more easily.
-- [Selector filtering](#selector-filtering): import only specific selectors from a file.
-- [Module importing](#module-importing): import modules from `node_modules` without specifying the full path.
-- [Globbing](#globbing): use globbing (e.g. `@import: 'scss/**/*.scss'`) to import multiple files at once.
+- [Selector filtering](#selector-filtering): import only specific selectors from a file.  
+  (Uses the [node-sass-selector-importer](https://github.com/maoberlehner/node-sass-selector-importer) module.)
+- [Module importing](#module-importing): import modules from `node_modules` without specifying the full path.  
+  (Uses the [node-sass-package-importer](https://github.com/maoberlehner/node-sass-package-importer) module.)
+- [Globbing](#globbing): use globbing (e.g. `@import: 'scss/**/*.scss'`) to import multiple files at once.  
+  (Uses the [node-sass-glob-importer](https://github.com/maoberlehner/node-sass-glob-importer) module.)
 
-By default every file is only imported once even if you `@import` the same file multiple times in your code but you can [disable this behavior](#options).
+By default every file is only imported once even if you `@import` the same file multiple times in your code.
 
 ### Selector filtering
 With selector filtering, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
@@ -34,7 +37,7 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 
 #### Usage with Bootstrap
-Bootstrap is a mighty and robust framework but most of the time you use only certain parts of it. There is the possibility to [customize](http://getbootstrap.com/customize/) Bootstrap to your needs but this can be annoying and you still end up with more code than you need. Also you might want to use just some specific parts of Bootstrap but your project uses the BEM syntax for writing class names. Selector filtering and transforming can help with that.
+Bootstrap is a mighty and robust framework but most of the time you use only certain parts of it. There is the possibility to [customize](http://getbootstrap.com/customize/) Bootstrap to your needs but this can be annoying and you still end up with more code than you need. Also you might want to use just some specific parts of Bootstrap but your project uses the BEM syntax for writing class names.
 
 ```scss
 // This example uses the v4 dev version of the Bootstrap `alert` component:
@@ -72,9 +75,7 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 **You may notice that source map support is limited for styles which are imported with selector filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
 
 ### Module importing
-In modern day web development, modules are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find the correct way of including them into your project. Module importing makes this a little easier.
-
-First the importer looks for a `sass` option in `package.json` if no value for `sass` is provided, the `style` option is next in the line, if there is also no `style` option, the importer checks if the `main` option provides a compatible file. If all of this fails, the module is not compatible with this importer.
+In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find the correct way of including them into your project. Module importing makes this a little easier.
 
 ```scss
 // Import the file that is specified in the `package.json` file of the module.
@@ -90,7 +91,12 @@ First the importer looks for a `sass` option in `package.json` if no value for `
 @import '~bootstrap/scss/alert';
 ```
 
-The "~" is optional, it is a hint for the importer and developers that this is a module path.
+The "~" is optional, it is a hint for developers that this is a module path.
+
+#### Path resolving
+If only the module name is given (e.g. `@import '~bootstrap'`) the importer looks in the `package.json` file of the module for the following keys: "sass", "scss", "style", "css", "main.sass", "main.scss", "main.style", "main.css" and "main". The first key that is found is used for resolving the path and importing the file into your sass code.
+
+To load only a certain file from a module you can specify the file in the import url (e.g. `@import '~bootstrap/scss/_alert.scss'`). The `node-sass-magic-importer` also supports partial file name resolving so you can import files by only specifying their base name without prefix and extension (e.g. `@import '~bootstrap/scss/alert'`). Sadly bootstrap and most other frameworks do not load their dependencies directly in the concerned files. So you have to load all dependencies of a file manually like in the example above. I recommend you to do better and to import dependencies directly in the files that are using them.
 
 ### Globbing
 Globbing allows pattern matching operators to be used to match multiple files at once.
@@ -121,9 +127,27 @@ sass.render({
   ...
   importer: magicImporter,
   magicImporter: {
-    importOnce: true, // Import files only once.
-    cssImport: true, // Import files with `.css` extension.
-    extensions: ['.scss'] // Allowed extensions.
+    // Defines the path in which your node_modules directory is found.
+    cwd: process.cwd(),
+    // Paths in which to search for imported files.
+    includePaths: [process.cwd()],
+    // Allowed extensions.
+    extensions: [
+      '.scss',
+      '.sass'
+    ],
+    // Define the package.json keys to search for and in which order.
+    packageKeys: [
+      'sass',
+      'scss',
+      'style',
+      'css',
+      'main.sass',
+      'main.scss',
+      'main.style',
+      'main.css',
+      'main'
+    ]
   }
   ...
 });
