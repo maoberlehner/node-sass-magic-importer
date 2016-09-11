@@ -186,7 +186,7 @@ var magicImporter = new MagicImporter();
  * @param {string} prev - The previously resolved path.
  * @param {Function} done - A callback function to invoke on async completion.
  */
-function index (url, prev, done) {
+var index = function (url, prev, done) {
   // Create an array of include paths to search for files.
   var includePaths = [];
   if (path.isAbsolute(prev)) {
