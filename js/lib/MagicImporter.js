@@ -17,7 +17,9 @@ export default class MagicImporter {
     const defaultOptions = {
       includePaths: [process.cwd()]
     };
+    /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
+    /** @type {Object} */
     this.onceStore = {};
   }
 
