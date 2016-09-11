@@ -1,5 +1,5 @@
 # node-sass-magic-importer
-Custom node-sass importer for selector specific imports, module importing, globbing support and import files only once.
+Custom node-sass importer for selector specific imports, module importing, globbing support and importing files only once.
 
 ## Features
 This importer enables several comfort functions for importing SASS files more easily.
