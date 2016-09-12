@@ -37,8 +37,9 @@
   "jsnext:main": "js/index.js",
   "scripts": {
     "scripts:lint": "eslint js/* test/*",
+    "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/PackageImporter.js js/lib/PackageImporter.js",
-    "scripts": "npm run scripts:lint && npm run scripts:bundle",
+    "scripts": "npm run scripts:lint-no-error && npm run scripts:bundle",
     "test": "mocha"
   },
   "config": {
