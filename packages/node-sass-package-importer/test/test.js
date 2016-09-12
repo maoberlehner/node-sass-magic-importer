@@ -33,13 +33,28 @@ describe('packageImporter', () => {
   });
 });
 
-describe('PackageImporterClass', () => {
+describe('PackageImporter', () => {
   it('should be a function', () => expect(PackageImporterClass).to.be.a('function'));
+
+  /**
+   * resolveSync()
+   */
+  describe('resolveSync()', () => {
+    it('should be a function', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      return expect(packageImporterInstance.resolveSync).to.be.a('function');
+    });
+  });
 
   /**
    * resolve()
    */
   describe('resolve()', () => {
+    it('should be a function', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      return expect(packageImporterInstance.resolve).to.be.a('function');
+    });
+
     it('should return null', (done) => {
       const packageImporterInstance = new PackageImporterClass();
       const url = 'path/that/does/not/exist.scss';
@@ -80,6 +95,11 @@ describe('PackageImporterClass', () => {
    * cleanUrl()
    */
   describe('cleanUrl()', () => {
+    it('should be a function', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      return expect(packageImporterInstance.cleanUrl).to.be.a('function');
+    });
+
     it('should return the url unmodified', () => {
       const packageImporterInstance = new PackageImporterClass();
       const url = 'normal/path/without/tilde';
@@ -106,6 +126,11 @@ describe('PackageImporterClass', () => {
    * urlVariants()
    */
   describe('urlVariants()', () => {
+    it('should be a function', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      return expect(packageImporterInstance.urlVariants).to.be.a('function');
+    });
+
     it('should return array with single url (module name)', () => {
       const packageImporterInstance = new PackageImporterClass();
       const url = 'module-name-url';
@@ -138,6 +163,11 @@ describe('PackageImporterClass', () => {
    * resolveFilter()
    */
   describe('resolveFilter()', () => {
+    it('should be a function', () => {
+      const packageImporterInstance = new PackageImporterClass();
+      return expect(packageImporterInstance.resolveFilter).to.be.a('function');
+    });
+
     it('should return package object with value from `sass` as value for `main`', () => {
       const packageImporterInstance = new PackageImporterClass();
       const pkg = {
