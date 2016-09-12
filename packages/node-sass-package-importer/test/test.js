@@ -12,6 +12,7 @@ const PackageImporterClass = require('../dist/PackageImporter.js');
 
 chai.use(chaiAsPromised);
 
+/** @test {index} */
 describe('packageImporter', () => {
   it('should be a function', () => expect(packageImporter).to.be.a('function'));
 
@@ -33,12 +34,11 @@ describe('packageImporter', () => {
   });
 });
 
+/** @test {PackageImporter} */
 describe('PackageImporter', () => {
   it('should be a function', () => expect(PackageImporterClass).to.be.a('function'));
 
-  /**
-   * resolveSync()
-   */
+  /** @test {PackageImporter#resolveSync} */
   describe('resolveSync()', () => {
     it('should be a function', () => {
       const packageImporterInstance = new PackageImporterClass();
@@ -46,9 +46,7 @@ describe('PackageImporter', () => {
     });
   });
 
-  /**
-   * resolve()
-   */
+  /** @test {PackageImporter#resolve} */
   describe('resolve()', () => {
     it('should be a function', () => {
       const packageImporterInstance = new PackageImporterClass();
@@ -91,9 +89,7 @@ describe('PackageImporter', () => {
     });
   });
 
-  /**
-   * cleanUrl()
-   */
+  /** @test {PackageImporter#cleanUrl} */
   describe('cleanUrl()', () => {
     it('should be a function', () => {
       const packageImporterInstance = new PackageImporterClass();
@@ -122,9 +118,7 @@ describe('PackageImporter', () => {
     });
   });
 
-  /**
-   * urlVariants()
-   */
+  /** @test {PackageImporter#urlVariants} */
   describe('urlVariants()', () => {
     it('should be a function', () => {
       const packageImporterInstance = new PackageImporterClass();
@@ -159,9 +153,7 @@ describe('PackageImporter', () => {
     });
   });
 
-  /**
-   * resolveFilter()
-   */
+  /** @test {PackageImporter#resolveFilter} */
   describe('resolveFilter()', () => {
     it('should be a function', () => {
       const packageImporterInstance = new PackageImporterClass();
