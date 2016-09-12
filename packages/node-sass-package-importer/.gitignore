@@ -25,8 +25,5 @@ nbproject
 Thumbs.db
 
 # Folders to ignore
-app/*/
-bower_components
 node_modules
 !test/files/node_modules
-bitmaps_test
