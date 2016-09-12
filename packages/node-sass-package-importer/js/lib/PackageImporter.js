@@ -1,9 +1,11 @@
 import resolve from 'resolve';
 import path from 'path';
 
+/**
+ * Import packages from the `node_modules` directory.
+ */
 export default class PackageImporter {
   /**
-   * Import packages from the `node_modules` directory.
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {
@@ -25,6 +27,7 @@ export default class PackageImporter {
         'main'
       ]
     };
+    /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
   }
 

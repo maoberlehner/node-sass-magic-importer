@@ -5,6 +5,9 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var resolve = _interopDefault(require('resolve'));
 var path = _interopDefault(require('path'));
 
+/**
+ * Import packages from the `node_modules` directory.
+ */
 var PackageImporter = function PackageImporter(options) {
   if ( options === void 0 ) options = {};
 
@@ -26,6 +29,7 @@ var PackageImporter = function PackageImporter(options) {
       'main'
     ]
   };
+  /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
 };
 

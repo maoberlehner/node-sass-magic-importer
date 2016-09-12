@@ -6,7 +6,7 @@
     "sass",
     "npm"
   ],
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-package-importer",
   "license": "MIT",
@@ -33,12 +33,17 @@
     "rollup": "^0.34.1",
     "rollup-plugin-buble": "^0.12.1"
   },
+  "optionalDependencies": {
+    "esdoc": "^0.4.8"
+  },
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
   "scripts": {
     "scripts:lint": "eslint js/* test/*",
+    "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/PackageImporter.js js/lib/PackageImporter.js",
-    "scripts": "npm run scripts:lint && npm run scripts:bundle",
+    "scripts:doc": "esdoc -c .esdocrc",
+    "scripts": "npm run scripts:lint-no-error && npm run scripts:bundle",
     "test": "mocha"
   },
   "config": {

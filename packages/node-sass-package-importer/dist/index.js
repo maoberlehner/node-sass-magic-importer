@@ -5,6 +5,9 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var resolve = _interopDefault(require('resolve'));
 var path = _interopDefault(require('path'));
 
+/**
+ * Import packages from the `node_modules` directory.
+ */
 var PackageImporter = function PackageImporter(options) {
   if ( options === void 0 ) options = {};
 
@@ -26,6 +29,7 @@ var PackageImporter = function PackageImporter(options) {
       'main'
     ]
   };
+  /** @type {Object} */
   this.options = Object.assign({}, defaultOptions, options);
 };
 
@@ -115,6 +119,12 @@ PackageImporter.prototype.resolveFilter = function resolveFilter (pkg) {
 };
 
 var packageImporter = new PackageImporter();
+/**
+ * Package importer for node-sass
+ * @param {string} url - The path in import as-is, which LibSass encountered.
+ * @param {string} prev - The previously resolved path.
+ * @param {Function} done - A callback function to invoke on async completion.
+ */
 function index (url, prev, done) {
   if (this.options.packageImporter) {
     Object.assign(packageImporter.options, this.options.packageImporter);
