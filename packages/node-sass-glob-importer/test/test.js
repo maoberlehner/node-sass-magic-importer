@@ -33,13 +33,25 @@ describe('globImporter', () => {
   });
 });
 
-describe('GlobImporterClass', () => {
+/** @test {GlobImporter} */
+describe('GlobImporter', () => {
   it('should be a function', () => expect(GlobImporterClass).to.be.a('function'));
 
-  /**
-   * resolve()
-   */
+  /** @test {GlobImporter#resolveSync} */
+  describe('resolveSync()', () => {
+    it('should be a function', () => {
+      const globImporterInstance = new GlobImporterClass();
+      return expect(globImporterInstance.resolveSync).to.be.a('function');
+    });
+  });
+
+  /** @test {GlobImporter#resolve} */
   describe('resolve()', () => {
+    it('should be a function', () => {
+      const globImporterInstance = new GlobImporterClass();
+      return expect(globImporterInstance.resolve).to.be.a('function');
+    });
+
     it('should return null', (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = 'path/without/glob/pattern.scss';
@@ -63,10 +75,13 @@ describe('GlobImporterClass', () => {
     });
   });
 
-  /**
-   * importer()
-   */
+  /** @test {GlobImporter#importer} */
   describe('importer()', () => {
+    it('should be a function', () => {
+      const globImporterInstance = new GlobImporterClass();
+      return expect(globImporterInstance.importer).to.be.a('function');
+    });
+
     it('should resolve glob import', (done) => {
       const globImporterInstance = new GlobImporterClass();
       const expectedResult = fs.readFileSync('test/files/glob-reference.css', {
