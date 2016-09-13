@@ -74,6 +74,10 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 node-sass --importer node_modules/node-sass-selector-importer -o dist src/index.scss
 ```
 
+
+## node-sass-magic-importer
+This module is part of the [node-sass-magic-importer](https://github.com/maoberlehner/node-sass-magic-importer) module.
+
 ## About
 ### Author
 Markus Oberlehner  
