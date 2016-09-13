@@ -2,6 +2,9 @@ import concat from 'unique-concat';
 import glob from 'glob';
 import path from 'path';
 
+/**
+ * Import files using glob patterns.
+ */
 export default class GlobImporter {
   /**
    * Synchronously resolve the path to a node-sass import url.
@@ -39,6 +42,7 @@ export default class GlobImporter {
   }
 
   /**
+   * Glob importer for node-sass
    * @return {function} Returns a node-sass importer function.
    */
   importer() {

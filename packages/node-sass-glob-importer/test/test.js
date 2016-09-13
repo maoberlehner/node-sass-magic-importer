@@ -33,12 +33,11 @@ describe('globImporter', () => {
   });
 });
 
-describe('GlobImporterClass', () => {
+/** @test {GlobImporter} */
+describe('GlobImporter', () => {
   it('should be a function', () => expect(GlobImporterClass).to.be.a('function'));
 
-  /**
-   * resolveSync()
-   */
+  /** @test {GlobImporter#resolveSync} */
   describe('resolveSync()', () => {
     it('should be a function', () => {
       const globImporterInstance = new GlobImporterClass();
@@ -46,9 +45,7 @@ describe('GlobImporterClass', () => {
     });
   });
 
-  /**
-   * resolve()
-   */
+  /** @test {GlobImporter#resolve} */
   describe('resolve()', () => {
     it('should be a function', () => {
       const globImporterInstance = new GlobImporterClass();
@@ -78,9 +75,7 @@ describe('GlobImporterClass', () => {
     });
   });
 
-  /**
-   * importer()
-   */
+  /** @test {GlobImporter#importer} */
   describe('importer()', () => {
     it('should be a function', () => {
       const globImporterInstance = new GlobImporterClass();

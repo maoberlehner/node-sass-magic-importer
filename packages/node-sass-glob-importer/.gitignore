@@ -25,4 +25,5 @@ nbproject
 Thumbs.db
 
 # Folders to ignore
+esdoc
 node_modules

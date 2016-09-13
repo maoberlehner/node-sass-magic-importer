@@ -6,6 +6,9 @@ var concat = _interopDefault(require('unique-concat'));
 var glob = _interopDefault(require('glob'));
 var path = _interopDefault(require('path'));
 
+/**
+ * Import files using glob patterns.
+ */
 var GlobImporter = function GlobImporter () {};
 
 GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
@@ -43,6 +46,7 @@ GlobImporter.prototype.resolve = function resolve (url, includePaths) {
 };
 
 /**
+ * Glob importer for node-sass
  * @return {function} Returns a node-sass importer function.
  */
 GlobImporter.prototype.importer = function importer () {
