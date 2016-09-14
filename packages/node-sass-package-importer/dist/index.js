@@ -125,7 +125,7 @@ var packageImporter = new PackageImporter();
  * @param {string} prev - The previously resolved path.
  * @param {Function} done - A callback function to invoke on async completion.
  */
-function index (url, prev, done) {
+var index = function (url, prev, done) {
   if (this.options.packageImporter) {
     Object.assign(packageImporter.options, this.options.packageImporter);
   }

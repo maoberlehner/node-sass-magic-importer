@@ -53,16 +53,16 @@ describe('PackageImporter', () => {
       return expect(packageImporterInstance.resolve).to.be.a('function');
     });
 
-    it('should return null', (done) => {
+    it('should return null', () => {
       const packageImporterInstance = new PackageImporterClass();
       const url = 'path/that/does/not/exist.scss';
       const expectedResult = null;
       return expect(packageImporterInstance.resolve(url))
         .to.eventually.equal(expectedResult)
-        .notify(done);
+        .notify();
     });
 
-    it('should return url for the test-module main sass file', (done) => {
+    it('should return url for the test-module main sass file', () => {
       const options = { cwd: path.join(process.cwd(), 'test/files') };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = 'test-module';
@@ -72,10 +72,10 @@ describe('PackageImporter', () => {
       )}`;
       return expect(packageImporterInstance.resolve(url))
         .to.eventually.equal(expectedResult)
-        .notify(done);
+        .notify();
     });
 
-    it('should return url for the test-module partial file', (done) => {
+    it('should return url for the test-module partial file', () => {
       const options = { cwd: path.join(process.cwd(), 'test/files') };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = 'test-module/scss/partial';
@@ -85,7 +85,7 @@ describe('PackageImporter', () => {
       )}`;
       return expect(packageImporterInstance.resolve(url))
         .to.eventually.equal(expectedResult)
-        .notify(done);
+        .notify();
     });
   });
 
