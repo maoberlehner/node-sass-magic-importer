@@ -1,0 +1,8 @@
+.editorconfig
+.esdocrc
+.eslintrc
+
+CONTRIBUTING.md
+rollup.config.js
+
+test

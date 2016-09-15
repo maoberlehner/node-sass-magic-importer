@@ -1,7 +1,7 @@
 {
   "name": "node-sass-magic-importer",
   "description": "Custom node-sass importer for selector specific imports, module importing, globbing support, import files only once and importing of files with .css extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "scripts:lint": "eslint js/* test/*",
     "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:doc": "esdoc -c .esdocrc",
-    "scripts": "npm run scripts:lint-no-error && npm run scripts:bundle",
+    "scripts": "npm run scripts:bundle && npm run scripts:lint-no-error",
     "test": "mocha"
   },
   "config": {
