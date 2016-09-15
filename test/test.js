@@ -60,7 +60,7 @@ describe('magicImporter', () => {
 });
 
 /** @test {MagicImporter} */
-describe('SelectorImporterClass', () => {
+describe('MagicImporter', () => {
   it('should be a function', () => expect(MagicImporterClass).to.be.a('function'));
 
   /** @test {MagicImporter#getAbsoluteUrl} */
