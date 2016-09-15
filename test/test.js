@@ -74,7 +74,7 @@ describe('MagicImporter', () => {
       const magicImporterInstance = new MagicImporterClass();
       const url = 'test/files/combined.scss';
       // eslint-disable-next-line max-len
-      const expectedResult = '/Users/moberlehner/Sites/vagrant/devbox/node-sass-magic-importer/test/files/combined.scss';
+      const expectedResult = `${process.cwd()}/test/files/combined.scss`;
       return expect(magicImporterInstance.getAbsoluteUrl(url)).to.equal(expectedResult);
     });
   });
