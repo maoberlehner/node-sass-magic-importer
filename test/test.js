@@ -73,7 +73,6 @@ describe('MagicImporter', () => {
     it('should return absolute URL', () => {
       const magicImporterInstance = new MagicImporterClass();
       const url = 'test/files/combined.scss';
-      // eslint-disable-next-line max-len
       const expectedResult = `${process.cwd()}/test/files/combined.scss`;
       return expect(magicImporterInstance.getAbsoluteUrl(url)).to.equal(expectedResult);
     });
