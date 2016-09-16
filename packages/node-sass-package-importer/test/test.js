@@ -62,10 +62,20 @@ describe('PackageImporter', () => {
         .notify();
     });
 
-    it('should return url for the test-module main sass file', () => {
+    it('should return null', () => {
       const options = { cwd: path.join(process.cwd(), 'test/files') };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = 'test-module';
+      const expectedResult = null;
+      return expect(packageImporterInstance.resolve(url))
+        .to.eventually.equal(expectedResult)
+        .notify();
+    });
+
+    it('should return url for the test-module main sass file', () => {
+      const options = { cwd: path.join(process.cwd(), 'test/files') };
+      const packageImporterInstance = new PackageImporterClass(options);
+      const url = '~test-module';
       const expectedResult = `${path.join(
         options.cwd,
         'node_modules/test-module/scss/style.scss'
@@ -78,7 +88,7 @@ describe('PackageImporter', () => {
     it('should return url for the test-module partial file', () => {
       const options = { cwd: path.join(process.cwd(), 'test/files') };
       const packageImporterInstance = new PackageImporterClass(options);
-      const url = 'test-module/scss/partial';
+      const url = '~test-module/scss/partial';
       const expectedResult = `${path.join(
         options.cwd,
         'node_modules/test-module/scss/_partial.scss'
