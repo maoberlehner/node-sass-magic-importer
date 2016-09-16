@@ -27,8 +27,15 @@ export default class PackageImporter {
         'main'
       ]
     };
-    /** @type {Object} */
+    /**
+     * @type {Object}
+     */
     this.options = Object.assign({}, defaultOptions, options);
+    /**
+     * Match tilde symbol at the beginning of urls (except home "~/" directory).
+     * @type {RegExp}
+     */
+    this.matchPackageUrl = new RegExp(`^~(?!${path.sep})`);
   }
 
   /**
@@ -37,9 +44,12 @@ export default class PackageImporter {
    * @return {string} Fully resolved import url or null.
    */
   resolveSync(url) {
+    let file = null;
+    if (!url.match(this.matchPackageUrl)) {
+      return file;
+    }
     const cleanUrl = this.cleanUrl(url);
     const urlVariants = this.urlVariants(cleanUrl);
-    let file = null;
     // Find a url variant that can be resolved.
     urlVariants.some(urlVariant => {
       try {
@@ -75,10 +85,7 @@ export default class PackageImporter {
    * @return {string} Cleaned url.
    */
   cleanUrl(url) {
-    // Remove tilde symbol from the beginning
-    // of urls (except home "~/" directory).
-    const re = new RegExp(`^~(?!${path.sep})`);
-    return url.replace(re, '');
+    return url.replace(this.matchPackageUrl, '');
   }
 
   /**

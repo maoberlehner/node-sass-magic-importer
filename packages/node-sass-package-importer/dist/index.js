@@ -29,8 +29,15 @@ var PackageImporter = function PackageImporter(options) {
       'main'
     ]
   };
-  /** @type {Object} */
+  /**
+   * @type {Object}
+   */
   this.options = Object.assign({}, defaultOptions, options);
+  /**
+   * Match tilde symbol at the beginning of urls (except home "~/" directory).
+   * @type {RegExp}
+   */
+  this.matchPackageUrl = new RegExp(("^~(?!" + (path.sep) + ")"));
 };
 
 /**
@@ -41,9 +48,12 @@ var PackageImporter = function PackageImporter(options) {
 PackageImporter.prototype.resolveSync = function resolveSync (url) {
     var this$1 = this;
 
+  var file = null;
+  if (!url.match(this.matchPackageUrl)) {
+    return file;
+  }
   var cleanUrl = this.cleanUrl(url);
   var urlVariants = this.urlVariants(cleanUrl);
-  var file = null;
   // Find a url variant that can be resolved.
   urlVariants.some(function (urlVariant) {
     try {
@@ -81,10 +91,7 @@ PackageImporter.prototype.resolve = function resolve$1 (url) {
  * @return {string} Cleaned url.
  */
 PackageImporter.prototype.cleanUrl = function cleanUrl (url) {
-  // Remove tilde symbol from the beginning
-  // of urls (except home "~/" directory).
-  var re = new RegExp(("^~(?!" + (path.sep) + ")"));
-  return url.replace(re, '');
+  return url.replace(this.matchPackageUrl, '');
 };
 
 /**
