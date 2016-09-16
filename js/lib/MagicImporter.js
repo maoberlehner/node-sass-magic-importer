@@ -143,6 +143,8 @@ export default class MagicImporter {
 
     const storedData = this.store(resolvedUrl, selectorFilters);
 
+    // If the file is already stored and should not be loaded,
+    // prevent node-sass from importing the file again.
     if (!storedData) {
       return {
         file: '',
