@@ -18,7 +18,11 @@ export default class GlobImporter {
         // Try to resolve the glob pattern.
         const newAbsolutePaths = glob
           .sync(url, { cwd: includePath })
-          .map(relativePath => path.resolve(includePath, relativePath));
+          .map(relativePath => {
+            const absolutePath = path.resolve(includePath, relativePath);
+            if (/^win/.test(process.platform)) absolutePath.split('\\').join('/');
+            return absolutePath;
+          });
         // Merge new paths with previously found ones.
         return concat(absolutePathStore, newAbsolutePaths);
       }, []);
