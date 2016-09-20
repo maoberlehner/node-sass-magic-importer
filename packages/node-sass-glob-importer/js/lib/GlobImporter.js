@@ -19,8 +19,8 @@ export default class GlobImporter {
         const newAbsolutePaths = glob
           .sync(url, { cwd: includePath })
           .map(relativePath => {
-            const absolutePath = path.resolve(includePath, relativePath);
-            if (/^win/.test(process.platform)) absolutePath.split('\\').join('/');
+            let absolutePath = path.resolve(includePath, relativePath);
+            if (/^win/.test(process.platform)) absolutePath = absolutePath.split('\\').join('/');
             return absolutePath;
           });
         // Merge new paths with previously found ones.
