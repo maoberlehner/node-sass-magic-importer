@@ -18,7 +18,14 @@ export default class GlobImporter {
         // Try to resolve the glob pattern.
         const newAbsolutePaths = glob
           .sync(url, { cwd: includePath })
-          .map(relativePath => path.resolve(includePath, relativePath));
+          .map(relativePath => {
+            let absolutePath = path.resolve(includePath, relativePath);
+            // node-sass fails to resolve absolute paths with forwardslashes on
+            // windows systems. Because of that we use this hack, replacing them
+            // with backslashes.
+            if (/^win/.test(process.platform)) absolutePath = absolutePath.split('\\').join('/');
+            return absolutePath;
+          });
         // Merge new paths with previously found ones.
         return concat(absolutePathStore, newAbsolutePaths);
       }, []);
