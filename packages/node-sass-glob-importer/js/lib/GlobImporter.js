@@ -20,6 +20,9 @@ export default class GlobImporter {
           .sync(url, { cwd: includePath })
           .map(relativePath => {
             let absolutePath = path.resolve(includePath, relativePath);
+            // node-sass fails to resolve absolute paths with forwardslashes on
+            // windows systems. Because of that we use this hack, replacing them
+            // with backslashes.
             if (/^win/.test(process.platform)) absolutePath = absolutePath.split('\\').join('/');
             return absolutePath;
           });
