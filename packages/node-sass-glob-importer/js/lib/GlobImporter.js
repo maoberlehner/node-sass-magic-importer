@@ -14,7 +14,7 @@ export default class GlobImporter {
    */
   resolveSync(url, includePaths = [process.cwd()]) {
     if (glob.hasMagic(url)) {
-      const absolutePaths = includePaths.reduce((absolutePathStore, includePath) => {
+      return includePaths.reduce((absolutePathStore, includePath) => {
         // Try to resolve the glob pattern.
         const newAbsolutePaths = glob
           .sync(url, { cwd: includePath })
@@ -29,9 +29,6 @@ export default class GlobImporter {
         // Merge new paths with previously found ones.
         return concat(absolutePathStore, newAbsolutePaths);
       }, []);
-      if (absolutePaths.length) {
-        return absolutePaths;
-      }
     }
     return null;
   }

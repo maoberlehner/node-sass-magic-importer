@@ -15,7 +15,7 @@ GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
     if ( includePaths === void 0 ) includePaths = [process.cwd()];
 
   if (glob.hasMagic(url)) {
-    var absolutePaths = includePaths.reduce(function (absolutePathStore, includePath) {
+    return includePaths.reduce(function (absolutePathStore, includePath) {
       // Try to resolve the glob pattern.
       var newAbsolutePaths = glob
         .sync(url, { cwd: includePath })
@@ -30,9 +30,6 @@ GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
       // Merge new paths with previously found ones.
       return concat(absolutePathStore, newAbsolutePaths);
     }, []);
-    if (absolutePaths.length) {
-      return absolutePaths;
-    }
   }
   return null;
 };
