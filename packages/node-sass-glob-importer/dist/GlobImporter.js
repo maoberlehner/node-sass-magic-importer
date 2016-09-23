@@ -20,14 +20,7 @@ GlobImporter.prototype.resolveSync = function resolveSync (url, includePaths) {
       // Try to resolve the glob pattern.
       var newAbsolutePaths = glob
         .sync(url, { cwd: includePath })
-        .map(function (relativePath) {
-          var absolutePath = path.resolve(includePath, relativePath);
-          // node-sass fails to resolve absolute paths with forwardslashes on
-          // windows systems. Because of that we use this hack, replacing them
-          // with backslashes.
-          if (/^win/.test(process.platform)) absolutePath = absolutePath.split('\\').join('/');
-          return absolutePath;
-        });
+        .map(function (relativePath) { return path.resolve(includePath, relativePath); });
       // Merge new paths with previously found ones.
       return concat(absolutePathStore, newAbsolutePaths);
     }, []);
