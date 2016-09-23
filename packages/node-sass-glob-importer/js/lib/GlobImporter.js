@@ -1,4 +1,5 @@
 import concat from 'unique-concat';
+import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
 
@@ -62,7 +63,7 @@ export default class GlobImporter {
       // Try to resolve the url.
       self.resolve(url, includePaths).then(files => {
         if (files) {
-          const contents = files.map(x => `@import '${x}';`).join('\n');
+          const contents = files.map(x => fs.readFileSync(x, { encoding: 'utf8' })).join('\n');
           done({ contents });
         } else {
           done(null);

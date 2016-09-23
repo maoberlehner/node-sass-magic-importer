@@ -3,6 +3,7 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var concat = _interopDefault(require('unique-concat'));
+var fs = _interopDefault(require('fs'));
 var glob = _interopDefault(require('glob'));
 var path = _interopDefault(require('path'));
 
@@ -66,7 +67,7 @@ GlobImporter.prototype.importer = function importer () {
     // Try to resolve the url.
     self.resolve(url, includePaths).then(function (files) {
       if (files) {
-        var contents = files.map(function (x) { return ("@import '" + x + "';"); }).join('\n');
+        var contents = files.map(function (x) { return fs.readFileSync(x, { encoding: 'utf8' }); }).join('\n');
         done({ contents: contents });
       } else {
         done(null);
