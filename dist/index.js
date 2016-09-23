@@ -119,15 +119,10 @@ MagicImporter.prototype.store = function store (url, selectorFilters) {
  * @return {string} Fully resolved import url or null.
  */
 MagicImporter.prototype.resolveSync = function resolveSync (url) {
+    var this$1 = this;
+
   var data = null;
   var resolvedUrl = url;
-
-  // Try to resolve glob pattern url.
-  var globImporter = new GlobImporter();
-  var globFiles = globImporter.resolveSync(url, this.options.includePaths);
-  if (globFiles) {
-    return { contents: globFiles.map(function (x) { return ("@import '" + x + "';"); }).join('\n') };
-  }
 
   // Parse url to eventually extract selector filters.
   var selectorImporter = new SelectorImporter();
@@ -135,6 +130,16 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   var urlData = selectorImporter.parseUrl(resolvedUrl);
   resolvedUrl = urlData.url;
   var selectorFilters = urlData.selectorFilters;
+
+  // Try to resolve glob pattern url.
+  var globImporter = new GlobImporter();
+  var globFiles = globImporter.resolveSync(resolvedUrl, this.options.includePaths);
+  if (globFiles) {
+    return { contents: globFiles.map(function (x) {
+      this$1.store(x);
+      return fs.readFileSync(x, { encoding: 'utf8' });
+    }).join('\n') };
+  }
 
   // Try to resolve a module url.
   var packageImporter = new PackageImporter();
@@ -147,6 +152,8 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
 
   var storedData = this.store(resolvedUrl, selectorFilters);
 
+  // If the file is already stored and should not be loaded,
+  // prevent node-sass from importing the file again.
   if (!storedData) {
     return {
       file: '',
@@ -158,7 +165,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   selectorFilters = storedData.selectorFilters;
 
   // Filter selectors.
-  var filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+    var filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
   if (filteredContents) {
     data = { contents: filteredContents };
   }
@@ -167,7 +174,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
 };
 
 /**
-   * Asynchronously resolve the path to a node-sass import url.
+ * Asynchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
  * @return {Promise} Promise for a fully resolved import url.
  */

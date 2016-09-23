@@ -1,7 +1,7 @@
 {
   "name": "node-sass-magic-importer",
   "description": "Custom node-sass importer for selector specific imports, module importing, globbing support, import files only once and importing of files with .css extension",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
   "license": "MIT",
@@ -13,8 +13,8 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "node-sass-glob-importer": "^2.0.1",
-    "node-sass-package-importer": "^1.0.6",
+    "node-sass-glob-importer": "^2.0.5",
+    "node-sass-package-importer": "^2.0.0",
     "node-sass-selector-importer": "^1.0.1",
     "unique-concat": "^0.2.2"
   },
