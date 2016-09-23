@@ -118,19 +118,22 @@ export default class MagicImporter {
     let data = null;
     let resolvedUrl = url;
 
-    // Try to resolve glob pattern url.
-    const globImporter = new GlobImporter();
-    const globFiles = globImporter.resolveSync(url, this.options.includePaths);
-    if (globFiles) {
-      return { contents: globFiles.map(x => `@import '${x}';`).join('\n') };
-    }
-
     // Parse url to eventually extract selector filters.
     const selectorImporter = new SelectorImporter();
     selectorImporter.options = this.options;
     const urlData = selectorImporter.parseUrl(resolvedUrl);
     resolvedUrl = urlData.url;
     let selectorFilters = urlData.selectorFilters;
+
+    // Try to resolve glob pattern url.
+    const globImporter = new GlobImporter();
+    const globFiles = globImporter.resolveSync(resolvedUrl, this.options.includePaths);
+    if (globFiles) {
+      return { contents: globFiles.map(x => {
+        this.store(x);
+        return fs.readFileSync(x, { encoding: 'utf8' });
+      }).join('\n') };
+    }
 
     // Try to resolve a module url.
     const packageImporter = new PackageImporter();
