@@ -5,7 +5,7 @@
     "node-sass",
     "sass"
   ],
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-glob-importer",
   "license": "MIT",
