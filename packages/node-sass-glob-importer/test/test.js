@@ -73,6 +73,16 @@ describe('GlobImporter', () => {
         .to.eventually.deep.equal(expectedResult)
         .notify(done);
     });
+
+    it('should return an empty array', (done) => {
+      const globImporterInstance = new GlobImporterClass();
+      const url = 'files/test-resolve/test-empty/**/*.scss';
+      const includePath = path.join(process.cwd(), 'test');
+      const expectedResult = [];
+      return expect(globImporterInstance.resolve(url, [includePath]))
+        .to.eventually.deep.equal(expectedResult)
+        .notify(done);
+    });
   });
 
   /** @test {GlobImporter#importer} */
