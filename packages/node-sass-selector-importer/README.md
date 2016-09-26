@@ -18,8 +18,8 @@ sass.render({
 ```
 ```scss
 // Result:
-.btn { ... }
-.btn-alert { ... }
+.btn { }
+.btn-alert { }
 ```
 
 ### Transform imported selectors
@@ -29,8 +29,29 @@ sass.render({
 ```
 ```scss
 // Result:
-.button { ... }
-.button--alert { ... } // Transformed to match BEM syntax.
+.button { }
+.button--alert { } // Transformed to match BEM syntax.
+```
+
+### RegEx
+```scss
+// Example:
+@import '{ /^\..+-alert/ } from style.scss';
+```
+```scss
+// Result:
+.box-alert { }
+.btn-alert { }
+```
+
+```scss
+// Example:
+@import '{ /^\.btn(.*)/ as .button$1 } from style.scss';
+```
+```scss
+// Result:
+.button { }
+.button-alert { }
 ```
 
 ### Usage with Bootstrap
