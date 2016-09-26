@@ -35,21 +35,24 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
     cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
     // Create an array with selectors and replacement as one value.
     selectorFilters = selectorFiltersMatch[1].split(',')
-      // Trim unnecessary whitespace.
-      .map(Function.prototype.call, String.prototype.trim)
       // Split selectors and replacement selectors into an array.
-      .map(function (currentValue) { return currentValue.split(' as ')
-        .map(Function.prototype.call, String.prototype.trim); })
-      .map(function (currentValue) {
-        var matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(currentValue[0]);
+      .map(function (filter) {
+        var filterArray = filter.trim().split(' as ')
+          .map(Function.prototype.call, String.prototype.trim);
+
+        var selector = filterArray[0];
+        var replacement = filterArray[1];
+
+        var matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(selector);
         if (matchRegExpSelector) {
           var pattern = matchRegExpSelector[1];
           var flags = matchRegExpSelector[2];
-          currentValue[0] = new RegExp(pattern, flags);
+          selector = new RegExp(pattern, flags);
         }
+
         return {
-          selector: currentValue[0],
-          replacement: currentValue[1]
+          selector: selector,
+          replacement: replacement
         };
       });
   }

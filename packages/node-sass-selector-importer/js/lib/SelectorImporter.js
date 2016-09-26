@@ -33,21 +33,24 @@ export default class SelectorImporter {
       cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
       // Create an array with selectors and replacement as one value.
       selectorFilters = selectorFiltersMatch[1].split(',')
-        // Trim unnecessary whitespace.
-        .map(Function.prototype.call, String.prototype.trim)
         // Split selectors and replacement selectors into an array.
-        .map((currentValue) => currentValue.split(' as ')
-          .map(Function.prototype.call, String.prototype.trim))
-        .map((currentValue) => {
-          const matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(currentValue[0]);
+        .map((filter) => {
+          const filterArray = filter.trim().split(' as ')
+            .map(Function.prototype.call, String.prototype.trim);
+
+          let selector = filterArray[0];
+          const replacement = filterArray[1];
+
+          const matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(selector);
           if (matchRegExpSelector) {
             const pattern = matchRegExpSelector[1];
             const flags = matchRegExpSelector[2];
-            currentValue[0] = new RegExp(pattern, flags);
+            selector = new RegExp(pattern, flags);
           }
+
           return {
-            selector: currentValue[0],
-            replacement: currentValue[1]
+            selector,
+            replacement
           };
         });
     }
