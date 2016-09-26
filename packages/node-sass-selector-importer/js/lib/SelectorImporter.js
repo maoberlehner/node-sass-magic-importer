@@ -37,7 +37,16 @@ export default class SelectorImporter {
         .map(Function.prototype.call, String.prototype.trim)
         // Split selectors and replacement selectors into an array.
         .map((currentValue) => currentValue.split(' as ')
-          .map(Function.prototype.call, String.prototype.trim));
+          .map(Function.prototype.call, String.prototype.trim))
+        .map((currentValue) => {
+          const matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(currentValue[0]);
+          if (matchRegExpSelector) {
+            const pattern = matchRegExpSelector[1];
+            const flags = matchRegExpSelector[2];
+            currentValue[0] = new RegExp(pattern, flags);
+          }
+          return currentValue;
+        });
     }
     return { url: cleanUrl, selectorFilters };
   }

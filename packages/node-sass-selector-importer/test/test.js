@@ -87,6 +87,21 @@ describe('SelectorImporterClass', () => {
       return expect(selectorImporterInstance.parseUrl(urlWithSelectorFilters))
         .to.deep.equal(expectedResult);
     });
+
+    it('should return object with url and RegEx selector filters', () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const url = 'path/with/regex/selector/filters.scss';
+      const urlWithSelectorFilters = `{ /\\.selector1/i, /\\.selector2/ } from ${url}`;
+      const expectedResult = {
+        url,
+        selectorFilters: [
+          [/\.selector1/i],
+          [/\.selector2/]
+        ]
+      };
+      return expect(selectorImporterInstance.parseUrl(urlWithSelectorFilters))
+        .to.deep.equal(expectedResult);
+    });
   });
 
   /** @test {SelectorImporter#extractSelectors} */

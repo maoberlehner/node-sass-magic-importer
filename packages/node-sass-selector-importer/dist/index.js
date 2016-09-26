@@ -39,7 +39,16 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
       .map(Function.prototype.call, String.prototype.trim)
       // Split selectors and replacement selectors into an array.
       .map(function (currentValue) { return currentValue.split(' as ')
-        .map(Function.prototype.call, String.prototype.trim); });
+        .map(Function.prototype.call, String.prototype.trim); })
+      .map(function (currentValue) {
+        var matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(currentValue[0]);
+        if (matchRegExpSelector) {
+          var pattern = matchRegExpSelector[1];
+          var flags = matchRegExpSelector[2];
+          currentValue[0] = new RegExp(pattern, flags);
+        }
+        return currentValue;
+      });
   }
   return { url: cleanUrl, selectorFilters: selectorFilters };
 };
@@ -109,7 +118,7 @@ var selectorImporter = new SelectorImporter();
  * @param {string} prev - The previously resolved path.
  * @param {Function} done - A callback function to invoke on async completion.
  */
-function index (url, prev, done) {
+var index = function (url, prev, done) {
   // Create an array of include paths to search for files.
   var includePaths = [];
   if (path.isAbsolute(prev)) {

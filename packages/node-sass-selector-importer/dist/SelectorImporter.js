@@ -39,7 +39,16 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
       .map(Function.prototype.call, String.prototype.trim)
       // Split selectors and replacement selectors into an array.
       .map(function (currentValue) { return currentValue.split(' as ')
-        .map(Function.prototype.call, String.prototype.trim); });
+        .map(Function.prototype.call, String.prototype.trim); })
+      .map(function (currentValue) {
+        var matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(currentValue[0]);
+        if (matchRegExpSelector) {
+          var pattern = matchRegExpSelector[1];
+          var flags = matchRegExpSelector[2];
+          currentValue[0] = new RegExp(pattern, flags);
+        }
+        return currentValue;
+      });
   }
   return { url: cleanUrl, selectorFilters: selectorFilters };
 };
