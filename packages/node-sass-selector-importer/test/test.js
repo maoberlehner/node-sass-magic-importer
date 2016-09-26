@@ -58,11 +58,16 @@ describe('SelectorImporterClass', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'path/with/selector/filters.scss';
       const selectorFilters = [
-        ['.selector1'],
-        ['.selector2']
+        {
+          selector: '.selector1',
+          replacement: undefined
+        },
+        {
+          selector: '.selector2',
+          replacement: undefined
+        }
       ];
-      const selectorFilterString = selectorFilters.map((x) => x.join(' as ')).join(', ');
-      const urlWithSelectorFilters = `{ ${selectorFilterString} } from ${url}`;
+      const urlWithSelectorFilters = `{ .selector1, .selector2 } from ${url}`;
       const expectedResult = {
         url,
         selectorFilters
@@ -75,11 +80,16 @@ describe('SelectorImporterClass', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'path/with/selector/filters/and/replacements.scss';
       const selectorFilters = [
-        ['.selector1', '.replacement1'],
-        ['.selector2', '.replacement1']
+        {
+          selector: '.selector1',
+          replacement: '.replacement1'
+        },
+        {
+          selector: '.selector2',
+          replacement: '.replacement2'
+        }
       ];
-      const selectorFilterString = selectorFilters.map((x) => x.join(' as ')).join(', ');
-      const urlWithSelectorFilters = `{ ${selectorFilterString} } from ${url}`;
+      const urlWithSelectorFilters = `{ .selector1 as .replacement1, .selector2 as .replacement2 } from ${url}`; // eslint-disable-line max-len
       const expectedResult = {
         url,
         selectorFilters
@@ -91,13 +101,20 @@ describe('SelectorImporterClass', () => {
     it('should return object with url and RegEx selector filters', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = 'path/with/regex/selector/filters.scss';
+      const selectorFilters = [
+        {
+          selector: /\.selector1/i,
+          replacement: undefined
+        },
+        {
+          selector: /\.selector2/,
+          replacement: undefined
+        }
+      ];
       const urlWithSelectorFilters = `{ /\\.selector1/i, /\\.selector2/ } from ${url}`;
       const expectedResult = {
         url,
-        selectorFilters: [
-          [/\.selector1/i],
-          [/\.selector2/]
-        ]
+        selectorFilters
       };
       return expect(selectorImporterInstance.parseUrl(urlWithSelectorFilters))
         .to.deep.equal(expectedResult);
@@ -124,8 +141,14 @@ describe('SelectorImporterClass', () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const cleanUrl = 'test/files/resolve.scss';
       const selectorFilters = [
-        ['.class1', '.class-1'],
-        ['.class3', '.class-3']
+        {
+          selector: '.class1',
+          replacement: '.class-1'
+        },
+        {
+          selector: '.class3',
+          replacement: '.class-3'
+        }
       ];
       const expectedResult = fs.readFileSync('test/files/resolve-reference.css', {
         encoding: 'utf8'

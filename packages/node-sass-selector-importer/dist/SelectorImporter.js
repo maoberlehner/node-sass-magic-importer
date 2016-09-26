@@ -47,7 +47,10 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
           var flags = matchRegExpSelector[2];
           currentValue[0] = new RegExp(pattern, flags);
         }
-        return currentValue;
+        return {
+          selector: currentValue[0],
+          replacement: currentValue[1]
+        };
       });
   }
   return { url: cleanUrl, selectorFilters: selectorFilters };
@@ -66,16 +69,11 @@ SelectorImporter.prototype.extractSelectors = function extractSelectors (cleanUr
     return contents;
   }
 
-  var preparedSelectorFilters = selectorFilters.map(function (selectorFilter) { return ({
-    selector: selectorFilter[0],
-    replacement: selectorFilter[1]
-  }); });
-
   this.options.includePaths.some(function (includePath) {
     try {
       var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
       if (css) {
-        contents = cssSelectorExtract.processSync(css, preparedSelectorFilters, postcssScss);
+        contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
         return true;
       }
     } catch (e) {}

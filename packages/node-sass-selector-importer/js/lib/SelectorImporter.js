@@ -45,7 +45,10 @@ export default class SelectorImporter {
             const flags = matchRegExpSelector[2];
             currentValue[0] = new RegExp(pattern, flags);
           }
-          return currentValue;
+          return {
+            selector: currentValue[0],
+            replacement: currentValue[1]
+          };
         });
     }
     return { url: cleanUrl, selectorFilters };
@@ -64,16 +67,11 @@ export default class SelectorImporter {
       return contents;
     }
 
-    const preparedSelectorFilters = selectorFilters.map(selectorFilter => ({
-      selector: selectorFilter[0],
-      replacement: selectorFilter[1]
-    }));
-
     this.options.includePaths.some((includePath) => {
       try {
         const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
         if (css) {
-          contents = cssSelectorExtract.processSync(css, preparedSelectorFilters, postcssScss);
+          contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
           return true;
         }
       } catch (e) {}
