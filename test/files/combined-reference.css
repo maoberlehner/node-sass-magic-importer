@@ -27,11 +27,6 @@
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem; }
-  .alert > p,
-  .alert > ul {
-    margin-bottom: 0; }
-  .alert > p + p {
-    margin-top: 5px; }
 
 .alert-heading {
   color: inherit; }
