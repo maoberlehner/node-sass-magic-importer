@@ -36,6 +36,27 @@ With selector filtering, it is possible to import only certain CSS selectors for
 .button--alert { ... } // Transformed to match BEM syntax.
 ```
 
+#### RegEx
+```scss
+// Example:
+@import '{ /^\..+-alert/ } from style.scss';
+```
+```scss
+// Result:
+.box-alert { }
+.btn-alert { }
+```
+
+```scss
+// Example:
+@import '{ /^\.btn(.*)/ as .button$1 } from style.scss';
+```
+```scss
+// Result:
+.button { }
+.button-alert { }
+```
+
 #### Usage with Bootstrap
 Bootstrap is a mighty and robust framework but most of the time you use only certain parts of it. There is the possibility to [customize](http://getbootstrap.com/customize/) Bootstrap to your needs but this can be annoying and you still end up with more code than you need. Also you might want to use just some specific parts of Bootstrap but your project uses the BEM syntax for writing class names.
 
