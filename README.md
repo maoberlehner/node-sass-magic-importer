@@ -21,8 +21,8 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 ```scss
 // Result:
-.btn { ... }
-.btn-alert { ... }
+.btn { }
+.btn-alert { }
 ```
 
 #### Transform imported selectors
@@ -32,8 +32,8 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 ```scss
 // Result:
-.button { ... }
-.button--alert { ... } // Transformed to match BEM syntax.
+.button { }
+.button--alert { } // Transformed to match BEM syntax.
 ```
 
 #### RegEx
