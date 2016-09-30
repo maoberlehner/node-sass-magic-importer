@@ -113,16 +113,9 @@ describe('PackageImporter', () => {
       return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
     });
 
-    it('should return the unmodified home path relative url on posix', () => {
-      const packageImporterInstance = new PackageImporterClass({ pathSep: '/' });
+    it('should return the unmodified home path relative url', () => {
+      const packageImporterInstance = new PackageImporterClass();
       const url = '~/home/path/with/tilde';
-      const expectedResult = url;
-      return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
-    });
-
-    it('should return the unmodified home path relative url on windows', () => {
-      const packageImporterInstance = new PackageImporterClass({ pathSep: '\\' });
-      const url = '~\\home\\path\\with\\tilde';
       const expectedResult = url;
       return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
     });
