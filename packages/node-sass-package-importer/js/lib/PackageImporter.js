@@ -37,7 +37,7 @@ export default class PackageImporter {
      * @type {RegExp}
      */
     const pathSep = (options.pathSep === '/') ? options.pathSep : '\\\\'; 
-    this.matchPackageUrl = new RegExp(("^~(?!" + (pathSep) + ")"));
+    this.matchPackageUrl = new RegExp(`^~(?!${pathSep})`);
   }
 
   /**

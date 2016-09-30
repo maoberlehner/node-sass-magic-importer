@@ -39,8 +39,7 @@ var PackageImporter = function PackageImporter(options) {
    * @type {RegExp}
    */
   var pathSep = (options.pathSep === '/') ? options.pathSep : '\\\\'; 
-  //const pathSep = options.pathSep.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&');  
-  this.matchPackageUrl = new RegExp(("^~(?!" + (pathSep) + ")"));
+  this.matchPackageUrl = new RegExp(("^~(?!" + pathSep + ")"));
 };
 
 /**
