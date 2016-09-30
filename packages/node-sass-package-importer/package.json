@@ -6,7 +6,7 @@
     "sass",
     "npm"
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-package-importer",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "mocha": "^3.0.2",
     "node-sass": "^3.10.0",
     "pre-git": "^3.10.0",
-    "rollup": "^0.35.10",
+    "rollup": "^0.35.11",
     "rollup-plugin-buble": "^0.13.0"
   },
   "optionalDependencies": {
