@@ -27,7 +27,8 @@ var PackageImporter = function PackageImporter(options) {
       'main.style',
       'main.css',
       'main'
-    ]
+    ],
+    pathSep: path.sep
   };
   /**
    * @type {Object}
@@ -37,7 +38,8 @@ var PackageImporter = function PackageImporter(options) {
    * Match tilde symbol at the beginning of urls (except home "~/" directory).
    * @type {RegExp}
    */
-  this.matchPackageUrl = new RegExp(("^~(?!" + (path.sep) + ")"));
+  var pathSep = (options.pathSep === '/') ? options.pathSep : '\\\\'; 
+  this.matchPackageUrl = new RegExp(("^~(?!" + pathSep + ")"));
 };
 
 /**
