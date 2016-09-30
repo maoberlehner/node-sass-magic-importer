@@ -27,19 +27,17 @@ var PackageImporter = function PackageImporter(options) {
       'main.style',
       'main.css',
       'main'
-    ],
-    pathSep: path.sep
+    ]
   };
   /**
    * @type {Object}
    */
   this.options = Object.assign({}, defaultOptions, options);
   /**
-   * Match tilde symbol at the beginning of urls (except home "~/" directory).
+   * Match tilde symbol at the beginning of urls (except posix home "~/" directory).
    * @type {RegExp}
    */
-  var pathSep = (options.pathSep === '/') ? options.pathSep : '\\\\';
-  this.matchPackageUrl = new RegExp(("^~(?!" + pathSep + ")"));
+  this.matchPackageUrl = new RegExp('^~(?!/)');
 };
 
 /**
@@ -134,7 +132,7 @@ var packageImporter = new PackageImporter();
  * @param {string} prev - The previously resolved path.
  * @param {Function} done - A callback function to invoke on async completion.
  */
-var index = function (url, prev, done) {
+function index (url, prev, done) {
   if (this.options.packageImporter) {
     Object.assign(packageImporter.options, this.options.packageImporter);
   }
