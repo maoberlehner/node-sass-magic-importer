@@ -113,9 +113,16 @@ describe('PackageImporter', () => {
       return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
     });
 
-    it('should return the unmodified home path relative url', () => {
-      const packageImporterInstance = new PackageImporterClass();
+    it('should return the unmodified home path relative url on posix', () => {
+      const packageImporterInstance = new PackageImporterClass({ pathSep: '/' });
       const url = '~/home/path/with/tilde';
+      const expectedResult = url;
+      return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
+    });
+
+    it('should return the unmodified home path relative url on windows', () => {
+      const packageImporterInstance = new PackageImporterClass({ pathSep: '\\' });
+      const url = '~\\home\\path\\with\\tilde';
       const expectedResult = url;
       return expect(packageImporterInstance.cleanUrl(url)).to.equal(expectedResult);
     });
@@ -154,10 +161,10 @@ describe('PackageImporter', () => {
       const url = 'module-name/partial/file';
       const expectedResult = [
         url,
-        'module-name/partial/file.scss',
-        'module-name/partial/_file.scss',
-        'module-name/partial/file.sass',
-        'module-name/partial/_file.sass'
+        path.join('module-name', 'partial', 'file.scss'),
+        path.join('module-name', 'partial', '_file.scss'),
+        path.join('module-name', 'partial', 'file.sass'),
+        path.join('module-name', 'partial', '_file.sass')
       ];
       return expect(packageImporterInstance.urlVariants(url)).to.deep.equal(expectedResult);
     });

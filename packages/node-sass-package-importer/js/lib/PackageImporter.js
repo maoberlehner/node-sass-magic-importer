@@ -25,7 +25,8 @@ export default class PackageImporter {
         'main.style',
         'main.css',
         'main'
-      ]
+      ],
+      pathSep: path.sep
     };
     /**
      * @type {Object}
@@ -35,7 +36,7 @@ export default class PackageImporter {
      * Match tilde symbol at the beginning of urls (except home "~/" directory).
      * @type {RegExp}
      */
-    let pathSep = (path.sep === '/')  ? path.sep : '\\\\';  
+    const pathSep = (options.pathSep === '/') ? options.pathSep : '\\\\'; 
     this.matchPackageUrl = new RegExp(("^~(?!" + (pathSep) + ")"));
   }
 
