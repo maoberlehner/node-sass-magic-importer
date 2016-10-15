@@ -1,4 +1,6 @@
 # node-sass-magic-importer
+[![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
+
 Custom node-sass importer for selector specific imports, module importing, globbing support and importing files only once.
 
 ## Features
@@ -21,8 +23,8 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 ```scss
 // Result:
-.btn { ... }
-.btn-alert { ... }
+.btn { }
+.btn-alert { }
 ```
 
 #### Transform imported selectors
@@ -32,8 +34,8 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 ```scss
 // Result:
-.button { ... }
-.button--alert { ... } // Transformed to match BEM syntax.
+.button { }
+.button--alert { } // Transformed to match BEM syntax.
 ```
 
 #### RegEx

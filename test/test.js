@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 describe('magicImporter', () => {
   it('should be a function', () => expect(magicImporter).to.be.a('function'));
 
-  it('should convert a SASS file successfully to CSS', (done) => {
+  it('should convert a SASS file asynchronously to CSS', (done) => {
     const expectedResult = fs.readFileSync('test/files/combined-reference.css', {
       encoding: 'utf8'
     });
