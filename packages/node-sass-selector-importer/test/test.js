@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 describe('selectorImporter', () => {
   it('should be a function', () => expect(selectorImporter).to.be.a('function'));
 
-  it('should resolve selector import', (done) => {
+  it('should resolve selector import asynchronously', (done) => {
     const expectedResult = fs.readFileSync('test/files/importer-reference.css', {
       encoding: 'utf8'
     });
@@ -30,6 +30,17 @@ describe('selectorImporter', () => {
         console.log(error);
       }
     });
+  });
+
+  it('should resolve selector import synchronously', () => {
+    const expectedResult = fs.readFileSync('test/files/importer-reference.css', {
+      encoding: 'utf8'
+    });
+    const result = sass.renderSync({
+      file: 'test/files/importer.scss',
+      importer: selectorImporter
+    });
+    expect(result.css.toString()).to.equal(expectedResult);
   });
 });
 

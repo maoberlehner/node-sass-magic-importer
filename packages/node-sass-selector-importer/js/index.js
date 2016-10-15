@@ -6,9 +6,8 @@ const selectorImporter = new SelectorImporter();
  * Selector importer for node-sass
  * @param {string} url - The path in import as-is, which LibSass encountered.
  * @param {string} prev - The previously resolved path.
- * @param {Function} done - A callback function to invoke on async completion.
  */
-export default function (url, prev, done) {
+export default function (url, prev) {
   // Create an array of include paths to search for files.
   const includePaths = [];
   if (path.isAbsolute(prev)) {
@@ -21,5 +20,6 @@ export default function (url, prev, done) {
   if (this.options.selectorImporter) {
     Object.assign(selectorImporter.options, this.options.selectorImporter);
   }
-  selectorImporter.resolve(url, prev).then(contents => done(contents ? { contents } : null));
+  const contents = selectorImporter.resolveSync(url, prev);
+  return contents ? { contents } : null;
 }
