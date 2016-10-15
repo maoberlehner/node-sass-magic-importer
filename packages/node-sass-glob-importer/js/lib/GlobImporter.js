@@ -45,7 +45,7 @@ export default class GlobImporter {
    */
   importer() {
     const self = this;
-    return function nodeSassImporter(url, prev, done) {
+    return function nodeSassImporter(url, prev) {
       const importer = this;
       // Create a set of all paths to search for files.
       let includePaths = [];
@@ -54,14 +54,12 @@ export default class GlobImporter {
       }
       includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
       // Try to resolve the url.
-      self.resolve(url, includePaths).then(files => {
-        if (files) {
-          const contents = files.map(x => fs.readFileSync(x, { encoding: 'utf8' })).join('\n');
-          done({ contents });
-        } else {
-          done(null);
-        }
-      });
+      const files = self.resolveSync(url, includePaths);
+      if (files) {
+        const contents = files.map(x => fs.readFileSync(x, { encoding: 'utf8' })).join('\n');
+        return { contents };
+      }
+      return null;
     };
   }
 }

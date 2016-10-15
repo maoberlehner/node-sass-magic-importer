@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 describe('globImporter', () => {
   it('should be a function', () => expect(globImporter).to.be.a('function'));
 
-  it('should resolve glob import', (done) => {
+  it('should resolve glob import asynchronously', (done) => {
     const expectedResult = fs.readFileSync('test/files/glob-reference.css', {
       encoding: 'utf8'
     });
@@ -30,6 +30,17 @@ describe('globImporter', () => {
         console.log(error);
       }
     });
+  });
+
+  it('should resolve glob import synchronously', () => {
+    const expectedResult = fs.readFileSync('test/files/glob-reference.css', {
+      encoding: 'utf8'
+    });
+    const result = sass.renderSync({
+      file: 'test/files/glob.scss',
+      importer: globImporter
+    });
+    expect(result.css.toString()).to.equal(expectedResult);
   });
 });
 

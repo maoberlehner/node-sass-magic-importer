@@ -49,7 +49,7 @@ GlobImporter.prototype.resolve = function resolve (url, includePaths) {
  */
 GlobImporter.prototype.importer = function importer () {
   var self = this;
-  return function nodeSassImporter(url, prev, done) {
+  return function nodeSassImporter(url, prev) {
     var importer = this;
     // Create a set of all paths to search for files.
     var includePaths = [];
@@ -58,14 +58,12 @@ GlobImporter.prototype.importer = function importer () {
     }
     includePaths = concat(includePaths, importer.options.includePaths.split(path.delimiter));
     // Try to resolve the url.
-    self.resolve(url, includePaths).then(function (files) {
-      if (files) {
-        var contents = files.map(function (x) { return fs.readFileSync(x, { encoding: 'utf8' }); }).join('\n');
-        done({ contents: contents });
-      } else {
-        done(null);
-      }
-    });
+    var files = self.resolveSync(url, includePaths);
+    if (files) {
+      var contents = files.map(function (x) { return fs.readFileSync(x, { encoding: 'utf8' }); }).join('\n');
+      return { contents: contents };
+    }
+    return null;
   };
 };
 
