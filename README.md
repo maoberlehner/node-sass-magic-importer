@@ -184,7 +184,8 @@ node-sass --importer node_modules/node-sass-magic-importer -o dist src/index.scs
 ## About
 ### Author
 Markus Oberlehner  
-Twitter: https://twitter.com/MaOberlehner
+Twitter: https://twitter.com/MaOberlehner  
+PayPal.me: https://paypal.me/maoberlehner
 
 ### License
 MIT
