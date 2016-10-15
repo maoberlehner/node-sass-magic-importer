@@ -16,7 +16,7 @@ chai.use(chaiAsPromised);
 describe('packageImporter', () => {
   it('should be a function', () => expect(packageImporter).to.be.a('function'));
 
-  it('should resolve module import', (done) => {
+  it('should resolve module import asynchronously', (done) => {
     const expectedResult = fs.readFileSync('test/files/module-reference.css', {
       encoding: 'utf8'
     });
@@ -31,6 +31,17 @@ describe('packageImporter', () => {
         console.log(error);
       }
     });
+  });
+
+  it('should resolve module import synchronously', () => {
+    const expectedResult = fs.readFileSync('test/files/module-reference.css', {
+      encoding: 'utf8'
+    });
+    const result = sass.renderSync({
+      file: 'test/files/module.scss',
+      importer: packageImporter
+    });
+    expect(result.css.toString()).to.equal(expectedResult);
   });
 });
 
