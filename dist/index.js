@@ -191,9 +191,8 @@ var magicImporter = new MagicImporter();
  * Magic importer for node-sass
  * @param {string} url - The path in import as-is, which LibSass encountered.
  * @param {string} prev - The previously resolved path.
- * @param {Function} done - A callback function to invoke on async completion.
  */
-var index = function (url, prev, done) {
+var index = function (url, prev) {
   // Create an array of include paths to search for files.
   var includePaths = [];
   if (path.isAbsolute(prev)) {
@@ -206,7 +205,7 @@ var index = function (url, prev, done) {
   if (this.options.magicImporter) {
     Object.assign(magicImporter.options, this.options.magicImporter);
   }
-  magicImporter.resolve(url).then(function (data) { return done(data); });
-}
+  return magicImporter.resolveSync(url);
+};
 
 module.exports = index;
