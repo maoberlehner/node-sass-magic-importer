@@ -1,4 +1,6 @@
 # node-sass-package-importer
+[![Build Status](https://travis-ci.org/maoberlehner/node-sass-package-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-package-importer)
+
 Custom importer for node-sass to import packages from the `node_modules` directory.
 
 ## Usage

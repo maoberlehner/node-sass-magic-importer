@@ -129,14 +129,13 @@ var packageImporter = new PackageImporter();
 /**
  * Package importer for node-sass
  * @param {string} url - The path in import as-is, which LibSass encountered.
- * @param {string} prev - The previously resolved path.
- * @param {Function} done - A callback function to invoke on async completion.
  */
-function index (url, prev, done) {
+var index = function (url) {
   if (this.options.packageImporter) {
     Object.assign(packageImporter.options, this.options.packageImporter);
   }
-  packageImporter.resolve(url).then(function (file) { return done(file ? { file: file } : null); });
+  var file = packageImporter.resolveSync(url);
+  return file ? { file: file } : null;
 }
 
 module.exports = index;

@@ -6,7 +6,7 @@
     "sass",
     "npm"
   ],
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-package-importer",
   "license": "MIT",
