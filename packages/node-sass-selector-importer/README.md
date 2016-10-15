@@ -1,4 +1,6 @@
 # node-sass-selector-importer
+[![Build Status](https://travis-ci.org/maoberlehner/node-sass-selector-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-selector-importer)
+
 With selector importing, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
 
 ## Usage
