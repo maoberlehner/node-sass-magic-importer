@@ -2,9 +2,11 @@
   "name": "node-sass-package-importer",
   "description": "Custom importer for node-sass to import packages from the `node_modules` directory",
   "keywords": [
+    "importer",
+    "module-importer",
     "node-sass",
-    "sass",
-    "npm"
+    "package-importer",
+    "sass"
   ],
   "version": "2.0.3",
   "author": "Markus Oberlehner",
