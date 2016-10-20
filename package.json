@@ -2,12 +2,12 @@
   "name": "node-sass-magic-importer",
   "description": "Custom node-sass importer for selector specific imports, module importing, globbing support, import files only once and importing of files with .css extension",
   "keywords": [
-    "node-sass",
-    "sass",
-    "importer",
     "glob-importer",
-    "package-importer",
+    "importer",
     "module-importer",
+    "node-sass",
+    "package-importer",
+    "sass",
     "selector-importer"
   ],
   "version": "1.1.3",
