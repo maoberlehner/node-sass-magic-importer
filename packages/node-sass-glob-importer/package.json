@@ -2,6 +2,8 @@
   "name": "node-sass-glob-importer",
   "description": "Custom node-sass importer to allow you to use glob syntax in imports",
   "keywords": [
+    "glob-importer",
+    "importer",
     "node-sass",
     "sass"
   ],
