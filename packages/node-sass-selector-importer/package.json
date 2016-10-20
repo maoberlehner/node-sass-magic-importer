@@ -2,8 +2,10 @@
   "name": "node-sass-selector-importer",
   "description": "Import only certain CSS selectors form a file",
   "keywords": [
+    "importer",
     "node-sass",
-    "sass"
+    "sass",
+    "selector-importer"
   ],
   "version": "2.0.1",
   "author": "Markus Oberlehner",
