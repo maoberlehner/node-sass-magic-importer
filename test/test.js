@@ -1,26 +1,26 @@
 /* eslint-env node, mocha */
 /* eslint-disable no-console */
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-const expect = require('chai').expect;
-const fs = require('fs');
-const sass = require('node-sass');
+const chai = require(`chai`);
+const chaiAsPromised = require(`chai-as-promised`);
+const expect = require(`chai`).expect;
+const fs = require(`fs`);
+const sass = require(`node-sass`);
 
-const magicImporter = require('../');
-const MagicImporterClass = require('../dist/MagicImporter.js');
+const magicImporter = require(`../`);
+const MagicImporterClass = require(`../dist/MagicImporter.js`);
 
 chai.use(chaiAsPromised);
 
 /** @test {index} */
-describe('magicImporter', () => {
-  it('should be a function', () => expect(magicImporter).to.be.a('function'));
+describe(`magicImporter`, () => {
+  it(`should be a function`, () => expect(magicImporter).to.be.a(`function`));
 
-  it('should convert a SASS file asynchronously to CSS', (done) => {
-    const expectedResult = fs.readFileSync('test/files/combined-reference.css', {
-      encoding: 'utf8'
+  it(`should convert a SASS file asynchronously to CSS`, (done) => {
+    const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
+      encoding: `utf8`
     });
     sass.render({
-      file: 'test/files/combined.scss',
+      file: `test/files/combined.scss`,
       importer: magicImporter
     }, (error, result) => {
       if (!error) {
@@ -32,9 +32,9 @@ describe('magicImporter', () => {
     });
   });
 
-  it('should compile bootstrap', (done) => {
+  it(`should compile bootstrap`, (done) => {
     sass.render({
-      file: 'test/files/bootstrap.scss',
+      file: `test/files/bootstrap.scss`,
       importer: magicImporter
     }, (error) => {
       if (!error) {
@@ -45,9 +45,9 @@ describe('magicImporter', () => {
     });
   });
 
-  it('should compile foundation', (done) => {
+  it(`should compile foundation`, (done) => {
     sass.render({
-      file: 'test/files/foundation.scss',
+      file: `test/files/foundation.scss`,
       importer: magicImporter
     }, (error) => {
       if (!error) {
@@ -60,35 +60,35 @@ describe('magicImporter', () => {
 });
 
 /** @test {MagicImporter} */
-describe('MagicImporter', () => {
-  it('should be a function', () => expect(MagicImporterClass).to.be.a('function'));
+describe(`MagicImporter`, () => {
+  it(`should be a function`, () => expect(MagicImporterClass).to.be.a(`function`));
 
   /** @test {MagicImporter#getAbsoluteUrl} */
-  describe('getAbsoluteUrl()', () => {
-    it('should be a function', () => {
+  describe(`getAbsoluteUrl()`, () => {
+    it(`should be a function`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      return expect(magicImporterInstance.getAbsoluteUrl).to.be.a('function');
+      return expect(magicImporterInstance.getAbsoluteUrl).to.be.a(`function`);
     });
 
-    it('should return absolute URL', () => {
+    it(`should return absolute URL`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = 'test/files/combined.scss';
+      const url = `test/files/combined.scss`;
       const expectedResult = `${process.cwd()}/test/files/combined.scss`;
       return expect(magicImporterInstance.getAbsoluteUrl(url)).to.equal(expectedResult);
     });
   });
 
   /** @test {MagicImporter#store} */
-  describe('store()', () => {
-    it('should be a function', () => {
+  describe(`store()`, () => {
+    it(`should be a function`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      return expect(magicImporterInstance.store).to.be.a('function');
+      return expect(magicImporterInstance.store).to.be.a(`function`);
     });
 
     // URL is not in store: store and load the URL.
-    it('should put the URL in the store', () => {
+    it(`should put the URL in the store`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = '/some/random/url.scss';
+      const url = `/some/random/url.scss`;
       const expectedOnceStoreState = {};
       expectedOnceStoreState[url] = null;
 
@@ -97,9 +97,9 @@ describe('MagicImporter', () => {
     });
 
     // URL is in store without filters, no filters given: do not load the URL.
-    it('should return false', () => {
+    it(`should return false`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = '/some/random/url.scss';
+      const url = `/some/random/url.scss`;
       const expectedResult = false;
 
       magicImporterInstance.onceStore = {};
@@ -108,12 +108,12 @@ describe('MagicImporter', () => {
     });
 
     // URL is in store without filters, filters given: load the URL.
-    it('should return URL and selector filters in an object', () => {
+    it(`should return URL and selector filters in an object`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = '/some/random/url.scss';
+      const url = `/some/random/url.scss`;
       const selectorFilters = [
-        ['.selector-a'],
-        ['.selector-b']
+        [`.selector-a`],
+        [`.selector-b`]
       ];
       const expectedResult = {
         url,
@@ -128,13 +128,13 @@ describe('MagicImporter', () => {
 
     // URL and filters in store, URL without filters given:
     // load and remove filters from store.
-    it('should remove filters from stored URL and return URL in an object', () => {
+    it(`should remove filters from stored URL and return URL in an object`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = '/some/random/url.scss';
+      const url = `/some/random/url.scss`;
       const selectorFilters = null;
       const storedSelectorFilters = [
-        ['.selector-a'],
-        ['.selector-b']
+        [`.selector-a`],
+        [`.selector-b`]
       ];
       const expectedResult = {
         url,
@@ -155,27 +155,27 @@ describe('MagicImporter', () => {
 
     // URL and filters in store, URL with same and other filters given:
     // only load other filters that not already are stored.
-    it('should return URL and concatenated selector filters in an object', () => {
+    it(`should return URL and concatenated selector filters in an object`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = '/some/random/url.scss';
+      const url = `/some/random/url.scss`;
       const selectorFilters = [
-        ['.selector-a'],
-        ['.selector-c'],
-        ['.selector-d']
+        [`.selector-a`],
+        [`.selector-c`],
+        [`.selector-d`]
       ];
       const expectedSelectorFilters = [
-        ['.selector-c'],
-        ['.selector-d']
+        [`.selector-c`],
+        [`.selector-d`]
       ];
       const storedSelectorFilters = [
-        ['.selector-a'],
-        ['.selector-b']
+        [`.selector-a`],
+        [`.selector-b`]
       ];
       const expectedStoredSelectorFilters = [
-        ['.selector-a'],
-        ['.selector-b'],
-        ['.selector-c'],
-        ['.selector-d']
+        [`.selector-a`],
+        [`.selector-b`],
+        [`.selector-c`],
+        [`.selector-d`]
       ];
       const expectedResult = {
         url,
@@ -195,12 +195,12 @@ describe('MagicImporter', () => {
     });
 
     // URL and filters in store, URL and same filters given: do not load.
-    it('should return false', () => {
+    it(`should return false`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      const url = '/some/random/url.scss';
+      const url = `/some/random/url.scss`;
       const selectorFilters = [
-        ['.selector-a'],
-        ['.selector-b']
+        [`.selector-a`],
+        [`.selector-b`]
       ];
       const storedSelectorFilters = selectorFilters;
       const expectedResult = false;
@@ -212,18 +212,18 @@ describe('MagicImporter', () => {
   });
 
   /** @test {MagicImporter#resolveSync} */
-  describe('resolveSync()', () => {
-    it('should be a function', () => {
+  describe(`resolveSync()`, () => {
+    it(`should be a function`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      return expect(magicImporterInstance.resolveSync).to.be.a('function');
+      return expect(magicImporterInstance.resolveSync).to.be.a(`function`);
     });
   });
 
   /** @test {MagicImporter#resolve} */
-  describe('resolve()', () => {
-    it('should be a function', () => {
+  describe(`resolve()`, () => {
+    it(`should be a function`, () => {
       const magicImporterInstance = new MagicImporterClass();
-      return expect(magicImporterInstance.resolve).to.be.a('function');
+      return expect(magicImporterInstance.resolve).to.be.a(`function`);
     });
   });
 });

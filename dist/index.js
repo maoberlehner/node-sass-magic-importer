@@ -20,19 +20,19 @@ var MagicImporter = function MagicImporter(options) {
     cwd: process.cwd(),
     includePaths: [process.cwd()],
     extensions: [
-      '.scss',
-      '.sass'
+      ".scss",
+      ".sass"
     ],
     packageKeys: [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
+      "sass",
+      "scss",
+      "style",
+      "css",
+      "main.sass",
+      "main.scss",
+      "main.style",
+      "main.css",
+      "main"
     ]
   };
   /** @type {Object} */
@@ -74,12 +74,12 @@ MagicImporter.prototype.store = function store (url, selectorFilters) {
   var absoluteUrl = this.getAbsoluteUrl(url);
 
   // URL is not in store: store and load the URL.
-  if (this.onceStore[absoluteUrl] === undefined) {
+    if (this.onceStore[absoluteUrl] === undefined) {
     this.onceStore[absoluteUrl] = selectorFilters;
     return { url: absoluteUrl, selectorFilters: selectorFilters };
-  }
+    }
 
-  // URL is in store without filters, filters given: load the URL.
+    // URL is in store without filters, filters given: load the URL.
   if (this.onceStore[absoluteUrl] === null && selectorFilters) {
     // eslint-disable-next-line no-console
     console.warn(("Warning: double import of file \"" + url + "\""));
@@ -137,8 +137,8 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   if (globFiles) {
     return { contents: globFiles.map(function (x) {
       this$1.store(x);
-      return fs.readFileSync(x, { encoding: 'utf8' });
-    }).join('\n') };
+      return fs.readFileSync(x, { encoding: "utf8" });
+    }).join("\n") };
   }
 
   // Try to resolve a module url.
@@ -156,8 +156,8 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   // prevent node-sass from importing the file again.
   if (!storedData) {
     return {
-      file: '',
-      contents: ''
+      file: "",
+      contents: ""
     };
   }
 
