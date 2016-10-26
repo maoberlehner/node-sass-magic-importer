@@ -12,19 +12,19 @@ export default class PackageImporter {
     const defaultOptions = {
       cwd: process.cwd(),
       extensions: [
-        '.scss',
-        '.sass'
+        `.scss`,
+        `.sass`
       ],
       packageKeys: [
-        'sass',
-        'scss',
-        'style',
-        'css',
-        'main.sass',
-        'main.scss',
-        'main.style',
-        'main.css',
-        'main'
+        `sass`,
+        `scss`,
+        `style`,
+        `css`,
+        `main.sass`,
+        `main.scss`,
+        `main.style`,
+        `main.css`,
+        `main`
       ]
     };
     /**
@@ -35,7 +35,7 @@ export default class PackageImporter {
      * Match tilde symbol at the beginning of urls (except posix home "~/" directory).
      * @type {RegExp}
      */
-    this.matchPackageUrl = new RegExp('^~(?!/)');
+    this.matchPackageUrl = new RegExp(`^~(?!/)`);
   }
 
   /**
@@ -85,7 +85,7 @@ export default class PackageImporter {
    * @return {string} Cleaned url.
    */
   cleanUrl(url) {
-    return url.replace(this.matchPackageUrl, '');
+    return url.replace(this.matchPackageUrl, ``);
   }
 
   /**
