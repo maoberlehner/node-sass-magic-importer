@@ -30,12 +30,12 @@ export default class SelectorImporter {
     let selectorFilters;
     const selectorFiltersMatch = url.match(/{([^}]+)}/);
     if (selectorFiltersMatch) {
-      cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+      cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ` `).split(` from `)[1].trim();
       // Create an array with selectors and replacement as one value.
-      selectorFilters = selectorFiltersMatch[1].split(',')
+      selectorFilters = selectorFiltersMatch[1].split(`,`)
         // Split selectors and replacement selectors into an array.
         .map((filter) => {
-          const filterArray = filter.trim().split(' as ')
+          const filterArray = filter.trim().split(` as `)
             .map(Function.prototype.call, String.prototype.trim);
 
           let selector = filterArray[0];
@@ -72,7 +72,7 @@ export default class SelectorImporter {
 
     this.options.includePaths.some((includePath) => {
       try {
-        const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
+        const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: `utf8` });
         if (css) {
           contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
           return true;

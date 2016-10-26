@@ -32,12 +32,12 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
   var selectorFilters;
   var selectorFiltersMatch = url.match(/{([^}]+)}/);
   if (selectorFiltersMatch) {
-    cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ' ').split(' from ')[1].trim();
+    cleanUrl = url.replace(/(\r\n|\n|\r)/gm, " ").split(" from ")[1].trim();
     // Create an array with selectors and replacement as one value.
-    selectorFilters = selectorFiltersMatch[1].split(',')
+    selectorFilters = selectorFiltersMatch[1].split(",")
       // Split selectors and replacement selectors into an array.
       .map(function (filter) {
-        var filterArray = filter.trim().split(' as ')
+        var filterArray = filter.trim().split(" as ")
           .map(Function.prototype.call, String.prototype.trim);
 
         var selector = filterArray[0];
@@ -74,7 +74,7 @@ SelectorImporter.prototype.extractSelectors = function extractSelectors (cleanUr
 
   this.options.includePaths.some(function (includePath) {
     try {
-      var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: 'utf8' });
+      var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: "utf8" });
       if (css) {
         contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
         return true;
