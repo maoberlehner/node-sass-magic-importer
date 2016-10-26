@@ -18,19 +18,19 @@ export default class MagicImporter {
       cwd: process.cwd(),
       includePaths: [process.cwd()],
       extensions: [
-        '.scss',
-        '.sass'
+        `.scss`,
+        `.sass`
       ],
       packageKeys: [
-        'sass',
-        'scss',
-        'style',
-        'css',
-        'main.sass',
-        'main.scss',
-        'main.style',
-        'main.css',
-        'main'
+        `sass`,
+        `scss`,
+        `style`,
+        `css`,
+        `main.sass`,
+        `main.scss`,
+        `main.style`,
+        `main.css`,
+        `main`
       ]
     };
     /** @type {Object} */
@@ -131,8 +131,8 @@ export default class MagicImporter {
     if (globFiles) {
       return { contents: globFiles.map(x => {
         this.store(x);
-        return fs.readFileSync(x, { encoding: 'utf8' });
-      }).join('\n') };
+        return fs.readFileSync(x, { encoding: `utf8` });
+      }).join(`\n`) };
     }
 
     // Try to resolve a module url.
@@ -150,8 +150,8 @@ export default class MagicImporter {
     // prevent node-sass from importing the file again.
     if (!storedData) {
       return {
-        file: '',
-        contents: ''
+        file: ``,
+        contents: ``
       };
     }
 
