@@ -60,7 +60,7 @@ GlobImporter.prototype.importer = function importer () {
     // Try to resolve the url.
     var files = self.resolveSync(url, includePaths);
     if (files) {
-      var contents = files.map(function (x) { return fs.readFileSync(x, { encoding: 'utf8' }); }).join('\n');
+      var contents = files.map(function (x) { return fs.readFileSync(x, { encoding: "utf8" }); }).join("\n");
       return { contents: contents };
     }
     return null;

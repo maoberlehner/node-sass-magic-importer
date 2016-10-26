@@ -56,7 +56,7 @@ export default class GlobImporter {
       // Try to resolve the url.
       const files = self.resolveSync(url, includePaths);
       if (files) {
-        const contents = files.map(x => fs.readFileSync(x, { encoding: 'utf8' })).join('\n');
+        const contents = files.map(x => fs.readFileSync(x, { encoding: `utf8` })).join(`\n`);
         return { contents };
       }
       return null;
