@@ -7,7 +7,7 @@
     "sass",
     "selector-importer"
   ],
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-selector-importer",
   "license": "MIT",
