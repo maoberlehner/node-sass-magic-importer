@@ -14,19 +14,19 @@ var PackageImporter = function PackageImporter(options) {
   var defaultOptions = {
     cwd: process.cwd(),
     extensions: [
-      '.scss',
-      '.sass'
+      ".scss",
+      ".sass"
     ],
     packageKeys: [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
+      "sass",
+      "scss",
+      "style",
+      "css",
+      "main.sass",
+      "main.scss",
+      "main.style",
+      "main.css",
+      "main"
     ]
   };
   /**
@@ -37,7 +37,7 @@ var PackageImporter = function PackageImporter(options) {
    * Match tilde symbol at the beginning of urls (except posix home "~/" directory).
    * @type {RegExp}
    */
-  this.matchPackageUrl = new RegExp('^~(?!/)');
+  this.matchPackageUrl = new RegExp("^~(?!/)");
 };
 
 /**
@@ -91,7 +91,7 @@ PackageImporter.prototype.resolve = function resolve$1 (url) {
  * @return {string} Cleaned url.
  */
 PackageImporter.prototype.cleanUrl = function cleanUrl (url) {
-  return url.replace(this.matchPackageUrl, '');
+  return url.replace(this.matchPackageUrl, "");
 };
 
 /**
