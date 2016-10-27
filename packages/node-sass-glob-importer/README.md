@@ -34,6 +34,7 @@ This module is part of the [node-sass-magic-importer](https://github.com/maoberl
 ### Author
 Markus Oberlehner  
 Twitter: https://twitter.com/MaOberlehner
+PayPal.me: https://paypal.me/maoberlehner
 
 ### License
 MIT
