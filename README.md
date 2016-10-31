@@ -179,7 +179,7 @@ sass.render({
 
 ### CLI
 ```bash
-node-sass --importer node_modules/node-sass-magic-importer -o dist src/index.scss
+node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
 ```
 
 ## About
