@@ -98,7 +98,7 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 **You may notice that source map support is limited for styles which are imported with selector filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
 
 ### Module importing
-In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find the correct way of including them into your project. Module importing makes this a little easier.
+In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Module importing makes this a little easier.
 
 ```scss
 // Import the file that is specified in the `package.json` file of the module.
@@ -136,7 +136,7 @@ var magicImporter = require('node-sass-magic-importer');
 
 sass.render({
   ...
-  importer: magicImporter
+  importer: magicImporter()
   ...
 });
 ```
@@ -146,32 +146,33 @@ sass.render({
 var sass = require('node-sass');
 var magicImporter = require('node-sass-magic-importer');
 
+var options = {
+  // Defines the path in which your node_modules directory is found.
+  cwd: process.cwd(),
+  // Paths in which to search for imported files.
+  includePaths: [process.cwd()],
+  // Allowed extensions.
+  extensions: [
+    '.scss',
+    '.sass'
+  ],
+  // Define the package.json keys and in which order to search for them.
+  packageKeys: [
+    'sass',
+    'scss',
+    'style',
+    'css',
+    'main.sass',
+    'main.scss',
+    'main.style',
+    'main.css',
+    'main'
+  ]
+};
+
 sass.render({
   ...
-  importer: magicImporter,
-  magicImporter: {
-    // Defines the path in which your node_modules directory is found.
-    cwd: process.cwd(),
-    // Paths in which to search for imported files.
-    includePaths: [process.cwd()],
-    // Allowed extensions.
-    extensions: [
-      '.scss',
-      '.sass'
-    ],
-    // Define the package.json keys and in which order to search for them.
-    packageKeys: [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
-    ]
-  }
+  importer: magicImporter(options)
   ...
 });
 ```
