@@ -98,7 +98,7 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 **You may notice that source map support is limited for styles which are imported with selector filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
 
 ### Module importing
-In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find the correct way of including them into your project. Module importing makes this a little easier.
+In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Module importing makes this a little easier.
 
 ```scss
 // Import the file that is specified in the `package.json` file of the module.
