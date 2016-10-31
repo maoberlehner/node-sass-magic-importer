@@ -15,13 +15,24 @@ chai.use(chaiAsPromised);
 describe(`magicImporter`, () => {
   it(`should be a function`, () => expect(magicImporter).to.be.a(`function`));
 
+  it(`should convert a SASS file synchronously to CSS`, () => {
+    const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
+      encoding: `utf8`
+    });
+    const result = sass.renderSync({
+      file: `test/files/combined.scss`,
+      importer: magicImporter()
+    });
+    expect(result.css.toString()).to.equal(expectedResult);
+  });
+
   it(`should convert a SASS file asynchronously to CSS`, (done) => {
     const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
       encoding: `utf8`
     });
     sass.render({
       file: `test/files/combined.scss`,
-      importer: magicImporter
+      importer: magicImporter()
     }, (error, result) => {
       if (!error) {
         expect(result.css.toString()).to.equal(expectedResult);
@@ -35,7 +46,7 @@ describe(`magicImporter`, () => {
   it(`should compile bootstrap`, (done) => {
     sass.render({
       file: `test/files/bootstrap.scss`,
-      importer: magicImporter
+      importer: magicImporter()
     }, (error) => {
       if (!error) {
         done();
@@ -48,7 +59,7 @@ describe(`magicImporter`, () => {
   it(`should compile foundation`, (done) => {
     sass.render({
       file: `test/files/foundation.scss`,
-      importer: magicImporter
+      importer: magicImporter()
     }, (error) => {
       if (!error) {
         done();

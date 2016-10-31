@@ -136,7 +136,7 @@ var magicImporter = require('node-sass-magic-importer');
 
 sass.render({
   ...
-  importer: magicImporter
+  importer: magicImporter()
   ...
 });
 ```
@@ -146,32 +146,33 @@ sass.render({
 var sass = require('node-sass');
 var magicImporter = require('node-sass-magic-importer');
 
+var options = {
+  // Defines the path in which your node_modules directory is found.
+  cwd: process.cwd(),
+  // Paths in which to search for imported files.
+  includePaths: [process.cwd()],
+  // Allowed extensions.
+  extensions: [
+    '.scss',
+    '.sass'
+  ],
+  // Define the package.json keys and in which order to search for them.
+  packageKeys: [
+    'sass',
+    'scss',
+    'style',
+    'css',
+    'main.sass',
+    'main.scss',
+    'main.style',
+    'main.css',
+    'main'
+  ]
+};
+
 sass.render({
   ...
-  importer: magicImporter,
-  magicImporter: {
-    // Defines the path in which your node_modules directory is found.
-    cwd: process.cwd(),
-    // Paths in which to search for imported files.
-    includePaths: [process.cwd()],
-    // Allowed extensions.
-    extensions: [
-      '.scss',
-      '.sass'
-    ],
-    // Define the package.json keys and in which order to search for them.
-    packageKeys: [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
-    ]
-  }
+  importer: magicImporter(options)
   ...
 });
 ```

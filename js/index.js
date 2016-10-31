@@ -1,24 +1,27 @@
 import path from 'path';
 import MagicImporter from './lib/MagicImporter.js';
 
-const magicImporter = new MagicImporter();
 /**
  * Magic importer for node-sass
- * @param {string} url - The path in import as-is, which LibSass encountered.
- * @param {string} prev - The previously resolved path.
+ * @param {Object} options - Configuration options.
  */
-export default function (url, prev) {
-  // Create an array of include paths to search for files.
-  const includePaths = [];
-  if (path.isAbsolute(prev)) {
-    includePaths.push(path.dirname(prev));
-  }
-  magicImporter.options.includePaths = includePaths
-    .concat(this.options.includePaths.split(path.delimiter));
+export default (options = {}) => {
+  const magicImporter = new MagicImporter();
+  /**
+   * @param {string} url - The path in import as-is, which LibSass encountered.
+   * @param {string} prev - The previously resolved path.
+   */
+  return function importer(url, prev) {
+    // Create an array of include paths to search for files.
+    const includePaths = [];
+    if (path.isAbsolute(prev)) {
+      includePaths.push(path.dirname(prev));
+    }
+    magicImporter.options.includePaths = includePaths
+      .concat(this.options.includePaths.split(path.delimiter));
 
-  // Merge default with custom options.
-  if (this.options.magicImporter) {
-    Object.assign(magicImporter.options, this.options.magicImporter);
-  }
-  return magicImporter.resolveSync(url);
-}
+    // Merge default with custom options.
+    Object.assign(magicImporter.options, options);
+    return magicImporter.resolveSync(url);
+  };
+};
