@@ -182,6 +182,34 @@ sass.render({
 node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
 ```
 
+## Upgrade to 2.x.x from 1.x.x
+Version 2.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
+
+If you want to use the `node-sass-magic-importer` in combination with the node-sass CLI, you now have to specify the path to the `node-sass-magic-importer` CLI script.
+
+```node
+sass.render({
+  ...
+  // Old
+  importer: magicImporter,
+  magicImporter: {
+    cwd: process.cwd()
+  }
+  // New
+  importer: magicImporter({
+    cwd: process.cwd()
+  })
+  ...
+});
+```
+
+```bash
+# Old
+node-sass --importer node_modules/node-sass-magic-importer -o dist src/index.scss
+# New
+node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
+```
+
 ## About
 ### Author
 Markus Oberlehner  
