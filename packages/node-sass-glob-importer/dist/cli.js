@@ -2,10 +2,10 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var path = _interopDefault(require('path'));
 var concat = _interopDefault(require('unique-concat'));
 var fs = _interopDefault(require('fs'));
 var glob = _interopDefault(require('glob'));
-var path = _interopDefault(require('path'));
 
 /**
  * Import files using glob patterns.
@@ -89,4 +89,23 @@ GlobImporter.prototype.resolve = function resolve (url) {
   });
 };
 
-module.exports = GlobImporter;
+var globImporter = new GlobImporter();
+
+/**
+ * Glob importer for node-sass
+ * @param {string} url - The path in import as-is, which LibSass encountered.
+ * @param {string} prev - The previously resolved path.
+ */
+var cli = function (url, prev) {
+  // Create an array of include paths to search for files.
+  var includePaths = [];
+  if (path.isAbsolute(prev)) {
+    includePaths.push(path.dirname(prev));
+  }
+  globImporter.options.includePaths = includePaths
+    .concat(this.options.includePaths.split(path.delimiter));
+
+  return globImporter.resolveSync(url);
+};
+
+module.exports = cli;

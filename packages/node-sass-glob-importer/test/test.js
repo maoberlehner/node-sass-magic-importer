@@ -12,6 +12,7 @@ const GlobImporterClass = require(`../dist/GlobImporter.js`);
 
 chai.use(chaiAsPromised);
 
+/** @test {index} */
 describe(`globImporter`, () => {
   it(`should be a function`, () => expect(globImporter).to.be.a(`function`));
 
@@ -21,14 +22,12 @@ describe(`globImporter`, () => {
     });
     sass.render({
       file: `test/files/glob.scss`,
-      importer: globImporter
+      importer: globImporter()
     }, (error, result) => {
-      if (!error) {
-        expect(result.css.toString()).to.equal(expectedResult);
-        done();
-      } else {
-        console.log(error);
-      }
+      if (error) throw error;
+
+      expect(result.css.toString()).to.equal(expectedResult);
+      done();
     });
   });
 
@@ -38,7 +37,20 @@ describe(`globImporter`, () => {
     });
     const result = sass.renderSync({
       file: `test/files/glob.scss`,
-      importer: globImporter
+      importer: globImporter()
+    });
+    expect(result.css.toString()).to.equal(expectedResult);
+  });
+
+  it(`should resolve glob import with include path`, () => {
+    const expectedResult = fs.readFileSync(`test/files/include-path-reference.css`, {
+      encoding: `utf8`
+    });
+    const result = sass.renderSync({
+      file: `test/files/include-path.scss`,
+      importer: globImporter({
+        includePaths: [path.join(process.cwd(), `test/files/test-imports`)]
+      })
     });
     expect(result.css.toString()).to.equal(expectedResult);
   });
@@ -52,23 +64,35 @@ describe(`GlobImporter`, () => {
   describe(`resolveSync()`, () => {
     it(`should be a function`, () => {
       const globImporterInstance = new GlobImporterClass();
+
       return expect(globImporterInstance.resolveSync).to.be.a(`function`);
     });
   });
 
-  /** @test {GlobImporter#resolve} */
-  describe(`resolve()`, () => {
+  /** @test {GlobImporter#resolveFilePathsSync} */
+  describe(`resolveFilePathsSync()`, () => {
     it(`should be a function`, () => {
       const globImporterInstance = new GlobImporterClass();
-      return expect(globImporterInstance.resolve).to.be.a(`function`);
+
+      return expect(globImporterInstance.resolveFilePathsSync).to.be.a(`function`);
+    });
+  });
+
+  /** @test {GlobImporter#resolveFilePaths} */
+  describe(`resolveFilePaths()`, () => {
+    it(`should be a function`, () => {
+      const globImporterInstance = new GlobImporterClass();
+
+      return expect(globImporterInstance.resolveFilePaths).to.be.a(`function`);
     });
 
-    it(`should return null`, () => {
+    it(`should return an empty array`, () => {
       const globImporterInstance = new GlobImporterClass();
       const url = `path/without/glob/pattern.scss`;
-      const expectedResult = null;
-      return expect(globImporterInstance.resolve(url))
-        .to.eventually.equal(expectedResult)
+      const expectedResult = [];
+
+      return expect(globImporterInstance.resolveFilePaths(url))
+        .to.eventually.deep.equal(expectedResult)
         .notify();
     });
 
@@ -80,86 +104,57 @@ describe(`GlobImporter`, () => {
         path.join(includePath, `files/test-resolve/style1.scss`),
         path.join(includePath, `files/test-resolve/style2.scss`)
       ];
-      return expect(globImporterInstance.resolve(url, [includePath]))
-        .to.eventually.deep.equal(expectedResult)
-        .notify();
-    });
 
-    it(`should return an empty array`, () => {
-      const globImporterInstance = new GlobImporterClass();
-      const url = `files/test-resolve/test-empty/**/*.scss`;
-      const includePath = path.join(process.cwd(), `test`);
-      const expectedResult = [];
-      return expect(globImporterInstance.resolve(url, [includePath]))
+      globImporterInstance.options.includePaths = [includePath];
+
+      return expect(globImporterInstance.resolveFilePaths(url))
         .to.eventually.deep.equal(expectedResult)
         .notify();
     });
   });
 
-  /** @test {GlobImporter#importer} */
-  describe(`importer()`, () => {
+  /** @test {GlobImporter#resolve} */
+  describe(`resolve()`, () => {
     it(`should be a function`, () => {
       const globImporterInstance = new GlobImporterClass();
-      return expect(globImporterInstance.importer).to.be.a(`function`);
+
+      return expect(globImporterInstance.resolve).to.be.a(`function`);
     });
 
-    it(`should resolve glob import`, (done) => {
+    it(`should return null`, () => {
       const globImporterInstance = new GlobImporterClass();
-      const expectedResult = fs.readFileSync(`test/files/glob-reference.css`, {
-        encoding: `utf8`
-      });
-      sass.render({
-        file: `test/files/glob.scss`,
-        importer: globImporterInstance.importer()
-      }, (error, result) => {
-        if (!error) {
-          expect(result.css.toString()).to.equal(expectedResult);
-          done();
-        } else {
-          console.log(error);
-        }
-      });
+      const url = `path/without/glob/pattern.scss`;
+      const expectedResult = null;
+
+      return expect(globImporterInstance.resolve(url))
+        .to.eventually.equal(expectedResult)
+        .notify();
     });
 
-    it(`should resolve glob import with include path`, (done) => {
+    it(`should return contents of resolved urls`, () => {
       const globImporterInstance = new GlobImporterClass();
-      const expectedResult = fs.readFileSync(`test/files/include-path-reference.css`, {
-        encoding: `utf8`
-      });
-      sass.render({
-        file: `test/files/include-path.scss`,
-        importer: globImporterInstance.importer(),
-        includePaths: [
-          `some/other/include-path`,
-          `test/files/test-imports`
-        ]
-      }, (error, result) => {
-        if (!error) {
-          expect(result.css.toString()).to.equal(expectedResult);
-          done();
-        } else {
-          console.log(error);
-        }
-      });
+      const url = `files/test-resolve/**/*.scss`;
+      const expectedResult = {
+        contents: `.class-a { content: 'Class A'; }\n\n.class-b { content: 'Class B'; }\n`
+      };
+
+      globImporterInstance.options.includePaths = [path.join(process.cwd(), `test`)];
+
+      return expect(globImporterInstance.resolve(url))
+        .to.eventually.deep.equal(expectedResult)
+        .notify();
     });
 
-    it(`should resolve glob import with absolute include path`, (done) => {
+    it(`should return null`, () => {
       const globImporterInstance = new GlobImporterClass();
-      const expectedResult = fs.readFileSync(`test/files/include-path-reference.css`, {
-        encoding: `utf8`
-      });
-      sass.render({
-        file: `test/files/include-path.scss`,
-        importer: globImporterInstance.importer(),
-        includePaths: [path.join(process.cwd(), `test/files/test-imports`)]
-      }, (error, result) => {
-        if (!error) {
-          expect(result.css.toString()).to.equal(expectedResult);
-          done();
-        } else {
-          console.log(error);
-        }
-      });
+      const url = `files/test-resolve/test-empty/**/*.scss`;
+      const expectedResult = null;
+
+      globImporterInstance.options.includePaths = [path.join(process.cwd(), `test`)];
+
+      return expect(globImporterInstance.resolve(url))
+        .to.eventually.deep.equal(expectedResult)
+        .notify();
     });
   });
 });
