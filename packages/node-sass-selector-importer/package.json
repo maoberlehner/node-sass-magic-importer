@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "css-selector-extract": "^1.3.1",
+    "node-sass": "^3.13.0",
     "postcss-scss": "^0.3.1"
   },
   "devDependencies": {
@@ -39,7 +40,7 @@
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
   "scripts": {
-    "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/SelectorImporter.js js/lib/SelectorImporter.js",
+    "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/SelectorImporter.js js/lib/SelectorImporter.js",
     "scripts:lint": "eslint js/* test/*",
     "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:doc": "esdoc -c .esdocrc",

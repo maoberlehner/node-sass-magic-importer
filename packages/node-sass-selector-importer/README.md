@@ -10,7 +10,7 @@ var selectorImporter = require('node-sass-selector-importer');
 
 sass.render({
   ...
-  importer: selectorImporter
+  importer: selectorImporter()
   ...
 });
 ```
@@ -92,9 +92,43 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 }
 ```
 
+### Options
+```node
+sass.render({
+  ...
+  importer: selectorImporter({
+    includePaths: [process.cwd()]
+  })
+  ...
+});
+```
+
 ### CLI
 ```bash
+node-sass --importer node_modules/node-sass-selector-importer/dist/cli.js -o dist src/index.scss
+```
+
+## Upgrade from 2.x.x to 3.x.x
+Version 3.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
+
+```node
+sass.render({
+  ...
+  // Old
+  importer: selectorImporter
+  // New
+  importer: selectorImporter()
+  ...
+});
+```
+
+If you want to use the `node-sass-selector-importer` in combination with the node-sass CLI, you now have to specify the path to the `node-sass-selector-importer` CLI script.
+
+```bash
+# Old
 node-sass --importer node_modules/node-sass-selector-importer -o dist src/index.scss
+# New
+node-sass --importer node_modules/node-sass-selector-importer/dist/cli.js -o dist src/index.scss
 ```
 
 ## node-sass-magic-importer

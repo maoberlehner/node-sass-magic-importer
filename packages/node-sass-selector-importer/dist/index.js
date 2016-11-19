@@ -87,22 +87,23 @@ SelectorImporter.prototype.extractSelectors = function extractSelectors (cleanUr
 };
 
 /**
- * Synchronously resolve filtered contentes from a file with the given url.
+ * Synchronously resolve filtered contents from a file with the given url.
  * @param {string} url - Import url from node-sass.
- * @return {string} Contents string or null.
+ * @return {Object|null} Contents object or null.
  */
 SelectorImporter.prototype.resolveSync = function resolveSync (url) {
   var data = this.parseUrl(url);
   var cleanUrl = data.url;
   var selectorFilters = data.selectorFilters;
+  var contents = this.extractSelectors(cleanUrl, selectorFilters);
 
-  return this.extractSelectors(cleanUrl, selectorFilters);
+  return contents ? { contents: contents } : null;
 };
 
 /**
- * Asynchronously resolve filtered contentes from a file with the given url.
+ * Asynchronously resolve filtered contents from a file with the given url.
  * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for a contents string.
+ * @return {Promise} Promise for a contents object.
  */
 SelectorImporter.prototype.resolve = function resolve (url) {
     var this$1 = this;
@@ -112,27 +113,31 @@ SelectorImporter.prototype.resolve = function resolve (url) {
   });
 };
 
-var selectorImporter = new SelectorImporter();
 /**
  * Selector importer for node-sass
- * @param {string} url - The path in import as-is, which LibSass encountered.
- * @param {string} prev - The previously resolved path.
+ * @param {Object} options - Configuration options.
  */
-var index = function (url, prev) {
-  // Create an array of include paths to search for files.
-  var includePaths = [];
-  if (path.isAbsolute(prev)) {
-    includePaths.push(path.dirname(prev));
-  }
-  selectorImporter.options.includePaths = includePaths
-    .concat(this.options.includePaths.split(path.delimiter));
+var index = function (options) {
+  if ( options === void 0 ) options = {};
 
-  // Merge default with custom options.
-  if (this.options.selectorImporter) {
-    Object.assign(selectorImporter.options, this.options.selectorImporter);
-  }
-  var contents = selectorImporter.resolveSync(url, prev);
-  return contents ? { contents: contents } : null;
+  var selectorImporter = new SelectorImporter();
+  /**
+   * @param {string} url - The path in import as-is, which LibSass encountered.
+   * @param {string} prev - The previously resolved path.
+   */
+  return function importer(url, prev) {
+    // Create an array of include paths to search for files.
+    var includePaths = [];
+    if (path.isAbsolute(prev)) {
+      includePaths.push(path.dirname(prev));
+    }
+    selectorImporter.options.includePaths = includePaths
+      .concat(this.options.includePaths.split(path.delimiter));
+
+    // Merge default with custom options.
+    Object.assign(selectorImporter.options, options);
+    return selectorImporter.resolveSync(url);
+  };
 };
 
 module.exports = index;

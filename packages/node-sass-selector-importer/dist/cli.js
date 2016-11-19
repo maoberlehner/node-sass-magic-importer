@@ -2,9 +2,9 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var path = _interopDefault(require('path'));
 var cssSelectorExtract = _interopDefault(require('css-selector-extract'));
 var fs = _interopDefault(require('fs'));
-var path = _interopDefault(require('path'));
 var postcssScss = _interopDefault(require('postcss-scss'));
 
 /**
@@ -113,4 +113,23 @@ SelectorImporter.prototype.resolve = function resolve (url) {
   });
 };
 
-module.exports = SelectorImporter;
+var selectorImporter = new SelectorImporter();
+
+/**
+ * Selector importer for node-sass
+ * @param {string} url - The path in import as-is, which LibSass encountered.
+ * @param {string} prev - The previously resolved path.
+ */
+var cli = function (url, prev) {
+  // Create an array of include paths to search for files.
+  var includePaths = [];
+  if (path.isAbsolute(prev)) {
+    includePaths.push(path.dirname(prev));
+  }
+  selectorImporter.options.includePaths = includePaths
+    .concat(this.options.includePaths.split(path.delimiter));
+
+  return selectorImporter.resolveSync(url);
+};
+
+module.exports = cli;

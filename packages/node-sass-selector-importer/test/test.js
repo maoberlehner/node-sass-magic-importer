@@ -21,7 +21,7 @@ describe(`selectorImporter`, () => {
     });
     sass.render({
       file: `test/files/importer.scss`,
-      importer: selectorImporter
+      importer: selectorImporter()
     }, (error, result) => {
       if (!error) {
         expect(result.css.toString()).to.equal(expectedResult);
@@ -38,7 +38,7 @@ describe(`selectorImporter`, () => {
     });
     const result = sass.renderSync({
       file: `test/files/importer.scss`,
-      importer: selectorImporter
+      importer: selectorImporter()
     });
     expect(result.css.toString()).to.equal(expectedResult);
   });
@@ -194,10 +194,11 @@ describe(`SelectorImporterClass`, () => {
     it(`should return selector filtered contents`, () => {
       const selectorImporterInstance = new SelectorImporterClass();
       const url = `{ .class1 as .class-1, .class3 as .class-3 } from test/files/resolve.scss`;
-      const expectedResult = fs.readFileSync(`test/files/resolve-reference.css`, {
+      const contents = fs.readFileSync(`test/files/resolve-reference.css`, {
         encoding: `utf8`
       });
-      return expect(selectorImporterInstance.resolve(url)).to.eventually.equal(expectedResult);
+      const expectedResult = { contents };
+      return expect(selectorImporterInstance.resolve(url)).to.eventually.deep.equal(expectedResult);
     });
   });
 });

@@ -87,20 +87,21 @@ export default class SelectorImporter {
   /**
    * Synchronously resolve filtered contents from a file with the given url.
    * @param {string} url - Import url from node-sass.
-   * @return {string} Contents string or null.
+   * @return {Object|null} Contents object or null.
    */
   resolveSync(url) {
     const data = this.parseUrl(url);
     const cleanUrl = data.url;
     const selectorFilters = data.selectorFilters;
+    const contents = this.extractSelectors(cleanUrl, selectorFilters);
 
-    return this.extractSelectors(cleanUrl, selectorFilters);
+    return contents ? { contents } : null;
   }
 
   /**
    * Asynchronously resolve filtered contents from a file with the given url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for a contents string.
+   * @return {Promise} Promise for a contents object.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
