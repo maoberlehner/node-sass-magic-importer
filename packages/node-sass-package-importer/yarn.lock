@@ -1691,9 +1691,9 @@ node-gyp@^3.3.1:
     tar "^2.0.0"
     which "1"
 
-node-sass@^3.10.1:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-3.10.1.tgz#c535b2e1a5439240591e06d7308cb663820d616c"
+node-sass@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-3.13.0.tgz#d08b95bdebf40941571bd2c16a9334b980f8924f"
   dependencies:
     async-foreach "^0.1.3"
     chalk "^1.1.1"
@@ -2117,9 +2117,9 @@ rollup-pluginutils@^1.5.0:
     estree-walker "^0.2.1"
     minimatch "^3.0.2"
 
-rollup@^0.35.11:
-  version "0.35.15"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.35.15.tgz#f1df97205ea7c7ce79afbf113c7b1a61ec8300fd"
+rollup@^0.36.3:
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.36.3.tgz#c89ac479828924ff8f69c1d44541cb4ea2fc11fc"
   dependencies:
     source-map-support "^0.4.0"
 
