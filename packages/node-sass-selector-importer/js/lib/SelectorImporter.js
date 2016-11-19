@@ -85,7 +85,7 @@ export default class SelectorImporter {
   }
 
   /**
-   * Synchronously resolve filtered contentes from a file with the given url.
+   * Synchronously resolve filtered contents from a file with the given url.
    * @param {string} url - Import url from node-sass.
    * @return {string} Contents string or null.
    */
@@ -98,7 +98,7 @@ export default class SelectorImporter {
   }
 
   /**
-   * Asynchronously resolve filtered contentes from a file with the given url.
+   * Asynchronously resolve filtered contents from a file with the given url.
    * @param {string} url - Import url from node-sass.
    * @return {Promise} Promise for a contents string.
    */
