@@ -55,7 +55,7 @@ export default class GlobImporter {
   /**
    * Synchronously resolve filtered contents from glob files with the given url.
    * @param {string} url - Import url from node-sass.
-   * @return {string} Contents string or null.
+   * @return {Object|null} Contents object or null.
    */
   resolveSync(url) {
     const filePaths = this.resolveFilePathsSync(url);
@@ -75,7 +75,7 @@ export default class GlobImporter {
    * Asynchronously resolve filtered contents
    * from glob files with the given url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for a contents string.
+   * @return {Promise} Promise for a contents object.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
