@@ -41,15 +41,17 @@ export default class PackageImporter {
   /**
    * Synchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {string} Fully resolved import url or null.
+   * @return {Object|null} Importer object or null.
    */
   resolveSync(url) {
-    let file = null;
     if (!url.match(this.matchPackageUrl)) {
-      return file;
+      return null;
     }
+
+    let file = null;
     const cleanUrl = this.cleanUrl(url);
     const urlVariants = this.urlVariants(cleanUrl);
+
     // Find a url variant that can be resolved.
     urlVariants.some(urlVariant => {
       try {
@@ -65,13 +67,14 @@ export default class PackageImporter {
       } catch (e) {}
       return false;
     });
-    return file;
+
+    return file ? { file } : null;
   }
 
   /**
    * Asynchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for a fully resolved import url.
+   * @return {Promise} Promise for a importer object or null.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
@@ -96,6 +99,7 @@ export default class PackageImporter {
   urlVariants(url) {
     const parsedUrl = path.parse(url);
     let urlVariants = [url];
+
     if (parsedUrl.dir && !parsedUrl.ext) {
       urlVariants = this.options.extensions.reduce((x, extension) => {
         x.push(path.join(parsedUrl.dir, `${parsedUrl.name}${extension}`));
@@ -103,6 +107,7 @@ export default class PackageImporter {
         return x;
       }, urlVariants);
     }
+
     return urlVariants;
   }
 
@@ -116,6 +121,7 @@ export default class PackageImporter {
     const newPkg = pkg;
     const pkgKey = this.options.packageKeys.find(x => pkg[x] !== undefined);
     newPkg.main = pkg[pkgKey];
+
     return newPkg;
   }
 }

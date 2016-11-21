@@ -12,7 +12,7 @@ var packageImporter = require('node-sass-package-importer');
 
 sass.render({
   ...
-  importer: packageImporter
+  importer: packageImporter()
   ...
 });
 ```
@@ -48,34 +48,58 @@ In the example below you can see the default configuration options.
 var sass = require('node-sass');
 var packageImporter = require('node-sass-package-importer');
 
+var options = {
+  cwd: process.cwd(),
+  extensions: [
+    '.scss',
+    '.sass'
+  ],
+  packageKeys: [
+    'sass',
+    'scss',
+    'style',
+    'css',
+    'main.sass',
+    'main.scss',
+    'main.style',
+    'main.css',
+    'main'
+  ]
+};
+
 sass.render({
   ...
-  importer: packageImporter,
-  packageImporter: {
-    cwd: process.cwd(),
-    extensions: [
-      '.scss',
-      '.sass'
-    ],
-    packageKeys: [
-      'sass',
-      'scss',
-      'style',
-      'css',
-      'main.sass',
-      'main.scss',
-      'main.style',
-      'main.css',
-      'main'
-    ]
-  }
+  importer: packageImporter(options)
   ...
 });
 ```
 
 ### CLI
 ```bash
+node-sass --importer node_modules/node-sass-package-importer/dist/cli.js -o dist src/index.scss
+```
+
+## Upgrade from 2.x.x to 3.x.x
+Version 3.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
+
+```node
+sass.render({
+  ...
+  // Old
+  importer: packageImporter
+  // New
+  importer: packageImporter()
+  ...
+});
+```
+
+If you want to use the `node-sass-package-importer` in combination with the node-sass CLI, you now have to specify the path to the `node-sass-package-importer` CLI script.
+
+```bash
+# Old
 node-sass --importer node_modules/node-sass-package-importer -o dist src/index.scss
+# New
+node-sass --importer node_modules/node-sass-package-importer/dist/cli.js -o dist src/index.scss
 ```
 
 ## node-sass-magic-importer
