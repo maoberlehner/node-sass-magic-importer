@@ -116,7 +116,7 @@ MagicImporter.prototype.store = function store (url, selectorFilters) {
 /**
  * Synchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
- * @return {string} Fully resolved import url or null.
+ * @return {string} Importer object or null.
  */
 MagicImporter.prototype.resolveSync = function resolveSync (url) {
     var this$1 = this;
@@ -174,7 +174,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
 /**
  * Asynchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for a fully resolved import url.
+ * @return {Promise} Promise for importer object or null.
  */
 MagicImporter.prototype.resolve = function resolve (url) {
     var this$1 = this;

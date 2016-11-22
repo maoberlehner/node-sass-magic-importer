@@ -112,7 +112,7 @@ export default class MagicImporter {
   /**
    * Synchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {string} Fully resolved import url or null.
+   * @return {string} Importer object or null.
    */
   resolveSync(url) {
     let data = null;
@@ -168,7 +168,7 @@ export default class MagicImporter {
   /**
    * Asynchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for a fully resolved import url.
+   * @return {Promise} Promise for importer object or null.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
