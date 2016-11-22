@@ -125,16 +125,15 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   var resolvedUrl = url;
 
   // Parse url to eventually extract selector filters.
-  var selectorImporter = new SelectorImporter();
-  selectorImporter.options = this.options;
+  var selectorImporter = new SelectorImporter(this.options);
   var urlData = selectorImporter.parseUrl(resolvedUrl);
   resolvedUrl = urlData.url;
   var selectorFilters = urlData.selectorFilters;
 
   // Try to resolve glob pattern url.
-  var globImporter = new GlobImporter();
-  var globFiles = globImporter.resolveSync(resolvedUrl, this.options.includePaths);
-  if (globFiles) {
+  var globImporter = new GlobImporter(this.options);
+  var globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
+  if (globFiles.length) {
     return { contents: globFiles.map(function (x) {
       this$1.store(x);
       return fs.readFileSync(x, { encoding: "utf8" });
@@ -142,11 +141,10 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   }
 
   // Try to resolve a module url.
-  var packageImporter = new PackageImporter();
-  packageImporter.options = this.options;
-  var packageFile = packageImporter.resolveSync(resolvedUrl);
-  if (packageFile) {
-    resolvedUrl = packageFile;
+  var packageImporter = new PackageImporter(this.options);
+  var packageImportData = packageImporter.resolveSync(resolvedUrl);
+  if (packageImportData) {
+    resolvedUrl = packageImportData.file;
     data = { file: resolvedUrl };
   }
 
@@ -165,7 +163,7 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   selectorFilters = storedData.selectorFilters;
 
   // Filter selectors.
-    var filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+  var filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
   if (filteredContents) {
     data = { contents: filteredContents };
   }
