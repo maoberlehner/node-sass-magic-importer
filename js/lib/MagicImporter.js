@@ -112,23 +112,22 @@ export default class MagicImporter {
   /**
    * Synchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {string} Fully resolved import url or null.
+   * @return {string} Importer object or null.
    */
   resolveSync(url) {
     let data = null;
     let resolvedUrl = url;
 
     // Parse url to eventually extract selector filters.
-    const selectorImporter = new SelectorImporter();
-    selectorImporter.options = this.options;
+    const selectorImporter = new SelectorImporter(this.options);
     const urlData = selectorImporter.parseUrl(resolvedUrl);
     resolvedUrl = urlData.url;
     let selectorFilters = urlData.selectorFilters;
 
     // Try to resolve glob pattern url.
-    const globImporter = new GlobImporter();
-    const globFiles = globImporter.resolveSync(resolvedUrl, this.options.includePaths);
-    if (globFiles) {
+    const globImporter = new GlobImporter(this.options);
+    const globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
+    if (globFiles.length) {
       return { contents: globFiles.map(x => {
         this.store(x);
         return fs.readFileSync(x, { encoding: `utf8` });
@@ -136,11 +135,10 @@ export default class MagicImporter {
     }
 
     // Try to resolve a module url.
-    const packageImporter = new PackageImporter();
-    packageImporter.options = this.options;
-    const packageFile = packageImporter.resolveSync(resolvedUrl);
-    if (packageFile) {
-      resolvedUrl = packageFile;
+    const packageImporter = new PackageImporter(this.options);
+    const packageImportData = packageImporter.resolveSync(resolvedUrl);
+    if (packageImportData) {
+      resolvedUrl = packageImportData.file;
       data = { file: resolvedUrl };
     }
 
@@ -170,7 +168,7 @@ export default class MagicImporter {
   /**
    * Asynchronously resolve the path to a node-sass import url.
    * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for a fully resolved import url.
+   * @return {Promise} Promise for importer object or null.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
