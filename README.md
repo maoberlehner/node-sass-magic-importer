@@ -182,7 +182,7 @@ sass.render({
 node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
 ```
 
-## Upgrade to 2.x.x from 1.x.x
+## Upgrade from 1.x.x to 2.x.x
 Version 2.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
 
 ```node
