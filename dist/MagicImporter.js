@@ -165,7 +165,10 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   // Filter selectors.
   var filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
   if (filteredContents) {
-    data = { contents: filteredContents };
+    data = {
+      file: resolvedUrl,
+      contents: filteredContents
+    };
   }
 
   return data;
