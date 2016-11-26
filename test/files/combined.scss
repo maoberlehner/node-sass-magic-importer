@@ -7,14 +7,16 @@
 // Module import.
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/border-radius';
-@import '~bootstrap/scss/mixins/alert';
-@import '~bootstrap/scss/alert';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~bootstrap/scss/jumbotron';
 
 // Selector filtering.
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/border-radius';
 @import '~bootstrap/scss/mixins/alert';
-@import '{ .alert, .alert-dismissible as .alert--dismissible, .close as .alert__close } from ~bootstrap/scss/alert';
-
-@import '~bootstrap/scss/mixins/breakpoints';
-@import '{ .jumbotron, /\.jumbotron-(.+)/ as .jumbotron--$1 } from ~bootstrap/scss/jumbotron';
+@import '{
+  .alert,
+  .alert-dismissible as .alert--dismissible,
+  .close as .alert__close,
+  /\.alert-li(.+)/ as .alert-li$1
+} from ~bootstrap/scss/alert';
