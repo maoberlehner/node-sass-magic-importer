@@ -169,6 +169,30 @@ describe(`SelectorImporterClass`, () => {
     });
   });
 
+  /** @test {SelectorImporter#escapeSpecialCharacters} */
+  describe(`escapeSpecialCharacters()`, () => {
+    it(`should be a function`, () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      expect(selectorImporterInstance.escapeSpecialCharacters).to.be.a(`function`);
+    });
+
+    it(`should return null`, () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const string = undefined;
+      const expectedResult = undefined;
+      return expect(selectorImporterInstance.escapeSpecialCharacters(string))
+        .to.equal(expectedResult);
+    });
+
+    it(`should return string with escaped special characters`, () => {
+      const selectorImporterInstance = new SelectorImporterClass();
+      const string = `string@with\\special@characters`;
+      const expectedResult = `string\\@with\\special\\@characters`;
+      return expect(selectorImporterInstance.escapeSpecialCharacters(string))
+        .to.equal(expectedResult);
+    });
+  });
+
   /** @test {SelectorImporter#resolveSync} */
   describe(`resolveSync()`, () => {
     it(`should be a function`, () => {

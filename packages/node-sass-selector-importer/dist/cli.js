@@ -26,6 +26,8 @@ var SelectorImporter = function SelectorImporter(options) {
  * @return {Object} Cleaned up url and selector filter array.
  */
 SelectorImporter.prototype.parseUrl = function parseUrl (url) {
+    var this$1 = this;
+
   // Find selectors in the import url and
   // return a cleaned up url and the selectors.
   var cleanUrl = url;
@@ -41,13 +43,15 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
           .map(Function.prototype.call, String.prototype.trim);
 
         var selector = filterArray[0];
-        var replacement = filterArray[1];
+        var replacement = this$1.escapeSpecialCharacters(filterArray[1]);
 
         var matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(selector);
         if (matchRegExpSelector) {
-          var pattern = matchRegExpSelector[1];
+          var pattern = this$1.escapeSpecialCharacters(matchRegExpSelector[1], "\\\\");
           var flags = matchRegExpSelector[2];
           selector = new RegExp(pattern, flags);
+        } else {
+          selector = this$1.escapeSpecialCharacters(selector);
         }
 
         return {
@@ -79,11 +83,34 @@ SelectorImporter.prototype.extractSelectors = function extractSelectors (cleanUr
         contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
         return true;
       }
-    } catch (e) {}
+    } catch (error) {}
     return false;
   });
 
   return contents;
+};
+
+/**
+   * Escape special characters.
+ * @param {string} string - String to be escaped.
+ * @param {string} escapeSequence - The characters which should be used for escaping.
+ * @return {string} String with escaped special characters.
+ */
+SelectorImporter.prototype.escapeSpecialCharacters = function escapeSpecialCharacters (string, escapeSequence) {
+    if ( escapeSequence === void 0 ) escapeSequence = "\\";
+
+  if (!string) { return string; }
+
+  var specialCharacters = [
+    "@"
+  ];
+  var regexSpecialCharacters = [
+    "/"
+  ];
+  var regex = new RegExp(
+    ("(" + (specialCharacters.join("|")) + "|\\" + (regexSpecialCharacters.join("|\\")) + ")"), "g"
+  );
+  return string.replace(regex, (escapeSequence + "$1"));
 };
 
 /**

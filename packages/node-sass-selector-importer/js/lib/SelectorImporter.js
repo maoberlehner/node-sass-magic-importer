@@ -39,13 +39,15 @@ export default class SelectorImporter {
             .map(Function.prototype.call, String.prototype.trim);
 
           let selector = filterArray[0];
-          const replacement = filterArray[1];
+          const replacement = this.escapeSpecialCharacters(filterArray[1]);
 
           const matchRegExpSelector = /^\/(.+)\/([a-z]*)$/.exec(selector);
           if (matchRegExpSelector) {
-            const pattern = matchRegExpSelector[1];
+            const pattern = this.escapeSpecialCharacters(matchRegExpSelector[1], `\\\\`);
             const flags = matchRegExpSelector[2];
             selector = new RegExp(pattern, flags);
+          } else {
+            selector = this.escapeSpecialCharacters(selector);
           }
 
           return {
@@ -77,11 +79,32 @@ export default class SelectorImporter {
           contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
           return true;
         }
-      } catch (e) {}
+      } catch (error) {}
       return false;
     });
 
     return contents;
+  }
+
+  /**
+   * Escape special characters.
+   * @param {string} string - String to be escaped.
+   * @param {string} escapeSequence - The characters which should be used for escaping.
+   * @return {string} String with escaped special characters.
+   */
+  escapeSpecialCharacters(string, escapeSequence = `\\`) {
+    if (!string) return string;
+
+    const specialCharacters = [
+      `@`
+    ];
+    const regexSpecialCharacters = [
+      `/`
+    ];
+    const regex = new RegExp(
+      `(${specialCharacters.join(`|`)}|\\${regexSpecialCharacters.join(`|\\`)})`, `g`
+    );
+    return string.replace(regex, `${escapeSequence}$1`);
   }
 
   /**

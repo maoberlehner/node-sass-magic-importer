@@ -28,3 +28,12 @@
   padding-right: 0;
   padding-left: 0;
   border-radius: 0; }
+
+.special\@-characters\/ {
+  content: 'Special characters'; }
+
+.replaced-\@special\/-characters {
+  content: 'Replaced special characters'; }
+
+.regex\@-special\/-charecters {
+  content: 'Regex special characters'; }
