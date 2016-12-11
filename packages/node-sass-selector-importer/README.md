@@ -108,6 +108,25 @@ sass.render({
 node-sass --importer node_modules/node-sass-selector-importer/dist/cli.js -o dist src/index.scss
 ```
 
+## Upgrade from 3.x.x to 4.x.x
+Version 4.x.x changes the way how nested CSS selectors are imported. Up until version 3.x.x you had to specify all nested selectors if you wanted to import them. With version 4.x.x nested selectors are imported automatically if you import the parent selector.
+
+```scss
+// File: styles.scss
+.selector {
+  .nested-selector { }
+  .other-nested-selector { }
+}
+
+// New way of importing .selector and all it's child selectors:
+@import '{ .selector } from styles.scss';
+
+// Old way:
+@import '{ .selector, .nested-selector, .other-nested-selector } from styles.scss';
+```
+
+It is not possible anymore to import only certain nested selectors. If this is a major concern in your daily work feel free to create a new issue or pull request and I may think about making this configurable.
+
 ## Upgrade from 2.x.x to 3.x.x
 Version 3.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
 
