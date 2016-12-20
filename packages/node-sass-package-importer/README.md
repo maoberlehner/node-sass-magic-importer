@@ -43,6 +43,7 @@ In the example below you can see the default configuration options.
 - `cwd`: Defines the path in which your `node_modules` directory is found.
 - `extensions`: Set which file extensions should get resolved.
 - `packageKeys`: You can define the `package.json` keys to search for and in which order.
+- `prefix`: You can set the special character for indicating a module resolution.
 
 ```node
 var sass = require('node-sass');
@@ -64,7 +65,8 @@ var options = {
     'main.style',
     'main.css',
     'main'
-  ]
+  ],
+  prefix: '~'
 };
 
 sass.render({
