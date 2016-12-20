@@ -34,12 +34,12 @@ export default class PackageImporter {
     this.options = Object.assign({}, defaultOptions, options);
 
     /**
-     * Ensure any regex characters entered are escaped
+     * Ensure any regex characters entered are escaped.
      */
     this.options.prefix = this.options.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
 
     /**
-     * Match tilde symbol at the beginning of urls (except posix home "~/" directory).
+     * Match given prefix symbol at the beginning of urls (except posix home "~/" directory).
      * @type {RegExp}
      */
     this.matchPackageUrl = new RegExp(`^${this.options.prefix}(?!/)`);

@@ -36,12 +36,12 @@ var PackageImporter = function PackageImporter(options) {
   this.options = Object.assign({}, defaultOptions, options);
 
   /**
-   * Ensure any regex characters entered are escaped
+   * Ensure any regex characters entered are escaped.
    */
   this.options.prefix = this.options.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 
   /**
-   * Match tilde symbol at the beginning of urls (except posix home "~/" directory).
+   * Match given prefix symbol at the beginning of urls (except posix home "~/" directory).
    * @type {RegExp}
    */
   this.matchPackageUrl = new RegExp(("^" + (this.options.prefix) + "(?!/)"));
@@ -49,13 +49,13 @@ var PackageImporter = function PackageImporter(options) {
 
 /**
  * Synchronously resolve the path to a node-sass import url.
- * @param {string} url - Import url from node-sass.
-   * @return {Object|null} Importer object or null.
+   * @param {string} url - Import url from node-sass.
+ * @return {Object|null} Importer object or null.
  */
 PackageImporter.prototype.resolveSync = function resolveSync (url) {
     var this$1 = this;
 
-    if (!url.match(this.matchPackageUrl)) {
+  if (!url.match(this.matchPackageUrl)) {
     return null;
   }
 
@@ -75,7 +75,7 @@ PackageImporter.prototype.resolveSync = function resolveSync (url) {
         file = resolvedPath;
         return true;
       }
-      } catch (e) {}
+    } catch (e) {}
     return false;
   });
 
@@ -93,7 +93,7 @@ PackageImporter.prototype.resolve = function resolve$1 (url) {
   return new Promise(function (promiseResolve) {
     promiseResolve(this$1.resolveSync(url));
   });
-  };
+};
 
 /**
  * Clean a node sass import url.
