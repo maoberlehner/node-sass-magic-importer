@@ -56,6 +56,19 @@ describe(`magicImporter`, () => {
     });
   });
 
+  it(`should compile bootstrap imported with alternative prefix`, (done) => {
+    sass.render({
+      file: `test/files/bootstrap-alt-prefix.scss`,
+      importer: magicImporter({ prefix: `+` })
+    }, (error) => {
+      if (!error) {
+        done();
+      } else {
+        console.log(error);
+      }
+    });
+  });
+
   it(`should compile foundation`, (done) => {
     sass.render({
       file: `test/files/foundation.scss`,
