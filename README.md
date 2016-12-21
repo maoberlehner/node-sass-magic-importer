@@ -167,7 +167,9 @@ var options = {
     'main.style',
     'main.css',
     'main'
-  ]
+  ],
+  // You can set the special character for indicating a module resolution.
+  prefix: '~'
 };
 
 sass.render({
