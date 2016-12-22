@@ -138,4 +138,14 @@ PackageImporter.prototype.resolveFilter = function resolveFilter (pkg) {
   return newPkg;
 };
 
-module.exports = PackageImporter;
+var packageImporter = new PackageImporter();
+
+/**
+ * Package importer for node-sass
+ * @param {string} url - The path in import as-is, which LibSass encountered.
+ */
+var cli = function (url) {
+  return packageImporter.resolveSync(url);
+};
+
+module.exports = cli;

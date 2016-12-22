@@ -22,7 +22,7 @@ describe(`packageImporter`, () => {
     });
     sass.render({
       file: `test/files/module.scss`,
-      importer: packageImporter
+      importer: packageImporter()
     }, (error, result) => {
       if (!error) {
         expect(result.css.toString()).to.equal(expectedResult);
@@ -39,7 +39,7 @@ describe(`packageImporter`, () => {
     });
     const result = sass.renderSync({
       file: `test/files/module.scss`,
-      importer: packageImporter
+      importer: packageImporter()
     });
     expect(result.css.toString()).to.equal(expectedResult);
   });
@@ -83,29 +83,31 @@ describe(`PackageImporter`, () => {
         .notify();
     });
 
-    it(`should return url for the test-module main sass file`, () => {
+    it(`should return import object containing the test-module main sass file`, () => {
       const options = { cwd: path.join(process.cwd(), `test/files`) };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = `~test-module`;
-      const expectedResult = `${path.join(
+      const file = `${path.join(
         options.cwd,
         `node_modules/test-module/scss/style.scss`
       )}`;
+      const expectedResult = { file };
       return expect(packageImporterInstance.resolve(url))
-        .to.eventually.equal(expectedResult)
+        .to.eventually.deep.equal(expectedResult)
         .notify();
     });
 
-    it(`should return url for the test-module partial file`, () => {
+    it(`should return import object containing the test-module partial file`, () => {
       const options = { cwd: path.join(process.cwd(), `test/files`) };
       const packageImporterInstance = new PackageImporterClass(options);
       const url = `~test-module/scss/partial`;
-      const expectedResult = `${path.join(
+      const file = `${path.join(
         options.cwd,
         `node_modules/test-module/scss/_partial.scss`
       )}`;
+      const expectedResult = { file };
       return expect(packageImporterInstance.resolve(url))
-        .to.eventually.equal(expectedResult)
+        .to.eventually.deep.equal(expectedResult)
         .notify();
     });
   });

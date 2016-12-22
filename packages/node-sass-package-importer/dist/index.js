@@ -27,33 +27,42 @@ var PackageImporter = function PackageImporter(options) {
       "main.style",
       "main.css",
       "main"
-    ]
+    ],
+    prefix: "~"
   };
   /**
    * @type {Object}
    */
   this.options = Object.assign({}, defaultOptions, options);
+
   /**
-   * Match tilde symbol at the beginning of urls (except posix home "~/" directory).
+   * Ensure any regex characters entered are escaped.
+   */
+  this.options.prefix = this.options.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+
+  /**
+   * Match given prefix symbol at the beginning of urls (except posix home "~/" directory).
    * @type {RegExp}
    */
-  this.matchPackageUrl = new RegExp("^~(?!/)");
+  this.matchPackageUrl = new RegExp(("^" + (this.options.prefix) + "(?!/)"));
 };
 
 /**
  * Synchronously resolve the path to a node-sass import url.
- * @param {string} url - Import url from node-sass.
- * @return {string} Fully resolved import url or null.
+   * @param {string} url - Import url from node-sass.
+ * @return {Object|null} Importer object or null.
  */
 PackageImporter.prototype.resolveSync = function resolveSync (url) {
     var this$1 = this;
 
-  var file = null;
   if (!url.match(this.matchPackageUrl)) {
-    return file;
+    return null;
   }
+
+  var file = null;
   var cleanUrl = this.cleanUrl(url);
   var urlVariants = this.urlVariants(cleanUrl);
+
   // Find a url variant that can be resolved.
   urlVariants.some(function (urlVariant) {
     try {
@@ -69,13 +78,14 @@ PackageImporter.prototype.resolveSync = function resolveSync (url) {
     } catch (e) {}
     return false;
   });
-  return file;
+
+  return file ? { file: file } : null;
 };
 
 /**
  * Asynchronously resolve the path to a node-sass import url.
  * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for a fully resolved import url.
+ * @return {Promise} Promise for a importer object or null.
  */
 PackageImporter.prototype.resolve = function resolve$1 (url) {
     var this$1 = this;
@@ -102,6 +112,7 @@ PackageImporter.prototype.cleanUrl = function cleanUrl (url) {
 PackageImporter.prototype.urlVariants = function urlVariants (url) {
   var parsedUrl = path.parse(url);
   var urlVariants = [url];
+
   if (parsedUrl.dir && !parsedUrl.ext) {
     urlVariants = this.options.extensions.reduce(function (x, extension) {
       x.push(path.join(parsedUrl.dir, ("" + (parsedUrl.name) + extension)));
@@ -109,6 +120,7 @@ PackageImporter.prototype.urlVariants = function urlVariants (url) {
       return x;
     }, urlVariants);
   }
+
   return urlVariants;
 };
 
@@ -122,20 +134,24 @@ PackageImporter.prototype.resolveFilter = function resolveFilter (pkg) {
   var newPkg = pkg;
   var pkgKey = this.options.packageKeys.find(function (x) { return pkg[x] !== undefined; });
   newPkg.main = pkg[pkgKey];
+
   return newPkg;
 };
 
-var packageImporter = new PackageImporter();
 /**
  * Package importer for node-sass
- * @param {string} url - The path in import as-is, which LibSass encountered.
+ * @param {Object} options - Configuration options.
  */
-var index = function (url) {
-  if (this.options.packageImporter) {
-    Object.assign(packageImporter.options, this.options.packageImporter);
-  }
-  var file = packageImporter.resolveSync(url);
-  return file ? { file: file } : null;
-}
+var index = function (options) {
+  if ( options === void 0 ) options = {};
+
+  var packageImporter = new PackageImporter(options);
+  /**
+   * @param {string} url - The path in import as-is, which LibSass encountered.
+   */
+  return function importer(url) {
+    return packageImporter.resolveSync(url);
+  };
+};
 
 module.exports = index;
