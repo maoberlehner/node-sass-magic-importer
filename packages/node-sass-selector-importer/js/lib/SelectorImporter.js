@@ -74,7 +74,7 @@ export default class SelectorImporter {
 
     this.options.includePaths.some((includePath) => {
       try {
-        const css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: `utf8` });
+        const css = fs.readFileSync(path.resolve(includePath, cleanUrl), { encoding: `utf8` });
         if (css) {
           contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
           return true;

@@ -78,7 +78,7 @@ SelectorImporter.prototype.extractSelectors = function extractSelectors (cleanUr
 
   this.options.includePaths.some(function (includePath) {
     try {
-      var css = fs.readFileSync(path.join(includePath, cleanUrl), { encoding: "utf8" });
+      var css = fs.readFileSync(path.resolve(includePath, cleanUrl), { encoding: "utf8" });
       if (css) {
         contents = cssSelectorExtract.processSync(css, selectorFilters, postcssScss);
         return true;
