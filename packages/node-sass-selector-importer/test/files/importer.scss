@@ -11,3 +11,5 @@
   .replace-\@special\/-characters as .replaced-\@special\/-characters,
   /\.regex\@-special\/-charecters/
 } from special-characters.scss';
+
+@import '{} from empty-import.scss'
