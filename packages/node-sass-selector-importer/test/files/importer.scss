@@ -9,7 +9,11 @@
 @import '{
   .special\@-characters\/,
   .replace-\@special\/-characters as .replaced-\@special\/-characters,
-  /\.regex\@-special\/-charecters/
+  /\.regex\@-special\/-charecters/,
+  /\.(mixin)/ as @mixin $1
 } from special-characters.scss';
+.mixin-test {
+  @include mixin;
+}
 
 @import '{} from empty-import.scss'

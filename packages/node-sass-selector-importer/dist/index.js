@@ -108,7 +108,7 @@ SelectorImporter.prototype.escapeSpecialCharacters = function escapeSpecialChara
     "/"
   ];
   var regex = new RegExp(
-    ("(" + (specialCharacters.join("|")) + "|\\" + (regexSpecialCharacters.join("|\\")) + ")"), "g"
+    ("(?!@mixin)(" + (specialCharacters.join("|")) + "|\\" + (regexSpecialCharacters.join("|\\")) + ")"), "g"
   );
   return string.replace(regex, (escapeSequence + "$1"));
 };
