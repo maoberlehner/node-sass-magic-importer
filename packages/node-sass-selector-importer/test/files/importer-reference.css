@@ -40,3 +40,6 @@
 
 .mixin-test {
   content: 'Mixin'; }
+
+.variable-test {
+  content: 'Variable import'; }

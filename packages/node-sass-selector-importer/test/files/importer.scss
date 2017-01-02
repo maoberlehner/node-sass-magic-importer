@@ -16,4 +16,6 @@
   @include mixin;
 }
 
-@import '{} from empty-import.scss'
+@import '{} from empty-import.scss';
+
+@import '{ .#{$variable}-test } from variable-import.scss';

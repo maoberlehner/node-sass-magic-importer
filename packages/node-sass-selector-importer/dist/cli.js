@@ -32,7 +32,7 @@ SelectorImporter.prototype.parseUrl = function parseUrl (url) {
   // return a cleaned up url and the selectors.
   var cleanUrl = url;
   var selectorFilters;
-  var selectorFiltersMatch = url.match(/{([^}]*)}/);
+  var selectorFiltersMatch = url.match(/{([\s\S]*)}/);
   if (selectorFiltersMatch) {
     cleanUrl = url.replace(/(\r\n|\n|\r)/gm, " ").split(" from ")[1].trim();
     // Create an array with selectors and replacement as one value.

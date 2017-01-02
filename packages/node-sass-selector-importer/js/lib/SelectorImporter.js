@@ -28,7 +28,7 @@ export default class SelectorImporter {
     // return a cleaned up url and the selectors.
     let cleanUrl = url;
     let selectorFilters;
-    const selectorFiltersMatch = url.match(/{([^}]*)}/);
+    const selectorFiltersMatch = url.match(/{([\s\S]*)}/);
     if (selectorFiltersMatch) {
       cleanUrl = url.replace(/(\r\n|\n|\r)/gm, ` `).split(` from `)[1].trim();
       // Create an array with selectors and replacement as one value.
