@@ -7,7 +7,7 @@
     "sass",
     "filter-importer"
   ],
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-filter-importer",
   "license": "MIT",
