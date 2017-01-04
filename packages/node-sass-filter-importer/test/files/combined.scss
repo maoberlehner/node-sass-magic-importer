@@ -1,0 +1,9 @@
+@import '[variables, mixins] from test.scss';
+
+.variable-test {
+  content: $variable1;
+}
+
+.mixin-test {
+  @include mixin-at-rule();
+}

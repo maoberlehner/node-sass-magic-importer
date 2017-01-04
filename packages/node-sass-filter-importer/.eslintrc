@@ -1,0 +1,6 @@
+{
+  "extends": "eslint-config-modularis",
+  "rules": {
+    "class-methods-use-this": 0
+  }
+}

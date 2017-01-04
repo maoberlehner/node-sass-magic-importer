@@ -1,0 +1,5 @@
+.variable-test {
+  content: variable; }
+
+.mixin-test .selector-inside-mixin-at-rule {
+  content: 'Selector inside mixin at rule'; }

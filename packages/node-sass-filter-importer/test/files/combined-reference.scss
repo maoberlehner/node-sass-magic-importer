@@ -1,0 +1,9 @@
+$variable1: variable;
+$variable2: variable;
+$variable3: variable;
+
+@mixin mixin-at-rule {
+  .selector-inside-mixin-at-rule {
+    content: 'Selector inside mixin at rule';
+  }
+}
