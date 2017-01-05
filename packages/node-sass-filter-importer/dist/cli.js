@@ -107,26 +107,40 @@ FilterImporter.prototype.resolve = function resolve (url) {
   });
 };
 
-var filterImporter = new FilterImporter();
-
 /**
  * Filter importer for node-sass
  *
- * @param {string} url
- *   The path in import as-is, which LibSass encountered.
- * @param {string} prev
- *   The previously resolved path.
+ * @param {Object} options
+ *   Configuration options.
  */
-var cli = function (url, prev) {
-  // Create an array of include paths to search for files.
-  var includePaths = [];
-  if (path.isAbsolute(prev)) {
-    includePaths.push(path.dirname(prev));
-  }
-  filterImporter.options.includePaths = includePaths
-    .concat(this.options.includePaths.split(path.delimiter));
+var importer = function (options) {
+  if ( options === void 0 ) options = {};
 
-  return filterImporter.resolveSync(url);
+  var filterImporter = new FilterImporter();
+  /**
+   * @param {string} url
+   *   The path in import as-is, which LibSass encountered.
+   * @param {string} prev
+   *   The previously resolved path.
+   */
+  return function importer(url, prev) {
+    // Create an array of include paths to search for files.
+    var includePaths = [];
+    if (path.isAbsolute(prev)) {
+      includePaths.push(path.dirname(prev));
+    }
+    filterImporter.options.includePaths = includePaths
+      .concat(this.options.includePaths.split(path.delimiter));
+
+    // Merge default with custom options.
+    Object.assign(filterImporter.options, options);
+    return filterImporter.resolveSync(url);
+  };
 };
+
+/**
+ * CLI importer.
+ */
+var cli = importer();
 
 module.exports = cli;
