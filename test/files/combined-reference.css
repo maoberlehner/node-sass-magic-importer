@@ -16,6 +16,18 @@
 .test-import2-3 {
   content: 'Test import 2-3'; }
 
+.test-import3-1 {
+  content: 'Test import 3-1'; }
+
+.test-import3-2 {
+  content: 'Test import 3-2'; }
+
+.test-import4-1 {
+  content: 'Test import 4-1'; }
+
+.test-import4-2 {
+  content: 'Test import 4-2'; }
+
 .test-sub-import1 {
   content: 'Test sub import 1'; }
 

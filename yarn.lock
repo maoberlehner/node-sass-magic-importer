@@ -458,6 +458,12 @@ cryptiles@2.x.x:
   dependencies:
     boom "2.x.x"
 
+css-node-extract@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/css-node-extract/-/css-node-extract-0.1.0.tgz#8ee622c1556fb87f98643375fd8a9c659c97887e"
+  dependencies:
+    postcss "^5.2.8"
+
 css-select@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
@@ -1702,6 +1708,13 @@ node-gyp@^3.3.1:
     tar "^2.0.0"
     which "1"
 
+node-sass-filter-importer@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/node-sass-filter-importer/-/node-sass-filter-importer-0.1.0.tgz#72f070094d4c98f9421866cf0d4da1b7c3c4a6e5"
+  dependencies:
+    css-node-extract "^0.1.0"
+    postcss-scss "^0.4.0"
+
 node-sass-glob-importer@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/node-sass-glob-importer/-/node-sass-glob-importer-3.0.0.tgz#a7845727ebd42c782f8fe57adc2ef066fb5c648a"
@@ -1941,9 +1954,15 @@ postcss-scss@^0.3.1:
   dependencies:
     postcss "^5.2.4"
 
-postcss@^5.2.4, postcss@^5.2.6:
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.6.tgz#a252cd67cd52585035f17e9ad12b35137a7bdd9e"
+postcss-scss@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/postcss-scss/-/postcss-scss-0.4.0.tgz#087c052c529b9270d9580bd1248a0f93d3b40d57"
+  dependencies:
+    postcss "^5.2.5"
+
+postcss@^5.2.4, postcss@^5.2.5, postcss@^5.2.6, postcss@^5.2.8:
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.8.tgz#05720c49df23c79bda51fd01daeb1e9222e94390"
   dependencies:
     chalk "^1.1.3"
     js-base64 "^2.1.9"

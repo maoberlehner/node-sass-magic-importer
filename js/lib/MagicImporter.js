@@ -1,9 +1,15 @@
+// @TODO: Add README info about filter importing.
+
+import CssNodeExtract from 'css-node-extract';
+import fs from 'fs';
+import path from 'path';
+import postcssSyntax from 'postcss-scss';
+import uniqueConcat from 'unique-concat';
+
+import FilterImporter from 'node-sass-filter-importer/dist/lib/FilterImporter.js';
 import GlobImporter from 'node-sass-glob-importer/dist/GlobImporter.js';
 import PackageImporter from 'node-sass-package-importer/dist/PackageImporter.js';
 import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter.js';
-import fs from 'fs';
-import path from 'path';
-import uniqueConcat from 'unique-concat';
 
 /**
  * Selector specific imports, module importing,
@@ -66,6 +72,7 @@ export default class MagicImporter {
    * @return {boolean|Object} - Absolute URL and selector filters or false.
    */
   store(url, selectorFilters = null) {
+    // @TODO: Add filter logic.
     const absoluteUrl = this.getAbsoluteUrl(url);
 
     // URL is not in store: store and load the URL.
@@ -116,13 +123,17 @@ export default class MagicImporter {
    */
   resolveSync(url) {
     let data = null;
-    let resolvedUrl = url;
+    // @TODO: Ugly.
+    let resolvedUrl = url.split(`from`)[1] || url;
+    resolvedUrl = resolvedUrl.trim();
 
-    // Parse url to eventually extract selector filters.
+    // Parse url and eventually extract filters.
+    const filterImporter = new FilterImporter(this.options);
+    const filterNames = filterImporter.parseUrl(url).filterNames;
+
+    // Parse url and eventually extract selector filters.
     const selectorImporter = new SelectorImporter(this.options);
-    const urlData = selectorImporter.parseUrl(resolvedUrl);
-    resolvedUrl = urlData.url;
-    let selectorFilters = urlData.selectorFilters;
+    let selectorFilters = selectorImporter.parseUrl(url).selectorFilters;
 
     // Try to resolve glob pattern url.
     const globImporter = new GlobImporter(this.options);
@@ -156,8 +167,23 @@ export default class MagicImporter {
     resolvedUrl = storedData.url;
     selectorFilters = storedData.selectorFilters;
 
-    // Filter selectors.
-    const filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+    // Filter.
+    let filteredContents;
+    // @TODO: This is ugly, maybe refactor.
+    if (selectorFilters) {
+      filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+    }
+    if (filterNames) {
+      if (filteredContents) {
+        filteredContents = CssNodeExtract.processSync({
+          css: filteredContents,
+          filterNames,
+          postcssSyntax
+        });
+      } else {
+        filteredContents = filterImporter.extractFilters(resolvedUrl, filterNames);
+      }
+    }
     if (filteredContents) {
       data = {
         file: resolvedUrl,

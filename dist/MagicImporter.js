@@ -2,12 +2,15 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var CssNodeExtract = _interopDefault(require('css-node-extract'));
+var fs = _interopDefault(require('fs'));
+var path = _interopDefault(require('path'));
+var postcssSyntax = _interopDefault(require('postcss-scss'));
+var uniqueConcat = _interopDefault(require('unique-concat'));
+var FilterImporter = _interopDefault(require('node-sass-filter-importer/dist/lib/FilterImporter.js'));
 var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImporter.js'));
 var PackageImporter = _interopDefault(require('node-sass-package-importer/dist/PackageImporter.js'));
 var SelectorImporter = _interopDefault(require('node-sass-selector-importer/dist/SelectorImporter.js'));
-var fs = _interopDefault(require('fs'));
-var path = _interopDefault(require('path'));
-var uniqueConcat = _interopDefault(require('unique-concat'));
 
 /**
  * Selector specific imports, module importing,
@@ -74,19 +77,19 @@ MagicImporter.prototype.store = function store (url, selectorFilters) {
   var absoluteUrl = this.getAbsoluteUrl(url);
 
   // URL is not in store: store and load the URL.
-    if (this.onceStore[absoluteUrl] === undefined) {
+  if (this.onceStore[absoluteUrl] === undefined) {
     this.onceStore[absoluteUrl] = selectorFilters;
     return { url: absoluteUrl, selectorFilters: selectorFilters };
     }
 
-    // URL is in store without filters, filters given: load the URL.
+  // URL is in store without filters, filters given: load the URL.
   if (this.onceStore[absoluteUrl] === null && selectorFilters) {
     // eslint-disable-next-line no-console
-    console.warn(("Warning: double import of file \"" + url + "\""));
+      console.warn(("Warning: double import of file \"" + url + "\""));
     return { url: absoluteUrl, selectorFilters: selectorFilters };
-  }
+    }
 
-  // URL and filters in store, URL without filters given:
+    // URL and filters in store, URL without filters given:
   // load and remove filters from store.
   if (this.onceStore[absoluteUrl] && !selectorFilters) {
     // eslint-disable-next-line no-console
@@ -122,13 +125,17 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
     var this$1 = this;
 
   var data = null;
-  var resolvedUrl = url;
+  // @TODO: Ugly.
+  var resolvedUrl = url.split("from")[1] || url;
+  resolvedUrl = resolvedUrl.trim();
 
-  // Parse url to eventually extract selector filters.
+  // Parse url and eventually extract filters.
+  var filterImporter = new FilterImporter(this.options);
+  var filterNames = filterImporter.parseUrl(url).filterNames;
+
+  // Parse url and eventually extract selector filters.
   var selectorImporter = new SelectorImporter(this.options);
-  var urlData = selectorImporter.parseUrl(resolvedUrl);
-  resolvedUrl = urlData.url;
-  var selectorFilters = urlData.selectorFilters;
+  var selectorFilters = selectorImporter.parseUrl(url).selectorFilters;
 
   // Try to resolve glob pattern url.
   var globImporter = new GlobImporter(this.options);
@@ -162,8 +169,23 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
   resolvedUrl = storedData.url;
   selectorFilters = storedData.selectorFilters;
 
-  // Filter selectors.
-  var filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+  // Filter.
+  var filteredContents;
+  // @TODO: This is ugly, maybe refactor.
+  if (selectorFilters) {
+    filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
+  }
+  if (filterNames) {
+      if (filteredContents) {
+      filteredContents = CssNodeExtract.processSync({
+        css: filteredContents,
+        filterNames: filterNames,
+        postcssSyntax: postcssSyntax
+      });
+    } else {
+      filteredContents = filterImporter.extractFilters(resolvedUrl, filterNames);
+    }
+  }
   if (filteredContents) {
     data = {
       file: resolvedUrl,
@@ -183,7 +205,7 @@ MagicImporter.prototype.resolve = function resolve (url) {
     var this$1 = this;
 
   return new Promise(function (promiseResolve) {
-    promiseResolve(this$1.resolveSync(url));
+      promiseResolve(this$1.resolveSync(url));
   });
 };
 

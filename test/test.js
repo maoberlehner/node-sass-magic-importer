@@ -43,6 +43,17 @@ describe(`magicImporter`, () => {
     });
   });
 
+  it(`should filter and convert a SASS file synchronously to CSS`, () => {
+    const expectedResult = fs.readFileSync(`test/files/filter-reference.css`, {
+      encoding: `utf8`
+    });
+    const result = sass.renderSync({
+      file: `test/files/filter.scss`,
+      importer: magicImporter()
+    });
+    expect(result.css.toString()).to.equal(expectedResult);
+  });
+
   it(`should compile bootstrap`, (done) => {
     sass.render({
       file: `test/files/bootstrap.scss`,
