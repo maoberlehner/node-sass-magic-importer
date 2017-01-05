@@ -47,7 +47,7 @@ describe(`filterImporter`, () => {
 
 /** @test {cli} **/
 describe(`cli`, () => {
-  it(`should resolve combined filter import synchronously`, (done) => {
+  it(`should resolve combined filter import`, (done) => {
     const cmd = `node_modules/node-sass/bin/node-sass --importer dist/cli.js test/files/combined.scss`;
     const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
       encoding: `utf8`,
