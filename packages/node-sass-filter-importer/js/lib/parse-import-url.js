@@ -1,11 +1,11 @@
 import extractImportFilters from './extract-import-filters';
-import splitImportUrl from './split-import-url';
+import cleanImportUrl from './clean-import-url';
 
 export default (url) => {
-  const importUrlParts = splitImportUrl(url);
+  const cleanUrl = cleanImportUrl(url);
   const filters = extractImportFilters(url);
   return {
-    url: importUrlParts[0],
+    url: cleanUrl,
     filters,
   };
 };
