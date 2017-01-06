@@ -39,17 +39,6 @@ $variable2: 'value';
 - **silent**: Extract only nodes that do not compile to CSS code (mixins, placeholder selectors, variables,...)
 - **variables**: `$variable`
 
-### Options
-```node
-sass.render({
-  ...
-  importer: filterImporter({
-    includePaths: [process.cwd()]
-  })
-  ...
-});
-```
-
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-filter-importer/dist/cli.js -o dist src/index.scss
