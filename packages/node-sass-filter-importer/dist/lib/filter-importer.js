@@ -7,21 +7,38 @@ var fs = _interopDefault(require('fs'));
 var path = _interopDefault(require('path'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
 
-// .replace(/(\r\n|\n|\r)/gm, ` `)
-
-var cleanImportUrl = (function () {
+/**
+ * Clean an import url from filters.
+ *
+ * @param {String} url
+ *   Import url from node-sass.
+ * @return {String}
+ *   Cleaned up node-sass import url.
+ */
+function cleanImportUrl() {
   var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
 
   var cleanUrl = url.split("from").reverse()[0].trim();
 
   return cleanUrl;
-});
+}
 
+/**
+ * Default options.
+ */
 var defaultOptions = {
   includePaths: [process.cwd()]
 };
 
-var extractImportFilters = (function () {
+/**
+ * Extract import filters from a string.
+ *
+ * @param {String} string
+ *   A string that may contains import filters.
+ * @return {Array}
+ *   Array of found import filters.
+ */
+function extractImportFilters() {
   var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
 
   var filterMatch = string.match(/\[([\s\S]*)]/);
@@ -33,7 +50,7 @@ var extractImportFilters = (function () {
   }
 
   return [];
-});
+}
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -60,11 +77,11 @@ var FilterImporter = function () {
   /**
    * Extract filters from a file with the given url.
    *
-   * @param {string} cleanUrl
-   *   Cleaned up import url from node-sass.
+   * @param {String} cleanUrl
+   *   Cleaned up node-sass import url.
    * @param {Array} filterNames
-   *   Array of filter names array.
-   * @return {string}
+   *   Array of filter names.
+   * @return {String|null}
    *   Contents string or null.
    */
 
@@ -93,7 +110,7 @@ var FilterImporter = function () {
     /**
      * Synchronously resolve filtered contents from a file with the given url.
      *
-     * @param {string} url
+     * @param {String} url
      *   Import url from node-sass.
      * @return {Object|null}
      *   Contents object or null.
@@ -112,7 +129,7 @@ var FilterImporter = function () {
     /**
      * Asynchronously resolve filtered contents from a file with the given url.
      *
-     * @param {string} url
+     * @param {String} url
      *   Import url from node-sass.
      * @return {Promise}
      *   Promise for a contents object.

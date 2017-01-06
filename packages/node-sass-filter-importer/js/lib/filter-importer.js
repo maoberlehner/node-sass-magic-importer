@@ -23,11 +23,11 @@ export default class FilterImporter {
   /**
    * Extract filters from a file with the given url.
    *
-   * @param {string} cleanUrl
-   *   Cleaned up import url from node-sass.
+   * @param {String} cleanUrl
+   *   Cleaned up node-sass import url.
    * @param {Array} filterNames
-   *   Array of filter names array.
-   * @return {string}
+   *   Array of filter names.
+   * @return {String|null}
    *   Contents string or null.
    */
   extractFilters(cleanUrl, filterNames) {
@@ -52,7 +52,7 @@ export default class FilterImporter {
   /**
    * Synchronously resolve filtered contents from a file with the given url.
    *
-   * @param {string} url
+   * @param {String} url
    *   Import url from node-sass.
    * @return {Object|null}
    *   Contents object or null.
@@ -68,7 +68,7 @@ export default class FilterImporter {
   /**
    * Asynchronously resolve filtered contents from a file with the given url.
    *
-   * @param {string} url
+   * @param {String} url
    *   Import url from node-sass.
    * @return {Promise}
    *   Promise for a contents object.

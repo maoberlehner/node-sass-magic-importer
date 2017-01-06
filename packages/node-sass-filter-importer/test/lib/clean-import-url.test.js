@@ -1,8 +1,9 @@
 /* eslint-env node, mocha */
 import { expect } from 'chai';
 
-import cleanImportUrl from './clean-import-url';
+import cleanImportUrl from '../../js/lib/clean-import-url';
 
+/** @test {cleanImportUrl} */
 describe(`cleanImportUrl`, () => {
   it(`should be a function`, () => expect(cleanImportUrl).to.be.a(`function`));
   it(`should return a string`, () => expect(cleanImportUrl()).to.be.a(`String`));

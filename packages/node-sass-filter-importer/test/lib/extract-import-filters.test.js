@@ -1,8 +1,9 @@
 /* eslint-env node, mocha */
 import { expect } from 'chai';
 
-import extractImportFilters from './extract-import-filters';
+import extractImportFilters from '../../js/lib/extract-import-filters';
 
+/** @test {extractImportFilters} */
 describe(`extractImportFilters`, () => {
   it(`should be a function`, () => expect(extractImportFilters).to.be.a(`function`));
   it(`should return an empty array`, () => expect(extractImportFilters(`some/url`)).to.be.an(`Array`));

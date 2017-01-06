@@ -5,10 +5,12 @@ import defaultOptions from './lib/default-options';
 import FilterImporter from './lib/filter-importer';
 
 /**
- * Filter importer for node-sass
+ * Filter importer for node-sass.
  *
  * @param {Object} customOptions
- *   Configuration options.
+ *   Custom configuration options.
+ * @return {Object|null}
+ *   Contents object or null.
  */
 export default (customOptions = {}) => function importer(url, prev) {
   const options = Object.assign({}, defaultOptions, customOptions);

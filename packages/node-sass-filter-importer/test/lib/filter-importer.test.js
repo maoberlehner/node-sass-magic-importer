@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import fs from 'fs';
 
-import FilterImporter from './filter-importer';
+import FilterImporter from '../../js/lib/filter-importer';
 
 /** @test {FilterImporter} */
 describe(`FilterImporter`, () => {

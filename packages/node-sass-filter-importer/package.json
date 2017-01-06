@@ -45,9 +45,10 @@
     "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:doc": "esdoc -c .esdocrc",
     "scripts": "npm run scripts:bundle && npm run scripts:lint-no-error",
-    "test:lib": "mocha js/**/*.test.js --compilers js:babel-core/register",
-    "test:importer": "npm run scripts:bundle && mocha test/test.js --compilers js:babel-core/register",
-    "test": "npm run scripts:bundle && mocha js/**/*.test.js test/test.js --compilers js:babel-core/register"
+    "test:lib": "mocha test/lib/*.test.js --compilers js:babel-core/register",
+    "test:index": "mocha test/index.test.js --compilers js:babel-core/register",
+    "test:cli": "npm run scripts:bundle && mocha test/cli.test.js --compilers js:babel-core/register",
+    "test": "npm run scripts:bundle && mocha test/**/*.test.js --compilers js:babel-core/register"
   },
   "config": {
     "pre-git": {
