@@ -40,7 +40,7 @@
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
   "scripts": {
-    "scripts:bundle": "rm -R dist && rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/lib/filter-importer.js js/lib/filter-importer.js",
+    "scripts:bundle": "rm -R dist && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/lib/clean-import-url.js js/lib/clean-import-url.js && rollup --config --format cjs --output dist/lib/default-options.js js/lib/default-options.js && rollup --config --format cjs --output dist/lib/extract-import-filters.js js/lib/extract-import-filters.js && rollup --config --format cjs --output dist/lib/filter-importer.js js/lib/filter-importer.js",
     "scripts:lint": "eslint js/* test/*",
     "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:doc": "esdoc -c .esdocrc",
