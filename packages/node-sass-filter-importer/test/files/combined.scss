@@ -1,4 +1,7 @@
-@import '[variables, mixins] from test.scss';
+@import '[
+  variables,
+  mixins
+] from test.scss';
 
 .variable-test {
   content: $variable1;
