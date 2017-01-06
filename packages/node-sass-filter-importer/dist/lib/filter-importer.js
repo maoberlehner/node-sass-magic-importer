@@ -2,15 +2,10 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var path = _interopDefault(require('path'));
-var uniqueConcat = _interopDefault(require('unique-concat'));
 var CssNodeExtract = _interopDefault(require('css-node-extract'));
 var fs = _interopDefault(require('fs'));
+var path = _interopDefault(require('path'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
-
-var defaultOptions = {
-  includePaths: [process.cwd()]
-};
 
 // .replace(/(\r\n|\n|\r)/gm, ` `)
 
@@ -21,6 +16,10 @@ var cleanImportUrl = (function () {
 
   return cleanUrl;
 });
+
+var defaultOptions = {
+  includePaths: [process.cwd()]
+};
 
 var extractImportFilters = (function () {
   var string = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
@@ -133,26 +132,4 @@ var FilterImporter = function () {
   return FilterImporter;
 }();
 
-/**
- * Filter importer for node-sass
- *
- * @param {Object} customOptions
- *   Configuration options.
- */
-var index = (function () {
-  var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return function importer(url, prev) {
-    var options = Object.assign({}, defaultOptions, customOptions);
-    var nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
-
-    if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
-    options.includePaths = uniqueConcat(options.includePaths, nodeSassIncludePaths).filter(function (item) {
-      return item.length;
-    });
-
-    var filterImporter = new FilterImporter(options);
-    return filterImporter.resolveSync(url);
-  };
-});
-
-module.exports = index;
+module.exports = FilterImporter;

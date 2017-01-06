@@ -1,31 +1,23 @@
 import path from 'path';
-import FilterImporter from './lib/FilterImporter';
+import uniqueConcat from 'unique-concat';
+
+import defaultOptions from './lib/default-options';
+import FilterImporter from './lib/filter-importer';
 
 /**
  * Filter importer for node-sass
  *
- * @param {Object} options
+ * @param {Object} customOptions
  *   Configuration options.
  */
-export default (options = {}) => {
-  const filterImporter = new FilterImporter();
-  /**
-   * @param {string} url
-   *   The path in import as-is, which LibSass encountered.
-   * @param {string} prev
-   *   The previously resolved path.
-   */
-  return function importer(url, prev) {
-    // Create an array of include paths to search for files.
-    const includePaths = [];
-    if (path.isAbsolute(prev)) {
-      includePaths.push(path.dirname(prev));
-    }
-    filterImporter.options.includePaths = includePaths
-      .concat(this.options.includePaths.split(path.delimiter));
+export default (customOptions = {}) => function importer(url, prev) {
+  const options = Object.assign({}, defaultOptions, customOptions);
+  const nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
 
-    // Merge default with custom options.
-    Object.assign(filterImporter.options, options);
-    return filterImporter.resolveSync(url);
-  };
+  if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
+  options.includePaths = uniqueConcat(options.includePaths, nodeSassIncludePaths)
+    .filter(item => item.length);
+
+  const filterImporter = new FilterImporter(options);
+  return filterImporter.resolveSync(url);
 };
