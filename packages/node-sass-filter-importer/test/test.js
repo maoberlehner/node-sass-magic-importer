@@ -1,14 +1,10 @@
 /* eslint-env node, mocha */
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import { exec } from 'child_process';
 import fs from 'fs';
 import sass from 'node-sass';
+import { exec } from 'child_process';
+import { expect } from 'chai';
 
 import filterImporter from '../js/index';
-
-const expect = chai.expect;
-chai.use(chaiAsPromised);
 
 /** @test {index} */
 describe(`filterImporter`, () => {
