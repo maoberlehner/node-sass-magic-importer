@@ -1,7 +1,12 @@
-import buble from 'rollup-plugin-buble';
+import babel from 'rollup-plugin-babel';
 
 export default {
   plugins: [
-    buble()
-  ]
+    babel({
+      babelrc: false,
+      presets: [
+        [`es2015`, { modules: false }],
+      ],
+    }),
+  ],
 };
