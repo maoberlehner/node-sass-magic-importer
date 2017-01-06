@@ -1,12 +1,8 @@
 /* eslint-env node, mocha */
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import { expect } from 'chai';
 import fs from 'fs';
 
 import FilterImporter from './filter-importer';
-
-const expect = chai.expect;
-chai.use(chaiAsPromised);
 
 /** @test {FilterImporter} */
 describe(`FilterImporter`, () => {
@@ -47,20 +43,12 @@ describe(`FilterImporter`, () => {
       const filterImporter = new FilterImporter();
       expect(filterImporter.resolveSync).to.be.a(`function`);
     });
-  });
-
-  /** @test {FilterImporter#resolve} */
-  describe(`resolve()`, () => {
-    it(`should be a function`, () => {
-      const filterImporter = new FilterImporter();
-      expect(filterImporter.resolve).to.be.a(`function`);
-    });
 
     it(`should return null`, () => {
       const filterImporter = new FilterImporter();
       const url = `path/without/filters.scss`;
       const expectedResult = null;
-      expect(filterImporter.resolve(url)).to.eventually.equal(expectedResult);
+      expect(filterImporter.resolveSync(url)).to.equal(expectedResult);
     });
 
     it(`should return filtered contents`, () => {
@@ -70,7 +58,15 @@ describe(`FilterImporter`, () => {
         encoding: `utf8`,
       });
       const expectedResult = { contents };
-      expect(filterImporter.resolve(url)).to.eventually.deep.equal(expectedResult);
+      expect(filterImporter.resolveSync(url)).to.deep.equal(expectedResult);
+    });
+  });
+
+  /** @test {FilterImporter#resolve} */
+  describe(`resolve()`, () => {
+    it(`should be a function`, () => {
+      const filterImporter = new FilterImporter();
+      expect(filterImporter.resolve).to.be.a(`function`);
     });
   });
 });
