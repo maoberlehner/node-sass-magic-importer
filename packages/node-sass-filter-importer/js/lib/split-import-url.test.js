@@ -9,11 +9,11 @@ describe(`splitImportUrl`, () => {
 
   it(`should return the url as first array item`, () => {
     const url = `some/url`;
-    return expect(splitImportUrl(url)[0]).to.equal(url);
+    expect(splitImportUrl(url)[0]).to.equal(url);
   });
 
   it(`should return a filter string as second array item`, () => {
     const url = `[variables, mixins] from some/url`;
-    return expect(splitImportUrl(url)[1]).to.equal(`[variables, mixins]`);
+    expect(splitImportUrl(url)[1]).to.equal(`[variables, mixins]`);
   });
 });

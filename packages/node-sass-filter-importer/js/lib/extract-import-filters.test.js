@@ -9,6 +9,6 @@ describe(`extractImportFilters`, () => {
 
   it(`should return an array of filters`, () => {
     const string = `[variables, mixins] from some/url`;
-    return expect(extractImportFilters(string)).to.deep.equal([`variables`, `mixins`]);
+    expect(extractImportFilters(string)).to.deep.equal([`variables`, `mixins`]);
   });
 });
