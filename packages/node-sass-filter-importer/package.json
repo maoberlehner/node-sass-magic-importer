@@ -48,7 +48,7 @@
     "test:lib": "mocha test/lib/*.test.js --compilers js:babel-core/register",
     "test:index": "mocha test/index.test.js --compilers js:babel-core/register",
     "test:cli": "npm run scripts:bundle && mocha test/cli.test.js --compilers js:babel-core/register",
-    "test": "npm run scripts:bundle && mocha test/**/*.test.js --compilers js:babel-core/register"
+    "test": "npm run scripts:bundle && mocha test/* --compilers js:babel-core/register"
   },
   "config": {
     "pre-git": {
