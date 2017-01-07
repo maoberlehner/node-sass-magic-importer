@@ -1,6 +1,10 @@
 /**
  * Default options.
+ *
+ * @type {Object}
  */
-export default {
+const defaultOptions = {
   includePaths: [process.cwd()],
 };
+
+export default defaultOptions;

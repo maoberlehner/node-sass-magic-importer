@@ -10,6 +10,8 @@ var postcssSyntax = _interopDefault(require('postcss-scss'));
 
 /**
  * Default options.
+ *
+ * @type {Object}
  */
 var defaultOptions = {
   includePaths: [process.cwd()]
