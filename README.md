@@ -179,6 +179,19 @@ sass.render({
 });
 ```
 
+### Gulp
+```node
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var magicImporter = require('node-sass-magic-importer');
+
+gulp.task('sass', function () {
+  return gulp.src('./**/*.scss')
+    .pipe(sass({ importer: magicImporter() }).on('error', sass.logError))
+    .pipe(gulp.dest('./css'));
+});
+```
+
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
