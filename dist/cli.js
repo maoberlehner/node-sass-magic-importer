@@ -12,6 +12,8 @@ var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImp
 var PackageImporter = _interopDefault(require('node-sass-package-importer/dist/PackageImporter.js'));
 var SelectorImporter = _interopDefault(require('node-sass-selector-importer/dist/SelectorImporter.js'));
 
+// @TODO: Add README info about filter importing.
+
 /**
  * Selector specific imports, module importing,
  * globbing support, import files only once.
@@ -74,22 +76,23 @@ MagicImporter.prototype.store = function store (url, selectorFilters) {
     var this$1 = this;
     if ( selectorFilters === void 0 ) selectorFilters = null;
 
+  // @TODO: Add filter logic.
   var absoluteUrl = this.getAbsoluteUrl(url);
 
   // URL is not in store: store and load the URL.
   if (this.onceStore[absoluteUrl] === undefined) {
     this.onceStore[absoluteUrl] = selectorFilters;
     return { url: absoluteUrl, selectorFilters: selectorFilters };
-    }
+  }
 
   // URL is in store without filters, filters given: load the URL.
   if (this.onceStore[absoluteUrl] === null && selectorFilters) {
     // eslint-disable-next-line no-console
-      console.warn(("Warning: double import of file \"" + url + "\""));
+    console.warn(("Warning: double import of file \"" + url + "\""));
     return { url: absoluteUrl, selectorFilters: selectorFilters };
-    }
+  }
 
-    // URL and filters in store, URL without filters given:
+  // URL and filters in store, URL without filters given:
   // load and remove filters from store.
   if (this.onceStore[absoluteUrl] && !selectorFilters) {
     // eslint-disable-next-line no-console
@@ -176,11 +179,11 @@ MagicImporter.prototype.resolveSync = function resolveSync (url) {
     filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
   }
   if (filterNames) {
-      if (filteredContents) {
+    if (filteredContents) {
       filteredContents = CssNodeExtract.processSync({
         css: filteredContents,
         filterNames: filterNames,
-        postcssSyntax: postcssSyntax
+          postcssSyntax: postcssSyntax
       });
     } else {
       filteredContents = filterImporter.extractFilters(resolvedUrl, filterNames);
@@ -205,7 +208,7 @@ MagicImporter.prototype.resolve = function resolve (url) {
     var this$1 = this;
 
   return new Promise(function (promiseResolve) {
-      promiseResolve(this$1.resolveSync(url));
+    promiseResolve(this$1.resolveSync(url));
   });
 };
 

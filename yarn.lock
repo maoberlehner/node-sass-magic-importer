@@ -1728,9 +1728,9 @@ node-sass-package-importer@^3.0.1:
   dependencies:
     resolve "^1.1.7"
 
-node-sass-selector-importer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/node-sass-selector-importer/-/node-sass-selector-importer-4.0.0.tgz#4ec5e6b87b04e1d4c28f1c8fd1a249e7a4b7ca59"
+node-sass-selector-importer@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/node-sass-selector-importer/-/node-sass-selector-importer-4.2.0.tgz#222cc502e4fb67540bad569d6984d9a03cc0695e"
   dependencies:
     css-selector-extract "^2.0.1"
     node-sass "^3.13.0"
