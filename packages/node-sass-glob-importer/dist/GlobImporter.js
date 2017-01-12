@@ -59,7 +59,7 @@ GlobImporter.prototype.resolveFilePaths = function resolveFilePaths (url) {
 /**
  * Synchronously resolve filtered contents from glob files with the given url.
  * @param {string} url - Import url from node-sass.
- * @return {string} Contents string or null.
+ * @return {Object|null} Contents object or null.
  */
 GlobImporter.prototype.resolveSync = function resolveSync (url) {
   var filePaths = this.resolveFilePathsSync(url);
@@ -79,7 +79,7 @@ GlobImporter.prototype.resolveSync = function resolveSync (url) {
  * Asynchronously resolve filtered contents
  * from glob files with the given url.
  * @param {string} url - Import url from node-sass.
- * @return {Promise} Promise for a contents string.
+ * @return {Promise} Promise for a contents object.
  */
 GlobImporter.prototype.resolve = function resolve (url) {
     var this$1 = this;

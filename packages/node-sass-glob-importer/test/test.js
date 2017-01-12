@@ -64,8 +64,7 @@ describe(`GlobImporter`, () => {
   describe(`resolveSync()`, () => {
     it(`should be a function`, () => {
       const globImporterInstance = new GlobImporterClass();
-
-      return expect(globImporterInstance.resolveSync).to.be.a(`function`);
+      expect(globImporterInstance.resolveSync).to.be.a(`function`);
     });
   });
 
@@ -73,30 +72,28 @@ describe(`GlobImporter`, () => {
   describe(`resolveFilePathsSync()`, () => {
     it(`should be a function`, () => {
       const globImporterInstance = new GlobImporterClass();
-
-      return expect(globImporterInstance.resolveFilePathsSync).to.be.a(`function`);
+      expect(globImporterInstance.resolveFilePathsSync).to.be.a(`function`);
     });
   });
 
   /** @test {GlobImporter#resolveFilePaths} */
   describe(`resolveFilePaths()`, () => {
-    it(`should be a function`, () => {
+    it(`should be a function`, (done) => {
       const globImporterInstance = new GlobImporterClass();
-
-      return expect(globImporterInstance.resolveFilePaths).to.be.a(`function`);
+      expect(globImporterInstance.resolveFilePaths).to.be.a(`function`);
+      done();
     });
 
-    it(`should return an empty array`, () => {
+    it(`should return an empty array`, (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = `path/without/glob/pattern.scss`;
       const expectedResult = [];
-
-      return expect(globImporterInstance.resolveFilePaths(url))
-        .to.eventually.deep.equal(expectedResult)
-        .notify();
+      expect(globImporterInstance.resolveFilePaths(url))
+        .to.eventually.deep.equal(expectedResult);
+      done();
     });
 
-    it(`should return array of resolved urls`, () => {
+    it(`should return array of resolved urls`, (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = `files/test-resolve/**/*.scss`;
       const includePath = path.join(process.cwd(), `test`);
@@ -107,9 +104,9 @@ describe(`GlobImporter`, () => {
 
       globImporterInstance.options.includePaths = [includePath];
 
-      return expect(globImporterInstance.resolveFilePaths(url))
-        .to.eventually.deep.equal(expectedResult)
-        .notify();
+      expect(globImporterInstance.resolveFilePaths(url))
+        .to.eventually.deep.equal(expectedResult);
+      done();
     });
   });
 
@@ -117,21 +114,20 @@ describe(`GlobImporter`, () => {
   describe(`resolve()`, () => {
     it(`should be a function`, () => {
       const globImporterInstance = new GlobImporterClass();
-
-      return expect(globImporterInstance.resolve).to.be.a(`function`);
+      expect(globImporterInstance.resolve).to.be.a(`function`);
     });
 
-    it(`should return null`, () => {
+    it(`should return null`, (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = `path/without/glob/pattern.scss`;
       const expectedResult = null;
 
-      return expect(globImporterInstance.resolve(url))
-        .to.eventually.equal(expectedResult)
-        .notify();
+      expect(globImporterInstance.resolve(url))
+        .to.eventually.equal(expectedResult);
+      done();
     });
 
-    it(`should return contents of resolved urls`, () => {
+    it(`should return contents of resolved urls`, (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = `files/test-resolve/**/*.scss`;
       const expectedResult = {
@@ -140,21 +136,21 @@ describe(`GlobImporter`, () => {
 
       globImporterInstance.options.includePaths = [path.join(process.cwd(), `test`)];
 
-      return expect(globImporterInstance.resolve(url))
-        .to.eventually.deep.equal(expectedResult)
-        .notify();
+      expect(globImporterInstance.resolve(url))
+        .to.eventually.deep.equal(expectedResult);
+      done();
     });
 
-    it(`should return null`, () => {
+    it(`should return null`, (done) => {
       const globImporterInstance = new GlobImporterClass();
       const url = `files/test-resolve/test-empty/**/*.scss`;
       const expectedResult = null;
 
       globImporterInstance.options.includePaths = [path.join(process.cwd(), `test`)];
 
-      return expect(globImporterInstance.resolve(url))
-        .to.eventually.deep.equal(expectedResult)
-        .notify();
+      expect(globImporterInstance.resolve(url))
+        .to.eventually.deep.equal(expectedResult);
+      done();
     });
   });
 });
