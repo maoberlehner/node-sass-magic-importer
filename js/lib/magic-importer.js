@@ -1,5 +1,3 @@
-// @TODO: Add README info about filter importing and disableWarnings option.
-
 import CssNodeExtract from 'css-node-extract';
 import fs from 'fs';
 import path from 'path';

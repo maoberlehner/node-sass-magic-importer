@@ -7,12 +7,14 @@ Custom node-sass importer for selector specific imports, module importing, globb
 This importer enables several comfort functions for importing SASS files more easily.
 - [Selector filtering](#selector-filtering): import only specific selectors from a file.  
   (Uses the [node-sass-selector-importer](https://github.com/maoberlehner/node-sass-selector-importer) module.)
+- [Node filtering](#node-filtering): import only specific nodes from a file.  
+  (Uses the [node-sass-filter-importer](https://github.com/maoberlehner/node-sass-filter-importer) module.)
 - [Module importing](#module-importing): import modules from `node_modules` without specifying the full path.  
   (Uses the [node-sass-package-importer](https://github.com/maoberlehner/node-sass-package-importer) module.)
 - [Globbing](#globbing): use globbing (e.g. `@import: 'scss/**/*.scss'`) to import multiple files at once.  
   (Uses the [node-sass-glob-importer](https://github.com/maoberlehner/node-sass-glob-importer) module.)
 
-By default every file is only imported once even if you `@import` the same file multiple times in your code.
+By default every file is only imported once even if you `@import` the same file multiple times in your code (except if you are using filters).
 
 ### Selector filtering
 With selector filtering, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
@@ -97,6 +99,34 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 
 **You may notice that source map support is limited for styles which are imported with selector filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
 
+### Node filtering
+Filter certain elements from SCSS code.
+
+```scss
+// Example:
+@import '[variables, mixins] from style.scss';
+```
+```scss
+// style.scss:
+$variable1: 'value';
+$variable2: 'value';
+.selector { }
+@mixin mixin() { }
+
+// Result:
+$variable1: 'value';
+$variable2: 'value';
+@mixin mixin() { }
+```
+
+#### Filters
+- **at-rules**: `@media`, `@supports`, `@mixin`,...
+- **functions**: `@function`
+- **mixins**: `@mixin`
+- **rules**: `.class-selector`, `#id-selector`,...
+- **silent**: Extract only nodes that do not compile to CSS code (mixins, placeholder selectors, variables,...)
+- **variables**: `$variable`
+
 ### Module importing
 In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Module importing makes this a little easier.
 
@@ -169,7 +199,9 @@ var options = {
     'main'
   ],
   // You can set the special character for indicating a module resolution.
-  prefix: '~'
+  prefix: '~',
+  // Disable console warnings.
+  disableWarnings: false
 };
 
 sass.render({

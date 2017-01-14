@@ -21,6 +21,7 @@ const defaultOptions = {
     `main.css`,
     `main`,
   ],
+  prefix: `~`,
   disableWarnings: false,
 };
 
