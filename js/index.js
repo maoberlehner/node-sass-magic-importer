@@ -1,5 +1,5 @@
 import path from 'path';
-import MagicImporter from './lib/MagicImporter';
+import MagicImporter from './lib/magic-importer';
 
 /**
  * Magic importer for node-sass

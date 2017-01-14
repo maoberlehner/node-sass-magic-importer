@@ -7,7 +7,7 @@ const fs = require(`fs`);
 const sass = require(`node-sass`);
 
 const magicImporter = require(`../`);
-const MagicImporterClass = require(`../dist/MagicImporter.js`);
+const MagicImporterClass = require(`../dist/lib/magic-importer.js`);
 
 chai.use(chaiAsPromised);
 
