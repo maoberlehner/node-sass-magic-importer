@@ -1,0 +1,17 @@
+$variable1: 4;
+$variable2: 4;
+$variable3: 4;
+
+.test-import4-1 {
+  content: 'Test import 4-1';
+}
+
+.test-import4-2 {
+  content: 'Test import 4-2';
+}
+
+@mixin mixin-at-rule {
+  .selector-inside-mixin-at-rule {
+    content: 'Selector inside mixin at rule';
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "node-sass-magic-importer",
-  "description": "Custom node-sass importer for selector specific imports, module importing, globbing support, import files only once and importing of files with .css extension",
+  "description": "Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once",
   "keywords": [
     "glob-importer",
     "importer",
@@ -10,7 +10,7 @@
     "sass",
     "selector-importer"
   ],
-  "version": "3.1.0",
+  "version": "4.0.0",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
   "license": "MIT",
@@ -22,35 +22,43 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "node-sass-glob-importer": "^3.0.0",
+    "css-node-extract": "^0.2.1",
+    "node-sass-filter-importer": "^1.0.1",
+    "node-sass-glob-importer": "^3.0.2",
     "node-sass-package-importer": "^3.0.1",
-    "node-sass-selector-importer": "^4.0.0",
+    "node-sass-selector-importer": "^4.2.0",
+    "postcss-scss": "^0.4.0",
     "unique-concat": "^0.2.2"
   },
   "devDependencies": {
-    "bootstrap": "4.0.0-alpha.3",
+    "babel-core": "^6.21.0",
+    "babel-preset-es2015": "^6.18.0",
+    "bootstrap": "4.0.0-alpha.6",
     "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
-    "esdoc": "^0.4.8",
-    "eslint": "^3.10.2",
-    "eslint-config-modularis": "^2.0.0",
+    "esdoc": "^0.5.2",
+    "eslint": "^3.13.1",
+    "eslint-config-modularis": "^4.0.0",
     "eslint-plugin-import": "^2.2.0",
-    "foundation-sites": "^6.2.4",
-    "mocha": "^3.1.2",
-    "node-sass": "^3.13.0",
-    "pre-git": "^3.11.1",
-    "rollup": "^0.36.3",
-    "rollup-plugin-buble": "^0.14.0"
+    "foundation-sites": "^6.3.0",
+    "mocha": "^3.2.0",
+    "node-sass": "^4.3.0",
+    "pre-git": "^3.12.0",
+    "rollup": "^0.41.3",
+    "rollup-plugin-babel": "^2.7.1",
+    "sinon": "^1.17.7"
   },
   "main": "dist/index.js",
   "jsnext:main": "js/index.js",
   "scripts": {
-    "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/MagicImporter.js js/lib/MagicImporter.js",
+    "scripts:bundle": "rm -R dist && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/lib/default-options.js js/lib/default-options.js && rollup --config --format cjs --output dist/lib/magic-importer.js js/lib/magic-importer.js",
     "scripts:lint": "eslint js/* test/*",
     "scripts:lint-no-error": "eslint js/* test/* || exit 0",
     "scripts:doc": "esdoc -c .esdocrc",
     "scripts": "npm run scripts:bundle && npm run scripts:lint-no-error",
-    "test": "mocha"
+    "test:lib": "mocha test/lib/*.test.js --compilers js:babel-core/register",
+    "test:index": "mocha test/index.test.js --compilers js:babel-core/register",
+    "test:cli": "npm run scripts:bundle && mocha test/cli.test.js --compilers js:babel-core/register",
+    "test": "npm run scripts:bundle && mocha test/* --compilers js:babel-core/register"
   },
   "config": {
     "pre-git": {

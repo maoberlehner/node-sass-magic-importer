@@ -1,18 +1,20 @@
 # node-sass-magic-importer
 [![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
 
-Custom node-sass importer for selector specific imports, module importing, globbing support and importing files only once.
+Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once.
 
 ## Features
 This importer enables several comfort functions for importing SASS files more easily.
 - [Selector filtering](#selector-filtering): import only specific selectors from a file.  
   (Uses the [node-sass-selector-importer](https://github.com/maoberlehner/node-sass-selector-importer) module.)
+- [Node filtering](#node-filtering): import only specific nodes from a file.  
+  (Uses the [node-sass-filter-importer](https://github.com/maoberlehner/node-sass-filter-importer) module.)
 - [Module importing](#module-importing): import modules from `node_modules` without specifying the full path.  
   (Uses the [node-sass-package-importer](https://github.com/maoberlehner/node-sass-package-importer) module.)
 - [Globbing](#globbing): use globbing (e.g. `@import: 'scss/**/*.scss'`) to import multiple files at once.  
   (Uses the [node-sass-glob-importer](https://github.com/maoberlehner/node-sass-glob-importer) module.)
 
-By default every file is only imported once even if you `@import` the same file multiple times in your code.
+By default every file is only imported once even if you `@import` the same file multiple times in your code (except if you are using filters).
 
 ### Selector filtering
 With selector filtering, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
@@ -97,6 +99,34 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 
 **You may notice that source map support is limited for styles which are imported with selector filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
 
+### Node filtering
+Filter certain elements from SCSS code.
+
+```scss
+// Example:
+@import '[variables, mixins] from style.scss';
+```
+```scss
+// style.scss:
+$variable1: 'value';
+$variable2: 'value';
+.selector { }
+@mixin mixin() { }
+
+// Result:
+$variable1: 'value';
+$variable2: 'value';
+@mixin mixin() { }
+```
+
+#### Filters
+- **at-rules**: `@media`, `@supports`, `@mixin`,...
+- **functions**: `@function`
+- **mixins**: `@mixin`
+- **rules**: `.class-selector`, `#id-selector`,...
+- **silent**: Extract only nodes that do not compile to CSS code (mixins, placeholder selectors, variables,...)
+- **variables**: `$variable`
+
 ### Module importing
 In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Module importing makes this a little easier.
 
@@ -169,7 +199,9 @@ var options = {
     'main'
   ],
   // You can set the special character for indicating a module resolution.
-  prefix: '~'
+  prefix: '~',
+  // Disable console warnings.
+  disableWarnings: false
 };
 
 sass.render({
@@ -179,10 +211,26 @@ sass.render({
 });
 ```
 
+### Gulp
+```node
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var magicImporter = require('node-sass-magic-importer');
+
+gulp.task('sass', function () {
+  return gulp.src('./**/*.scss')
+    .pipe(sass({ importer: magicImporter() }).on('error', sass.logError))
+    .pipe(gulp.dest('./css'));
+});
+```
+
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
 ```
+
+## Upgrade from 3.x.x to 4.x.x
+No changes have to be made.
 
 ## Upgrade from 2.x.x to 3.x.x
 Version 3.x.x changes the way how nested CSS selectors are imported. Up until version 2.x.x you had to specify all nested selectors if you wanted to import them. With version 3.x.x nested selectors are imported automatically if you import the parent selector.
@@ -202,34 +250,6 @@ Version 3.x.x changes the way how nested CSS selectors are imported. Up until ve
 ```
 
 It is not possible anymore to import only certain nested selectors. If this is a major concern in your daily work feel free to create a new issue or pull request and I may think about making this configurable.
-
-## Upgrade from 1.x.x to 2.x.x
-Version 2.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
-
-```node
-sass.render({
-  ...
-  // Old
-  importer: magicImporter,
-  magicImporter: {
-    cwd: process.cwd()
-  }
-  // New
-  importer: magicImporter({
-    cwd: process.cwd()
-  })
-  ...
-});
-```
-
-If you want to use the `node-sass-magic-importer` in combination with the node-sass CLI, you now have to specify the path to the `node-sass-magic-importer` CLI script.
-
-```bash
-# Old
-node-sass --importer node_modules/node-sass-magic-importer -o dist src/index.scss
-# New
-node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
-```
 
 ## About
 ### Author

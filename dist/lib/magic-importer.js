@@ -2,10 +2,9 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var path = _interopDefault(require('path'));
-var uniqueConcat = _interopDefault(require('unique-concat'));
 var CssNodeExtract = _interopDefault(require('css-node-extract'));
 var fs = _interopDefault(require('fs'));
+var path = _interopDefault(require('path'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
 var cleanImportUrl = _interopDefault(require('node-sass-filter-importer/dist/lib/clean-import-url'));
 var extractImportFilters = _interopDefault(require('node-sass-filter-importer/dist/lib/extract-import-filters'));
@@ -230,38 +229,4 @@ var MagicImporter = function () {
   return MagicImporter;
 }();
 
-/**
- * Magic importer for node-sass.
- *
- * @param {Object} customOptions
- *   Custom configuration options.
- * @return {Function}
- *   node-sass custom importer function.
- */
-var index = (function () {
-  var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-  var options = Object.assign({}, defaultOptions, customOptions);
-  var magicImporter = new MagicImporter(options);
-
-  /**
-   * @param {string} url
-   *   The path in import as-is, which LibSass encountered.
-   * @param {string} prev
-   *   The previously resolved path.
-   * @return {Object|null}
-   *   node-sass custom importer data object or null.
-   */
-  return function importer(url, prev) {
-    var nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
-
-    if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
-    magicImporter.options.includePaths = uniqueConcat(options.includePaths, nodeSassIncludePaths).filter(function (item) {
-      return item.length;
-    });
-
-    return magicImporter.resolveSync(url);
-  };
-});
-
-module.exports = index;
+module.exports = MagicImporter;

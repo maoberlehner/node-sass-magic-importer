@@ -16,6 +16,18 @@
 .test-import2-3 {
   content: 'Test import 2-3'; }
 
+.test-import3-1 {
+  content: 'Test import 3-1'; }
+
+.test-import3-2 {
+  content: 'Test import 3-2'; }
+
+.test-import4-1 {
+  content: 'Test import 4-1'; }
+
+.test-import4-2 {
+  content: 'Test import 4-2'; }
+
 .test-sub-import1 {
   content: 'Test sub import 1'; }
 
@@ -27,7 +39,7 @@
   margin-bottom: 2rem;
   background-color: #eceeef;
   border-radius: 0.3rem; }
-  @media (min-width: 544px) {
+  @media (min-width: 576px) {
     .jumbotron {
       padding: 4rem 2rem; } }
 
@@ -40,7 +52,7 @@
   border-radius: 0; }
 
 .alert {
-  padding: 15px;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem; }
@@ -48,10 +60,9 @@
 .alert-link {
   font-weight: bold; }
 
-.alert--dismissible {
-  padding-right: 35px; }
-  .alert--dismissible .alert__close {
-    position: relative;
-    top: -2px;
-    right: -21px;
-    color: inherit; }
+.alert--dismissible .alert__close {
+  position: relative;
+  top: -0.75rem;
+  right: -1.25rem;
+  padding: 0.75rem 1.25rem;
+  color: inherit; }
