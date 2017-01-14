@@ -2308,9 +2308,9 @@ node-gyp@^3.3.1:
     tar "^2.0.0"
     which "1"
 
-node-sass-filter-importer@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/node-sass-filter-importer/-/node-sass-filter-importer-1.0.0.tgz#a41846bf614dd1a840ad5d3b6f261dceb874da6e"
+node-sass-filter-importer@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/node-sass-filter-importer/-/node-sass-filter-importer-1.0.1.tgz#875cb640681ab597fc9e0cb515cacb4f282a22ad"
   dependencies:
     css-node-extract "^0.1.0"
     postcss-scss "^0.4.0"
