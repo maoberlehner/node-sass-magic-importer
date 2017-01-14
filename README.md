@@ -229,6 +229,9 @@ gulp.task('sass', function () {
 node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
 ```
 
+## Upgrade from 3.x.x to 4.x.x
+No changes have to be made.
+
 ## Upgrade from 2.x.x to 3.x.x
 Version 3.x.x changes the way how nested CSS selectors are imported. Up until version 2.x.x you had to specify all nested selectors if you wanted to import them. With version 3.x.x nested selectors are imported automatically if you import the parent selector.
 
@@ -247,34 +250,6 @@ Version 3.x.x changes the way how nested CSS selectors are imported. Up until ve
 ```
 
 It is not possible anymore to import only certain nested selectors. If this is a major concern in your daily work feel free to create a new issue or pull request and I may think about making this configurable.
-
-## Upgrade from 1.x.x to 2.x.x
-Version 2.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
-
-```node
-sass.render({
-  ...
-  // Old
-  importer: magicImporter,
-  magicImporter: {
-    cwd: process.cwd()
-  }
-  // New
-  importer: magicImporter({
-    cwd: process.cwd()
-  })
-  ...
-});
-```
-
-If you want to use the `node-sass-magic-importer` in combination with the node-sass CLI, you now have to specify the path to the `node-sass-magic-importer` CLI script.
-
-```bash
-# Old
-node-sass --importer node_modules/node-sass-magic-importer -o dist src/index.scss
-# New
-node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
-```
 
 ## About
 ### Author
