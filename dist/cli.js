@@ -34,8 +34,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // @TODO: Add README info about filter importing and disableWarnings option.
 
 /**
- * Selector specific imports, module importing,
- * globbing support, import files only once.
+ * Selector specific imports, filter imports, module importing,
+ * globbing support and import files only once.
  */
 
 var MagicImporter = function () {
@@ -55,8 +55,11 @@ var MagicImporter = function () {
 
   /**
    * Find the absolute URL for a given relative URL.
-   * @param {string} url - Import url from node-sass.
-   * @return {string} Absolute import url.
+   *
+   * @param {String} url
+   *   Import url from node-sass.
+   * @return {String}
+   *   Absolute import url.
    */
 
 
@@ -127,8 +130,11 @@ var MagicImporter = function () {
 
     /**
      * Synchronously resolve the path to a node-sass import url.
-     * @param {string} url - Import url from node-sass.
-     * @return {string} Importer object or null.
+     *
+     * @param {String} url
+     *   Import url from node-sass.
+     * @return {String}
+     *   Importer object or null.
      */
 
   }, {
@@ -145,7 +151,6 @@ var MagicImporter = function () {
       // Parse url and eventually extract selector filters.
       var selectorImporter = new SelectorImporter(this.options);
       var selectorFilters = selectorImporter.parseUrl(url).selectorFilters || [];
-
       var hasFilters = filterNames.length || selectorFilters.length;
 
       // Try to resolve glob pattern url.
@@ -205,8 +210,11 @@ var MagicImporter = function () {
 
     /**
      * Asynchronously resolve the path to a node-sass import url.
-     * @param {string} url - Import url from node-sass.
-     * @return {Promise} Promise for importer object or null.
+     *
+     * @param {string} url
+     *   Import url from node-sass.
+     * @return {Promise}
+     *   Promise for importer object or null.
      */
 
   }, {

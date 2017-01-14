@@ -16,8 +16,8 @@ import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter'
 import defaultOptions from './default-options';
 
 /**
- * Selector specific imports, module importing,
- * globbing support, import files only once.
+ * Selector specific imports, filter imports, module importing,
+ * globbing support and import files only once.
  */
 export default class MagicImporter {
   /**
@@ -32,8 +32,11 @@ export default class MagicImporter {
 
   /**
    * Find the absolute URL for a given relative URL.
-   * @param {string} url - Import url from node-sass.
-   * @return {string} Absolute import url.
+   *
+   * @param {String} url
+   *   Import url from node-sass.
+   * @return {String}
+   *   Absolute import url.
    */
   getAbsoluteUrl(url) {
     let absoluteUrl = url;
@@ -92,8 +95,11 @@ export default class MagicImporter {
 
   /**
    * Synchronously resolve the path to a node-sass import url.
-   * @param {string} url - Import url from node-sass.
-   * @return {string} Importer object or null.
+   *
+   * @param {String} url
+   *   Import url from node-sass.
+   * @return {String}
+   *   Importer object or null.
    */
   resolveSync(url) {
     let data = null;
@@ -105,7 +111,6 @@ export default class MagicImporter {
     // Parse url and eventually extract selector filters.
     const selectorImporter = new SelectorImporter(this.options);
     const selectorFilters = selectorImporter.parseUrl(url).selectorFilters || [];
-
     const hasFilters = filterNames.length || selectorFilters.length;
 
     // Try to resolve glob pattern url.
@@ -165,8 +170,11 @@ export default class MagicImporter {
 
   /**
    * Asynchronously resolve the path to a node-sass import url.
-   * @param {string} url - Import url from node-sass.
-   * @return {Promise} Promise for importer object or null.
+   *
+   * @param {string} url
+   *   Import url from node-sass.
+   * @return {Promise}
+   *   Promise for importer object or null.
    */
   resolve(url) {
     return new Promise((promiseResolve) => {
