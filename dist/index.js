@@ -7,6 +7,7 @@ var CssNodeExtract = _interopDefault(require('css-node-extract'));
 var fs = _interopDefault(require('fs'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
 var uniqueConcat = _interopDefault(require('unique-concat'));
+var cleanImportUrl = _interopDefault(require('node-sass-filter-importer/dist/lib/clean-import-url'));
 var extractImportFilters = _interopDefault(require('node-sass-filter-importer/dist/lib/extract-import-filters'));
 var FilterImporter = _interopDefault(require('node-sass-filter-importer/dist/lib/filter-importer'));
 var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImporter'));
@@ -138,9 +139,7 @@ var MagicImporter = function () {
       var _this2 = this;
 
       var data = null;
-      // @TODO: Ugly.
-      var resolvedUrl = url.split('from')[1] || url;
-      resolvedUrl = resolvedUrl.trim();
+      var resolvedUrl = cleanImportUrl(url);
 
       // Parse url and eventually extract filters.
       var filterNames = extractImportFilters(url);

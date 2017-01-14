@@ -6,6 +6,7 @@ import path from 'path';
 import postcssSyntax from 'postcss-scss';
 import uniqueConcat from 'unique-concat';
 
+import cleanImportUrl from 'node-sass-filter-importer/dist/lib/clean-import-url';
 import extractImportFilters from 'node-sass-filter-importer/dist/lib/extract-import-filters';
 
 import FilterImporter from 'node-sass-filter-importer/dist/lib/filter-importer';
@@ -125,9 +126,7 @@ export default class MagicImporter {
    */
   resolveSync(url) {
     let data = null;
-    // @TODO: Ugly.
-    let resolvedUrl = url.split(`from`)[1] || url;
-    resolvedUrl = resolvedUrl.trim();
+    let resolvedUrl = cleanImportUrl(url);
 
     // Parse url and eventually extract filters.
     const filterNames = extractImportFilters(url);
