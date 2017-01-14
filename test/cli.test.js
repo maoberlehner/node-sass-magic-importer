@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
-const fs = require(`fs`);
-const exec = require(`child_process`).exec;
-const expect = require(`chai`).expect;
+import fs from 'fs';
+import { exec } from 'child_process';
+import { expect } from 'chai';
 
 /** @test {cli} **/
 describe(`cli`, () => {
