@@ -13,6 +13,19 @@ var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImp
 var PackageImporter = _interopDefault(require('node-sass-package-importer/dist/PackageImporter'));
 var SelectorImporter = _interopDefault(require('node-sass-selector-importer/dist/SelectorImporter'));
 
+/**
+ * Default options.
+ *
+ * @type {Object}
+ */
+var defaultOptions = {
+  cwd: process.cwd(),
+  includePaths: [process.cwd()],
+  extensions: [".scss", ".sass"],
+  packageKeys: ["sass", "scss", "style", "css", "main.sass", "main.scss", "main.style", "main.css", "main"],
+  disableWarnings: false
+};
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33,13 +46,6 @@ var MagicImporter = function () {
 
     _classCallCheck(this, MagicImporter);
 
-    var defaultOptions = {
-      cwd: process.cwd(),
-      includePaths: [process.cwd()],
-      extensions: ['.scss', '.sass'],
-      packageKeys: ['sass', 'scss', 'style', 'css', 'main.sass', 'main.scss', 'main.style', 'main.css', 'main'],
-      disableWarnings: false
-    };
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
     /** @type {Array} */
@@ -60,9 +66,11 @@ var MagicImporter = function () {
       if (!path.isAbsolute(url)) {
         this.options.includePaths.some(function (includePath) {
           try {
-            absoluteUrl = path.normalize(path.join(includePath, absoluteUrl));
+            absoluteUrl = path.normalize(path.resolve(includePath, absoluteUrl));
             return fs.statSync(absoluteUrl).isFile();
-          } catch (e) {} // eslint-disable-line no-empty
+          } catch (e) {
+            absoluteUrl = url;
+          }
           return false;
         });
       }

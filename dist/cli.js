@@ -3,6 +3,7 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var path = _interopDefault(require('path'));
+var uniqueConcat = _interopDefault(require('unique-concat'));
 var CssNodeExtract = _interopDefault(require('css-node-extract'));
 var fs = _interopDefault(require('fs'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
@@ -12,6 +13,19 @@ var FilterImporter = _interopDefault(require('node-sass-filter-importer/dist/lib
 var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImporter'));
 var PackageImporter = _interopDefault(require('node-sass-package-importer/dist/PackageImporter'));
 var SelectorImporter = _interopDefault(require('node-sass-selector-importer/dist/SelectorImporter'));
+
+/**
+ * Default options.
+ *
+ * @type {Object}
+ */
+var defaultOptions = {
+  cwd: process.cwd(),
+  includePaths: [process.cwd()],
+  extensions: [".scss", ".sass"],
+  packageKeys: ["sass", "scss", "style", "css", "main.sass", "main.scss", "main.style", "main.css", "main"],
+  disableWarnings: false
+};
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33,13 +47,6 @@ var MagicImporter = function () {
 
     _classCallCheck(this, MagicImporter);
 
-    var defaultOptions = {
-      cwd: process.cwd(),
-      includePaths: [process.cwd()],
-      extensions: ['.scss', '.sass'],
-      packageKeys: ['sass', 'scss', 'style', 'css', 'main.sass', 'main.scss', 'main.style', 'main.css', 'main'],
-      disableWarnings: false
-    };
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
     /** @type {Array} */
@@ -60,9 +67,11 @@ var MagicImporter = function () {
       if (!path.isAbsolute(url)) {
         this.options.includePaths.some(function (includePath) {
           try {
-            absoluteUrl = path.normalize(path.join(includePath, absoluteUrl));
+            absoluteUrl = path.normalize(path.resolve(includePath, absoluteUrl));
             return fs.statSync(absoluteUrl).isFile();
-          } catch (e) {} // eslint-disable-line no-empty
+          } catch (e) {
+            absoluteUrl = url;
+          }
           return false;
         });
       }
@@ -215,27 +224,35 @@ var MagicImporter = function () {
 }();
 
 /**
- * Magic importer for node-sass
- * @param {Object} options - Configuration options.
+ * Magic importer for node-sass.
+ *
+ * @param {Object} customOptions
+ *   Custom configuration options.
+ * @return {Function}
+ *   node-sass custom importer function.
  */
 var importer = (function () {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  var magicImporter = new MagicImporter();
+  var options = Object.assign({}, defaultOptions, customOptions);
+  var magicImporter = new MagicImporter(options);
+
   /**
-   * @param {string} url - The path in import as-is, which LibSass encountered.
-   * @param {string} prev - The previously resolved path.
+   * @param {string} url
+   *   The path in import as-is, which LibSass encountered.
+   * @param {string} prev
+   *   The previously resolved path.
+   * @return {Object|null}
+   *   node-sass custom importer data object or null.
    */
   return function importer(url, prev) {
-    // Create an array of include paths to search for files.
-    var includePaths = [];
-    if (path.isAbsolute(prev)) {
-      includePaths.push(path.dirname(prev));
-    }
-    magicImporter.options.includePaths = includePaths.concat(this.options.includePaths.split(path.delimiter));
+    var nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
 
-    // Merge default with custom options.
-    Object.assign(magicImporter.options, options);
+    if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
+    magicImporter.options.includePaths = uniqueConcat(options.includePaths, nodeSassIncludePaths).filter(function (item) {
+      return item.length;
+    });
+
     return magicImporter.resolveSync(url);
   };
 });

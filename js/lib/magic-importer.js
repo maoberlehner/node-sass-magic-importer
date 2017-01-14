@@ -13,6 +13,8 @@ import GlobImporter from 'node-sass-glob-importer/dist/GlobImporter';
 import PackageImporter from 'node-sass-package-importer/dist/PackageImporter';
 import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter';
 
+import defaultOptions from './default-options';
+
 /**
  * Selector specific imports, module importing,
  * globbing support, import files only once.
@@ -22,26 +24,6 @@ export default class MagicImporter {
    * @param {Object} options - Configuration options.
    */
   constructor(options = {}) {
-    const defaultOptions = {
-      cwd: process.cwd(),
-      includePaths: [process.cwd()],
-      extensions: [
-        `.scss`,
-        `.sass`,
-      ],
-      packageKeys: [
-        `sass`,
-        `scss`,
-        `style`,
-        `css`,
-        `main.sass`,
-        `main.scss`,
-        `main.style`,
-        `main.css`,
-        `main`,
-      ],
-      disableWarnings: false,
-    };
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
     /** @type {Array} */
@@ -58,9 +40,11 @@ export default class MagicImporter {
     if (!path.isAbsolute(url)) {
       this.options.includePaths.some((includePath) => {
         try {
-          absoluteUrl = path.normalize(path.join(includePath, absoluteUrl));
+          absoluteUrl = path.normalize(path.resolve(includePath, absoluteUrl));
           return fs.statSync(absoluteUrl).isFile();
-        } catch (e) {} // eslint-disable-line no-empty
+        } catch (e) {
+          absoluteUrl = url;
+        }
         return false;
       });
     }
