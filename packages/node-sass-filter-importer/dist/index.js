@@ -153,25 +153,35 @@ var FilterImporter = function () {
 }();
 
 /**
- * Filter importer for node-sass.
+ * Filter importer for node-sass
  *
  * @param {Object} customOptions
  *   Custom configuration options.
- * @return {Object|null}
- *   Contents object or null.
+ * @return {Function}
+ *   node-sass custom importer function.
  */
 var index = (function () {
   var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  var options = Object.assign({}, defaultOptions, customOptions);
+  var filterImporter = new FilterImporter(options);
+
+  /**
+   * @param {string} url
+   *   The path in import as-is, which LibSass encountered.
+   * @param {string} prev
+   *   The previously resolved path.
+   * @return {Object|null}
+   *   node-sass custom importer data object or null.
+   */
   return function importer(url, prev) {
-    var options = Object.assign({}, defaultOptions, customOptions);
     var nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
 
     if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
-    options.includePaths = uniqueConcat(options.includePaths, nodeSassIncludePaths).filter(function (item) {
+    filterImporter.options.includePaths = uniqueConcat(options.includePaths, nodeSassIncludePaths).filter(function (item) {
       return item.length;
     });
 
-    var filterImporter = new FilterImporter(options);
     return filterImporter.resolveSync(url);
   };
 });
