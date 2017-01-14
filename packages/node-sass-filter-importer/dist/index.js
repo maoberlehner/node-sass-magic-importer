@@ -153,7 +153,7 @@ var FilterImporter = function () {
 }();
 
 /**
- * Filter importer for node-sass
+ * Filter importer for node-sass.
  *
  * @param {Object} customOptions
  *   Custom configuration options.
