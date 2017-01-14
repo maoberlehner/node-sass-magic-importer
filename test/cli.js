@@ -9,7 +9,7 @@ describe(`cli`, () => {
     // eslint-disable-next-line max-len
     const cmd = `node_modules/node-sass/bin/node-sass --importer dist/cli.js test/files/combined.scss`;
     const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
-      encoding: `utf8`
+      encoding: `utf8`,
     });
     exec(cmd, (error, stdout) => {
       if (error) throw error;

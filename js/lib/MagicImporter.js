@@ -6,10 +6,12 @@ import path from 'path';
 import postcssSyntax from 'postcss-scss';
 import uniqueConcat from 'unique-concat';
 
-import FilterImporter from 'node-sass-filter-importer/dist/lib/FilterImporter.js';
-import GlobImporter from 'node-sass-glob-importer/dist/GlobImporter.js';
-import PackageImporter from 'node-sass-package-importer/dist/PackageImporter.js';
-import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter.js';
+import extractImportFilters from 'node-sass-filter-importer/dist/lib/extract-import-filters';
+
+import FilterImporter from 'node-sass-filter-importer/dist/lib/filter-importer';
+import GlobImporter from 'node-sass-glob-importer/dist/GlobImporter';
+import PackageImporter from 'node-sass-package-importer/dist/PackageImporter';
+import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter';
 
 /**
  * Selector specific imports, module importing,
@@ -25,7 +27,7 @@ export default class MagicImporter {
       includePaths: [process.cwd()],
       extensions: [
         `.scss`,
-        `.sass`
+        `.sass`,
       ],
       packageKeys: [
         `sass`,
@@ -36,8 +38,8 @@ export default class MagicImporter {
         `main.scss`,
         `main.style`,
         `main.css`,
-        `main`
-      ]
+        `main`,
+      ],
     };
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
@@ -57,7 +59,7 @@ export default class MagicImporter {
         try {
           absoluteUrl = path.normalize(path.join(includePath, absoluteUrl));
           return fs.statSync(absoluteUrl).isFile();
-        } catch (e) {}
+        } catch (e) {} // eslint-disable-line no-empty
         return false;
       });
     }
@@ -128,8 +130,7 @@ export default class MagicImporter {
     resolvedUrl = resolvedUrl.trim();
 
     // Parse url and eventually extract filters.
-    const filterImporter = new FilterImporter(this.options);
-    const filterNames = filterImporter.parseUrl(url).filterNames;
+    const filterNames = extractImportFilters(url);
 
     // Parse url and eventually extract selector filters.
     const selectorImporter = new SelectorImporter(this.options);
@@ -139,7 +140,7 @@ export default class MagicImporter {
     const globImporter = new GlobImporter(this.options);
     const globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
     if (globFiles.length) {
-      return { contents: globFiles.map(x => {
+      return { contents: globFiles.map((x) => {
         this.store(x);
         return fs.readFileSync(x, { encoding: `utf8` });
       }).join(`\n`) };
@@ -160,7 +161,7 @@ export default class MagicImporter {
     if (!storedData) {
       return {
         file: ``,
-        contents: ``
+        contents: ``,
       };
     }
 
@@ -173,21 +174,22 @@ export default class MagicImporter {
     if (selectorFilters) {
       filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
     }
-    if (filterNames) {
+    if (filterNames.length) {
       if (filteredContents) {
         filteredContents = CssNodeExtract.processSync({
           css: filteredContents,
           filterNames,
-          postcssSyntax
+          postcssSyntax,
         });
       } else {
+        const filterImporter = new FilterImporter(this.options);
         filteredContents = filterImporter.extractFilters(resolvedUrl, filterNames);
       }
     }
     if (filteredContents) {
       data = {
         file: resolvedUrl,
-        contents: filteredContents
+        contents: filteredContents,
       };
     }
 

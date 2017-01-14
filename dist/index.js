@@ -7,10 +7,11 @@ var CssNodeExtract = _interopDefault(require('css-node-extract'));
 var fs = _interopDefault(require('fs'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
 var uniqueConcat = _interopDefault(require('unique-concat'));
-var FilterImporter = _interopDefault(require('node-sass-filter-importer/dist/lib/FilterImporter.js'));
-var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImporter.js'));
-var PackageImporter = _interopDefault(require('node-sass-package-importer/dist/PackageImporter.js'));
-var SelectorImporter = _interopDefault(require('node-sass-selector-importer/dist/SelectorImporter.js'));
+var extractImportFilters = _interopDefault(require('node-sass-filter-importer/dist/lib/extract-import-filters'));
+var FilterImporter = _interopDefault(require('node-sass-filter-importer/dist/lib/filter-importer'));
+var GlobImporter = _interopDefault(require('node-sass-glob-importer/dist/GlobImporter'));
+var PackageImporter = _interopDefault(require('node-sass-package-importer/dist/PackageImporter'));
+var SelectorImporter = _interopDefault(require('node-sass-selector-importer/dist/SelectorImporter'));
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -60,7 +61,7 @@ var MagicImporter = function () {
           try {
             absoluteUrl = path.normalize(path.join(includePath, absoluteUrl));
             return fs.statSync(absoluteUrl).isFile();
-          } catch (e) {}
+          } catch (e) {} // eslint-disable-line no-empty
           return false;
         });
       }
@@ -142,8 +143,7 @@ var MagicImporter = function () {
       resolvedUrl = resolvedUrl.trim();
 
       // Parse url and eventually extract filters.
-      var filterImporter = new FilterImporter(this.options);
-      var filterNames = filterImporter.parseUrl(url).filterNames;
+      var filterNames = extractImportFilters(url);
 
       // Parse url and eventually extract selector filters.
       var selectorImporter = new SelectorImporter(this.options);
@@ -187,7 +187,7 @@ var MagicImporter = function () {
       if (selectorFilters) {
         filteredContents = selectorImporter.extractSelectors(resolvedUrl, selectorFilters);
       }
-      if (filterNames) {
+      if (filterNames.length) {
         if (filteredContents) {
           filteredContents = CssNodeExtract.processSync({
             css: filteredContents,
@@ -195,6 +195,7 @@ var MagicImporter = function () {
             postcssSyntax: postcssSyntax
           });
         } else {
+          var filterImporter = new FilterImporter(this.options);
           filteredContents = filterImporter.extractFilters(resolvedUrl, filterNames);
         }
       }

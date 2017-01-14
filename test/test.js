@@ -17,22 +17,22 @@ describe(`magicImporter`, () => {
 
   it(`should convert a SASS file synchronously to CSS`, () => {
     const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
-      encoding: `utf8`
+      encoding: `utf8`,
     });
     const result = sass.renderSync({
       file: `test/files/combined.scss`,
-      importer: magicImporter()
+      importer: magicImporter(),
     });
     expect(result.css.toString()).to.equal(expectedResult);
   });
 
   it(`should convert a SASS file asynchronously to CSS`, (done) => {
     const expectedResult = fs.readFileSync(`test/files/combined-reference.css`, {
-      encoding: `utf8`
+      encoding: `utf8`,
     });
     sass.render({
       file: `test/files/combined.scss`,
-      importer: magicImporter()
+      importer: magicImporter(),
     }, (error, result) => {
       if (!error) {
         expect(result.css.toString()).to.equal(expectedResult);
@@ -45,11 +45,11 @@ describe(`magicImporter`, () => {
 
   it(`should filter and convert a SASS file synchronously to CSS`, () => {
     const expectedResult = fs.readFileSync(`test/files/filter-reference.css`, {
-      encoding: `utf8`
+      encoding: `utf8`,
     });
     const result = sass.renderSync({
       file: `test/files/filter.scss`,
-      importer: magicImporter()
+      importer: magicImporter(),
     });
     expect(result.css.toString()).to.equal(expectedResult);
   });
@@ -57,7 +57,7 @@ describe(`magicImporter`, () => {
   it(`should compile bootstrap`, (done) => {
     sass.render({
       file: `test/files/bootstrap.scss`,
-      importer: magicImporter()
+      importer: magicImporter(),
     }, (error) => {
       if (!error) {
         done();
@@ -70,7 +70,7 @@ describe(`magicImporter`, () => {
   it(`should compile bootstrap imported with alternative prefix`, (done) => {
     sass.render({
       file: `test/files/bootstrap-alt-prefix.scss`,
-      importer: magicImporter({ prefix: `+` })
+      importer: magicImporter({ prefix: `+` }),
     }, (error) => {
       if (!error) {
         done();
@@ -83,7 +83,7 @@ describe(`magicImporter`, () => {
   it(`should compile foundation`, (done) => {
     sass.render({
       file: `test/files/foundation.scss`,
-      importer: magicImporter()
+      importer: magicImporter(),
     }, (error) => {
       if (!error) {
         done();
@@ -148,11 +148,11 @@ describe(`MagicImporter`, () => {
       const url = `/some/random/url.scss`;
       const selectorFilters = [
         [`.selector-a`],
-        [`.selector-b`]
+        [`.selector-b`],
       ];
       const expectedResult = {
         url,
-        selectorFilters
+        selectorFilters,
       };
 
       magicImporterInstance.onceStore = {};
@@ -169,11 +169,11 @@ describe(`MagicImporter`, () => {
       const selectorFilters = null;
       const storedSelectorFilters = [
         [`.selector-a`],
-        [`.selector-b`]
+        [`.selector-b`],
       ];
       const expectedResult = {
         url,
-        selectorFilters
+        selectorFilters,
       };
       const expectedOnceStoreState = {};
       expectedOnceStoreState[url] = null;
@@ -196,25 +196,25 @@ describe(`MagicImporter`, () => {
       const selectorFilters = [
         [`.selector-a`],
         [`.selector-c`],
-        [`.selector-d`]
+        [`.selector-d`],
       ];
       const expectedSelectorFilters = [
         [`.selector-c`],
-        [`.selector-d`]
+        [`.selector-d`],
       ];
       const storedSelectorFilters = [
         [`.selector-a`],
-        [`.selector-b`]
+        [`.selector-b`],
       ];
       const expectedStoredSelectorFilters = [
         [`.selector-a`],
         [`.selector-b`],
         [`.selector-c`],
-        [`.selector-d`]
+        [`.selector-d`],
       ];
       const expectedResult = {
         url,
-        selectorFilters: expectedSelectorFilters
+        selectorFilters: expectedSelectorFilters,
       };
       const expectedOnceStoreState = {};
       expectedOnceStoreState[url] = expectedStoredSelectorFilters;
@@ -235,7 +235,7 @@ describe(`MagicImporter`, () => {
       const url = `/some/random/url.scss`;
       const selectorFilters = [
         [`.selector-a`],
-        [`.selector-b`]
+        [`.selector-b`],
       ];
       const storedSelectorFilters = selectorFilters;
       const expectedResult = false;
