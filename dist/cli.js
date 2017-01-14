@@ -229,22 +229,35 @@ var MagicImporter = function () {
   return MagicImporter;
 }();
 
-var magicImporter = new MagicImporter();
-
 /**
  * Magic importer for node-sass
- * @param {string} url - The path in import as-is, which LibSass encountered.
- * @param {string} prev - The previously resolved path.
+ * @param {Object} options - Configuration options.
  */
-var cli = function (url, prev) {
-  // Create an array of include paths to search for files.
-  var includePaths = [];
-  if (path.isAbsolute(prev)) {
-    includePaths.push(path.dirname(prev));
-  }
-  magicImporter.options.includePaths = includePaths.concat(this.options.includePaths.split(path.delimiter));
+var importer = (function () {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  return magicImporter.resolveSync(url);
-};
+  var magicImporter = new MagicImporter();
+  /**
+   * @param {string} url - The path in import as-is, which LibSass encountered.
+   * @param {string} prev - The previously resolved path.
+   */
+  return function importer(url, prev) {
+    // Create an array of include paths to search for files.
+    var includePaths = [];
+    if (path.isAbsolute(prev)) {
+      includePaths.push(path.dirname(prev));
+    }
+    magicImporter.options.includePaths = includePaths.concat(this.options.includePaths.split(path.delimiter));
+
+    // Merge default with custom options.
+    Object.assign(magicImporter.options, options);
+    return magicImporter.resolveSync(url);
+  };
+});
+
+/**
+ * CLI importer.
+ */
+var cli = importer();
 
 module.exports = cli;
