@@ -25,7 +25,6 @@
   "devDependencies": {
     "bootstrap": "4.0.0-alpha.2",
     "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
     "esdoc": "^0.4.8",
     "eslint": "^3.8.1",
     "eslint-config-modularis": "^2.0.0",
