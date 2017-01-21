@@ -23,6 +23,7 @@ const defaultOptions = {
   ],
   prefix: `~`,
   disableWarnings: false,
+  disableImportOnce: false,
 };
 
 export default defaultOptions;

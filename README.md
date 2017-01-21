@@ -201,7 +201,9 @@ var options = {
   // You can set the special character for indicating a module resolution.
   prefix: '~',
   // Disable console warnings.
-  disableWarnings: false
+  disableWarnings: false,
+  // Disable importing files only once.
+  disableImportOnce: false
 };
 
 sass.render({

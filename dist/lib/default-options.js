@@ -11,7 +11,8 @@ var defaultOptions = {
   extensions: [".scss", ".sass"],
   packageKeys: ["sass", "scss", "style", "css", "main.sass", "main.scss", "main.style", "main.css", "main"],
   prefix: "~",
-  disableWarnings: false
+  disableWarnings: false,
+  disableImportOnce: false
 };
 
 module.exports = defaultOptions;
