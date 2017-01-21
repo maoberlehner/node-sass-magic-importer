@@ -24,7 +24,8 @@ var defaultOptions = {
   extensions: [".scss", ".sass"],
   packageKeys: ["sass", "scss", "style", "css", "main.sass", "main.scss", "main.style", "main.css", "main"],
   prefix: "~",
-  disableWarnings: false
+  disableWarnings: false,
+  disableImportOnce: false
 };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -171,7 +172,7 @@ var MagicImporter = function () {
 
       // If the file is already stored and should not be loaded,
       // prevent node-sass from importing the file again.
-      if (this.isInStore(resolvedUrl, hasFilters)) {
+      if (this.isInStore(resolvedUrl, hasFilters) && !this.options.disableImportOnce) {
         return {
           file: '',
           contents: ''
