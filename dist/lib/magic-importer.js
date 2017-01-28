@@ -122,8 +122,6 @@ var MagicImporter = function () {
         return false;
       }
 
-      if (!hasFilters) this.storeAdd(cleanUrl);
-
       return false;
     }
 
@@ -178,6 +176,8 @@ var MagicImporter = function () {
           contents: ''
         };
       }
+
+      if (!hasFilters) this.storeAdd(resolvedUrl);
 
       // Filter.
       var filteredContents = void 0;

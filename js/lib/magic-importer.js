@@ -86,8 +86,6 @@ export default class MagicImporter {
       return false;
     }
 
-    if (!hasFilters) this.storeAdd(cleanUrl);
-
     return false;
   }
 
@@ -137,6 +135,8 @@ export default class MagicImporter {
         contents: ``,
       };
     }
+
+    if (!hasFilters) this.storeAdd(resolvedUrl);
 
     // Filter.
     let filteredContents;
