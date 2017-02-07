@@ -1,5 +1,6 @@
 import CssNodeExtract from 'css-node-extract';
 import fs from 'fs';
+import glob from 'glob';
 import path from 'path';
 import postcssSyntax from 'postcss-scss';
 
@@ -40,11 +41,15 @@ export default class MagicImporter {
     let absoluteUrl = url;
     if (!path.isAbsolute(url)) {
       this.options.includePaths.some((includePath) => {
-        try {
-          absoluteUrl = path.normalize(path.resolve(includePath, absoluteUrl));
-          return fs.statSync(absoluteUrl).isFile();
-        } catch (e) {
-          absoluteUrl = url;
+        const globMatch = glob.sync(path.join(
+          includePath,
+          path.parse(url).dir,
+          `?(_)${path.parse(url).name}@(${this.options.extensions.join(`|`)})`
+        ));
+
+        if (globMatch.length) {
+          absoluteUrl = globMatch[0];
+          return true;
         }
         return false;
       });
@@ -114,8 +119,12 @@ export default class MagicImporter {
     const globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
     if (globFiles.length) {
       return { contents: globFiles.map((globUrl) => {
-        this.storeAdd(globUrl, hasFilters);
-        return fs.readFileSync(globUrl, { encoding: `utf8` });
+        if (!this.isInStore(globUrl, hasFilters) || this.options.disableImportOnce) {
+          if (!hasFilters) this.storeAdd(globUrl);
+          return fs.readFileSync(globUrl, { encoding: `utf8` });
+        }
+        if (!hasFilters) this.storeAdd(globUrl);
+        return ``;
       }).join(`\n`) };
     }
 

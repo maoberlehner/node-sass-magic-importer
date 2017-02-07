@@ -1,3 +1,7 @@
+// SASS filename variations
+@import 'test-imports/_underscore.scss';
+@import 'test-imports/nofileending';
+
 // Glob import.
 @import 'test-imports/**/*.scss';
 

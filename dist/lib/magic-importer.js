@@ -4,6 +4,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var CssNodeExtract = _interopDefault(require('css-node-extract'));
 var fs = _interopDefault(require('fs'));
+var glob = _interopDefault(require('glob'));
 var path = _interopDefault(require('path'));
 var postcssSyntax = _interopDefault(require('postcss-scss'));
 var cleanImportUrl = _interopDefault(require('node-sass-filter-importer/dist/lib/clean-import-url'));
@@ -65,14 +66,16 @@ var MagicImporter = function () {
   _createClass(MagicImporter, [{
     key: 'getAbsoluteUrl',
     value: function getAbsoluteUrl(url) {
+      var _this = this;
+
       var absoluteUrl = url;
       if (!path.isAbsolute(url)) {
         this.options.includePaths.some(function (includePath) {
-          try {
-            absoluteUrl = path.normalize(path.resolve(includePath, absoluteUrl));
-            return fs.statSync(absoluteUrl).isFile();
-          } catch (e) {
-            absoluteUrl = url;
+          var globMatch = glob.sync(path.join(includePath, path.parse(url).dir, '?(_)' + path.parse(url).name + '@(' + _this.options.extensions.join('|') + ')'));
+
+          if (globMatch.length) {
+            absoluteUrl = globMatch[0];
+            return true;
           }
           return false;
         });
@@ -137,7 +140,7 @@ var MagicImporter = function () {
   }, {
     key: 'resolveSync',
     value: function resolveSync(url) {
-      var _this = this;
+      var _this2 = this;
 
       var data = null;
       var resolvedUrl = cleanImportUrl(url);
@@ -155,8 +158,12 @@ var MagicImporter = function () {
       var globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
       if (globFiles.length) {
         return { contents: globFiles.map(function (globUrl) {
-            _this.storeAdd(globUrl, hasFilters);
-            return fs.readFileSync(globUrl, { encoding: 'utf8' });
+            if (!_this2.isInStore(globUrl, hasFilters) || _this2.options.disableImportOnce) {
+              if (!hasFilters) _this2.storeAdd(globUrl);
+              return fs.readFileSync(globUrl, { encoding: 'utf8' });
+            }
+            if (!hasFilters) _this2.storeAdd(globUrl);
+            return '';
           }).join('\n') };
       }
 
@@ -219,10 +226,10 @@ var MagicImporter = function () {
   }, {
     key: 'resolve',
     value: function resolve(url) {
-      var _this2 = this;
+      var _this3 = this;
 
       return new Promise(function (promiseResolve) {
-        promiseResolve(_this2.resolveSync(url));
+        promiseResolve(_this3.resolveSync(url));
       });
     }
   }]);
