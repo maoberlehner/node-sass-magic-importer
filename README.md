@@ -16,6 +16,8 @@ This importer enables several comfort functions for importing SASS files more ea
 
 By default every file is only imported once even if you `@import` the same file multiple times in your code (except if you are using filters).
 
+**You may notice that source map support is limited for styles which are imported with selector or node filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
+
 ### Selector filtering
 With selector filtering, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
 
@@ -96,8 +98,6 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
   color: inherit;
 }
 ```
-
-**You may notice that source map support is limited for styles which are imported with selector filtering. If you have an idea how to fix this, please feel free to create a new issue or pull request.**
 
 ### Node filtering
 Filter certain elements from SCSS code.
