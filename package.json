@@ -66,5 +66,11 @@
         "npm test"
       ]
     }
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": [
+      "babel-register"
+    ]
   }
 }
