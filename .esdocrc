@@ -2,7 +2,7 @@
   "source": "js",
   "destination": "esdoc",
   "test": {
-    "type": "mocha",
+    "type": "ava",
     "source": "test"
   }
 }
