@@ -1,5 +1,6 @@
 import test from 'ava';
 import sinon from 'sinon';
+import nodePath from 'path';
 
 import { getAbsoluteUrl } from '../../js/lib/get-absolute-url';
 
@@ -34,13 +35,31 @@ test(`Should call getSassFileGlobPattern() with the parsed file base.`, (t) => {
 test(`Should call path.resolve() with include path dir and a glob pattern base.`, (t) => {
   const dir = `test/dir`;
   const base = `test-file`;
+  const globPattern = `glob-pattern`;
   const includePath = `include/path`;
   const path = {
     parse: sinon.stub().returns({ dir, base }),
     resolve: sinon.spy(),
   };
-  const getSassFileGlobPattern = sinon.stub().returns(`glob-pattern`);
+  const getSassFileGlobPattern = sinon.stub().returns(globPattern);
 
   getAbsoluteUrl({ path, getSassFileGlobPattern }, undefined, [includePath]);
-  t.true(path.resolve.calledWith(includePath, dir, `glob-pattern`));
+  t.true(path.resolve.calledWith(includePath, dir, globPattern));
+});
+
+test(`Should call glob.sync() with resolved include path.`, (t) => {
+  const dir = `test/dir`;
+  const base = `test-file`;
+  const globPattern = `glob-pattern`;
+  const includePath = `include/path`;
+  const resolvedPath = nodePath.resolve(includePath, dir, globPattern);
+  const path = {
+    parse: sinon.stub().returns({ dir, base }),
+    resolve: sinon.stub().returns(resolvedPath),
+  };
+  const getSassFileGlobPattern = sinon.stub().returns(globPattern);
+  const glob = { sync: sinon.spy() };
+
+  getAbsoluteUrl({ path, getSassFileGlobPattern, glob }, undefined, [includePath]);
+  t.true(glob.sync.calledWith(resolvedPath));
 });

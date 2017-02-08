@@ -1,8 +1,8 @@
-export function getAbsoluteUrl({ path, getSassFileGlobPattern }, url, includePaths = []) {
+export function getAbsoluteUrl({ path, getSassFileGlobPattern, glob }, url, includePaths = []) {
   const { dir, base } = path.parse(url);
   const baseGlobPattern = getSassFileGlobPattern(base);
   includePaths.some((includePath) => {
-    path.resolve(includePath, dir, baseGlobPattern);
+    glob.sync(path.resolve(includePath, dir, baseGlobPattern));
     return false;
   });
 }
