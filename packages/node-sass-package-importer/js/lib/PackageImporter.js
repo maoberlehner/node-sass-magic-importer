@@ -75,9 +75,7 @@ export default class PackageImporter {
       return false;
     });
 
-    file = file.replace(/\.css$/, ``);
-
-    return file ? { file } : null;
+    return file ? { file: file.replace(/\.css$/, ``) } : null;
   }
 
   /**
