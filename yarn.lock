@@ -2255,9 +2255,9 @@ node-sass-glob-importer@^3.0.2:
     glob "^7.1.1"
     unique-concat "^0.2.2"
 
-node-sass-package-importer@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/node-sass-package-importer/-/node-sass-package-importer-3.0.1.tgz#1e0dfd25d1afd41e61a4d50c76d5345aa39447ee"
+node-sass-package-importer@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/node-sass-package-importer/-/node-sass-package-importer-3.0.3.tgz#d02adf35b30b0afbc12533e335e63123b85b65bd"
   dependencies:
     resolve "^1.1.7"
 
