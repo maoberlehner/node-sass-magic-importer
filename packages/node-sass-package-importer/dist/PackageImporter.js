@@ -79,6 +79,8 @@ PackageImporter.prototype.resolveSync = function resolveSync (url) {
     return false;
   });
 
+  file = file.replace(/\.css$/, "");
+
   return file ? { file: file } : null;
 };
 
