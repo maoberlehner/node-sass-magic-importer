@@ -64,7 +64,7 @@ const glob = { sync: sinon.spy() };
 test.only(`Should call glob.sync() with resolved include path.`, (t) => {
   const resolvedPath = nodePath.resolve(includePath, dir, globPattern);
 
-  getAbsoluteUrl({ path, getSassFileGlobPattern, glob });
+  getAbsoluteUrl({ path, getSassFileGlobPattern, glob }, `test-url`, [includePath]);
   t.true(glob.sync.calledWith(resolvedPath));
 });
 
