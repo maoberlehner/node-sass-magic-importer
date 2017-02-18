@@ -10,26 +10,26 @@ test(`Should be a function.`, (t) => {
 });
 
 test(`Should call glob.sync() with resolved include path.`, (t) => {
-  const sassFileGlobPattern = sinon.stub().returns(`some/string`);
+  const sassGlobPattern = sinon.stub().returns(`some/string`);
   const globStub = { sync: sinon.stub().returns([]) };
 
   resolveUrl({
     path,
-    sassFileGlobPattern,
+    sassGlobPattern,
     glob: globStub,
   }, `test/url`, [`test/include/path`]);
 
-  t.true(sassFileGlobPattern.calledWith(`url`));
+  t.true(sassGlobPattern.calledWith(`url`));
   t.true(globStub.sync.called);
 });
 
 test(`Should return the given URL if no absolute URL can be resolved.`, (t) => {
-  const sassFileGlobPattern = sinon.stub().returns(`some/string`);
+  const sassGlobPattern = sinon.stub().returns(`some/string`);
   const url = `test/url`;
 
   const resolvedUrl = resolveUrl({
     path,
-    sassFileGlobPattern,
+    sassGlobPattern,
     glob,
   }, url, [`test/include/path`]);
 
@@ -37,14 +37,14 @@ test(`Should return the given URL if no absolute URL can be resolved.`, (t) => {
 });
 
 test(`Should return the absolute URL to a file.`, (t) => {
-  const sassFileGlobPattern = sinon.stub().returns(`combined.scss`);
+  const sassGlobPattern = sinon.stub().returns(`combined.scss`);
   const url = `files/combined.scss`;
   const includePath = path.resolve(__dirname, `../`);
   const absoluteUrl = path.resolve(includePath, url);
 
   const resolvedUrl = resolveUrl({
     path,
-    sassFileGlobPattern,
+    sassGlobPattern,
     glob,
   }, url, [includePath]);
 
