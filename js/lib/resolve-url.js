@@ -3,7 +3,7 @@ import pathModule from 'path';
 
 import sassGlobPatternModule from './sass-glob-pattern';
 
-export function resolveUrl({ path, sassGlobPattern, glob }, url, includePaths = []) {
+function resolveUrl({ path, sassGlobPattern, glob }, url, includePaths = []) {
   const { dir, base } = path.parse(url);
   const baseGlobPattern = sassGlobPattern(base);
   let resolvedUrls = [];
@@ -16,6 +16,10 @@ export function resolveUrl({ path, sassGlobPattern, glob }, url, includePaths = 
   });
 
   return resolvedUrls[0] || url;
+}
+
+export function resolveUrlFactory(dependencies) {
+  return resolveUrl.bind(null, dependencies);
 }
 
 export default resolveUrl.bind(null, {
