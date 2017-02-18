@@ -7,7 +7,7 @@ test(`Should be a function.`, (t) => {
   t.is(typeof storeAdd, `function`);
 });
 
-test.only(`Should add a file to the store if it is not already included.`, (t) => {
+test(`Should add a file to the store if it is not already included.`, (t) => {
   const url = `some/url`;
   const store = [];
   const storeAdd = storeAddFactory({ store });
@@ -16,7 +16,7 @@ test.only(`Should add a file to the store if it is not already included.`, (t) =
   t.deepEqual(store, [url]);
 });
 
-test.only(`Should not add a file to the store if it is already included.`, (t) => {
+test(`Should not add a file to the store if it is already included.`, (t) => {
   const url = `some/url`;
   const store = [url];
   const storeAdd = storeAddFactory({ store });
