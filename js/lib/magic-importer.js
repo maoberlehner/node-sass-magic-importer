@@ -72,14 +72,17 @@ export default class MagicImporter {
 
     // If the file is already stored and should not be loaded,
     // prevent node-sass from importing the file again.
-    if (storeHas(resolveUrl(resolvedUrl), hasFilters) && !this.options.disableImportOnce) {
+    if (
+      storeHas(resolveUrl(resolvedUrl, this.options.includePaths), hasFilters) &&
+      !this.options.disableImportOnce
+    ) {
       return {
         file: ``,
         contents: ``,
       };
     }
 
-    if (!hasFilters) storeAdd(resolveUrl(resolvedUrl));
+    if (!hasFilters) storeAdd(resolveUrl(resolvedUrl, this.options.includePaths));
 
     // Filter.
     let filteredContents;
