@@ -3,6 +3,7 @@ import uniqueConcat from 'unique-concat';
 
 import defaultOptions from './lib/default-options';
 import MagicImporter from './lib/magic-importer';
+import storeClear from './lib/store-clear';
 
 /**
  * Magic importer for node-sass.
@@ -15,6 +16,8 @@ import MagicImporter from './lib/magic-importer';
 export default (customOptions = {}) => {
   const options = Object.assign({}, defaultOptions, customOptions);
   const magicImporter = new MagicImporter(options);
+
+  storeClear();
 
   /**
    * @param {string} url
