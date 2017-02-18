@@ -1,11 +1,11 @@
 import globModule from 'glob';
 import pathModule from 'path';
 
-import sassFileGlobPatternModule from './sass-file-glob-pattern';
+import sassGlobPatternModule from './sass-glob-pattern';
 
-export function resolveUrl({ path, sassFileGlobPattern, glob }, url, includePaths = []) {
+export function resolveUrl({ path, sassGlobPattern, glob }, url, includePaths = []) {
   const { dir, base } = path.parse(url);
-  const baseGlobPattern = sassFileGlobPattern(base);
+  const baseGlobPattern = sassGlobPattern(base);
   let resolvedUrls = [];
 
   includePaths.some((includePath) => {
@@ -20,6 +20,6 @@ export function resolveUrl({ path, sassFileGlobPattern, glob }, url, includePath
 
 export default resolveUrl.bind(null, {
   path: pathModule,
-  sassFileGlobPattern: sassFileGlobPatternModule,
+  sassGlobPattern: sassGlobPatternModule,
   glob: globModule,
 });
