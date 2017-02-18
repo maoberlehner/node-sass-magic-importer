@@ -12,6 +12,8 @@ import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter'
 
 import defaultOptions from './default-options';
 import resolveUrl from './resolve-url';
+import storeAdd from './store-add';
+import storeHas from './store-has';
 
 /**
  * Selector specific imports, filter imports, module importing,
@@ -24,45 +26,6 @@ export default class MagicImporter {
   constructor(options = {}) {
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
-    /** @type {Array} */
-    this.store = [];
-  }
-
-  /**
-   * Add an URL to the store of imported URLs.
-   *
-   * @param {String} cleanUrl
-   *   Cleaned up import url from node-sass.
-   */
-  storeAdd(cleanUrl) {
-    const resolvedUrl = resolveUrl(cleanUrl);
-    if (!this.store.includes(resolvedUrl)) this.store.push(resolvedUrl);
-  }
-
-  /**
-   * Check if an URL is in store, add it if is not and it has no filters.
-   *
-   * @param {String} cleanUrl
-   *   Cleaned up import url from node-sass.
-   * @param {Boolean} hasFilters
-   *   Does the URL have filters or not.
-   * @return {boolean}
-   *   Returns true if the URL has no filters and is already stored.
-   */
-  isInStore(cleanUrl, hasFilters = false) {
-    const resolvedUrl = resolveUrl(cleanUrl);
-
-    if (!hasFilters && this.store.includes(resolvedUrl)) return true;
-
-    if (hasFilters && this.store.includes(resolvedUrl)) {
-      if (!this.options.disableWarnings) {
-        // eslint-disable-next-line no-console
-        console.warn(`Warning: double import of file "${resolvedUrl}".`);
-      }
-      return false;
-    }
-
-    return false;
   }
 
   /**
@@ -90,11 +53,11 @@ export default class MagicImporter {
     const globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
     if (globFiles.length) {
       return { contents: globFiles.map((globUrl) => {
-        if (!this.isInStore(globUrl, hasFilters) || this.options.disableImportOnce) {
-          if (!hasFilters) this.storeAdd(globUrl);
+        if (!storeHas(globUrl, hasFilters) || this.options.disableImportOnce) {
+          if (!hasFilters) storeAdd(globUrl);
           return fs.readFileSync(globUrl, { encoding: `utf8` });
         }
-        if (!hasFilters) this.storeAdd(globUrl);
+        if (!hasFilters) storeAdd(globUrl);
         return ``;
       }).join(`\n`) };
     }
@@ -109,14 +72,14 @@ export default class MagicImporter {
 
     // If the file is already stored and should not be loaded,
     // prevent node-sass from importing the file again.
-    if (this.isInStore(resolvedUrl, hasFilters) && !this.options.disableImportOnce) {
+    if (storeHas(resolveUrl(resolvedUrl), hasFilters) && !this.options.disableImportOnce) {
       return {
         file: ``,
         contents: ``,
       };
     }
 
-    if (!hasFilters) this.storeAdd(resolvedUrl);
+    if (!hasFilters) storeAdd(resolveUrl(resolvedUrl));
 
     // Filter.
     let filteredContents;
