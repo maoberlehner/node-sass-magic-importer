@@ -1,7 +1,5 @@
 import CssNodeExtract from 'css-node-extract';
 import fs from 'fs';
-import glob from 'glob';
-import path from 'path';
 import postcssSyntax from 'postcss-scss';
 
 import cleanImportUrl from 'node-sass-filter-importer/dist/lib/clean-import-url';
@@ -13,6 +11,7 @@ import PackageImporter from 'node-sass-package-importer/dist/PackageImporter';
 import SelectorImporter from 'node-sass-selector-importer/dist/SelectorImporter';
 
 import defaultOptions from './default-options';
+import resolveUrl from './resolve-url';
 
 /**
  * Selector specific imports, filter imports, module importing,
@@ -30,42 +29,14 @@ export default class MagicImporter {
   }
 
   /**
-   * Find the absolute URL for a given relative URL.
-   *
-   * @param {String} url
-   *   Import url from node-sass.
-   * @return {String}
-   *   Absolute import url.
-   */
-  getAbsoluteUrl(url) {
-    let absoluteUrl = url;
-    if (!path.isAbsolute(url)) {
-      this.options.includePaths.some((includePath) => {
-        const globMatch = glob.sync(path.join(
-          includePath,
-          path.parse(url).dir,
-          `?(_)${path.parse(url).name}@(${this.options.extensions.join(`|`)})`
-        ));
-
-        if (globMatch.length) {
-          absoluteUrl = globMatch[0];
-          return true;
-        }
-        return false;
-      });
-    }
-    return absoluteUrl;
-  }
-
-  /**
    * Add an URL to the store of imported URLs.
    *
    * @param {String} cleanUrl
    *   Cleaned up import url from node-sass.
    */
   storeAdd(cleanUrl) {
-    const absoluteUrl = this.getAbsoluteUrl(cleanUrl);
-    if (!this.store.includes(absoluteUrl)) this.store.push(absoluteUrl);
+    const resolvedUrl = resolveUrl(cleanUrl);
+    if (!this.store.includes(resolvedUrl)) this.store.push(resolvedUrl);
   }
 
   /**
@@ -79,14 +50,14 @@ export default class MagicImporter {
    *   Returns true if the URL has no filters and is already stored.
    */
   isInStore(cleanUrl, hasFilters = false) {
-    const absoluteUrl = this.getAbsoluteUrl(cleanUrl);
+    const resolvedUrl = resolveUrl(cleanUrl);
 
-    if (!hasFilters && this.store.includes(absoluteUrl)) return true;
+    if (!hasFilters && this.store.includes(resolvedUrl)) return true;
 
-    if (hasFilters && this.store.includes(absoluteUrl)) {
+    if (hasFilters && this.store.includes(resolvedUrl)) {
       if (!this.options.disableWarnings) {
         // eslint-disable-next-line no-console
-        console.warn(`Warning: double import of file "${absoluteUrl}".`);
+        console.warn(`Warning: double import of file "${resolvedUrl}".`);
       }
       return false;
     }
