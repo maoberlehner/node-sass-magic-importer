@@ -3,6 +3,11 @@
 
 Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once.
 
+## Install
+```bash
+npm install node-sass-magic-importer --save-dev
+```
+
 ## Features
 This importer enables several comfort functions for importing SASS files more easily.
 - [Selector filtering](#selector-filtering): import only specific selectors from a file.  
