@@ -1,8 +1,0 @@
-.test-import4-1 {
-  content: 'Test import 4-1'; }
-
-.variable-test {
-  content: 3; }
-
-.mixin-test .selector-inside-mixin-at-rule {
-  content: 'Selector inside mixin at rule'; }
