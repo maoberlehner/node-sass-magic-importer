@@ -3,21 +3,16 @@ import * as sinon from 'sinon';
 
 import resolveUrl from '../functions/resolve-url';
 
-import { IImporterOptions } from '../interfaces/IImporter';
 import { IDependencies, OnceImporter } from './OnceImporter';
 
 test.beforeEach((t) => {
   t.context.dependencies = {
     resolveUrl,
   } as IDependencies;
-
-  t.context.options = {
-    cwd: process.cwd(),
-  } as IImporterOptions;
 });
 
 test(`Should be an object.`, (t) => {
-  const onceImporter = new OnceImporter(t.context.dependencies, t.context.options);
+  const onceImporter = new OnceImporter(t.context.dependencies);
   t.is(typeof onceImporter, `object`);
 });
 
@@ -32,7 +27,7 @@ test(`Should resolve the absolute URL.`, (t) => {
     t.context.dependencies,
     dependenciesStub,
   );
-  const onceImporter = new OnceImporter(dependencies, t.context.options);
+  const onceImporter = new OnceImporter(dependencies);
 
   onceImporter.import(url, []);
 
@@ -43,7 +38,7 @@ test(`Should return an import object (empty, if the URL was already imported).`,
   const url = `test/url`;
 
   const resolveUrlSpy = sinon.spy();
-  const onceImporter = new OnceImporter(t.context.dependencies, t.context.options);
+  const onceImporter = new OnceImporter(t.context.dependencies);
 
   const firstReturnValue = onceImporter.import(url, []);
   const secondReturnValue = onceImporter.import(url, []);

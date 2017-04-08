@@ -1,6 +1,6 @@
 import resolveUrl from '../functions/resolve-url';
 
-import { IImporter, IImporterOptions } from '../interfaces/IImporter';
+import { IImporter } from '../interfaces/IImporter';
 
 type ResolveUrl = typeof resolveUrl;
 
@@ -10,15 +10,10 @@ export interface IDependencies {
 
 export class OnceImporter implements IImporter {
   private resolveUrl: ResolveUrl;
-  private options: IImporterOptions;
   private store: Set<string>;
 
-  constructor(
-    { resolveUrl }: IDependencies,
-    options: IImporterOptions,
-  ) {
+  constructor({ resolveUrl }: IDependencies) {
     this.resolveUrl = resolveUrl;
-    this.options = options;
     this.store = new Set();
   }
 
@@ -41,8 +36,6 @@ export class OnceImporter implements IImporter {
   }
 }
 
-export function onceImporterFactory(
-  options: IImporterOptions,
-): IImporter {
-  return new OnceImporter({ resolveUrl }, options);
+export function onceImporterFactory(): IImporter {
+  return new OnceImporter({ resolveUrl });
 }

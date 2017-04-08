@@ -5,9 +5,7 @@ import { onceImporterFactory } from './classes/OnceImporter';
 import { IImporterOptions } from './interfaces/IImporter';
 
 export default function onceImporter(options: IImporterOptions) {
-  const defaultOptions = { cwd: process.cwd() };
-  const importerOptions = Object.assign({}, defaultOptions, options);
-  const onceImporter = onceImporterFactory(importerOptions);
+  const onceImporter = onceImporterFactory();
 
   return function importer(url, prev) {
     const includePathsSet = new Set(this.options.includePaths.split(path.delimiter));

@@ -2,9 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const resolve_url_1 = require("../functions/resolve-url");
 class OnceImporter {
-    constructor({ resolveUrl }, options) {
+    constructor({ resolveUrl }) {
         this.resolveUrl = resolveUrl;
-        this.options = options;
         this.store = new Set();
     }
     import(url, includePaths = []) {
@@ -20,8 +19,8 @@ class OnceImporter {
     }
 }
 exports.OnceImporter = OnceImporter;
-function onceImporterFactory(options) {
-    return new OnceImporter({ resolveUrl: resolve_url_1.default }, options);
+function onceImporterFactory() {
+    return new OnceImporter({ resolveUrl: resolve_url_1.default });
 }
 exports.onceImporterFactory = onceImporterFactory;
 //# sourceMappingURL=OnceImporter.js.map
