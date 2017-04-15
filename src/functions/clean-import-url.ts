@@ -1,5 +1,6 @@
 export function cleanImportUrl(url: string) {
   const importUrl = url.split(` from `).pop() || ``;
+
   return importUrl.trim();
 }
 

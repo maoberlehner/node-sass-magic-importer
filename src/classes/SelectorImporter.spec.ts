@@ -25,5 +25,6 @@ test.beforeEach((t) => {
 
 test(`Should be an object.`, (t) => {
   const selectorImporter = new SelectorImporter(t.context.dependencies);
+
   t.is(typeof selectorImporter, `object`);
 });

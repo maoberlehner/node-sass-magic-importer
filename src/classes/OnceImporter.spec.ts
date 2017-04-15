@@ -13,6 +13,7 @@ test.beforeEach((t) => {
 
 test(`Should be an object.`, (t) => {
   const onceImporter = new OnceImporter(t.context.dependencies);
+
   t.is(typeof onceImporter, `object`);
 });
 

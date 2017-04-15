@@ -17,6 +17,7 @@ test.beforeEach((t) => {
 
 test(`Should be a function.`, (t) => {
   const resolveUrl = resolveUrlFactory(t.context.dependencies);
+
   t.is(typeof resolveUrl, `function`);
 });
 

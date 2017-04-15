@@ -4,6 +4,7 @@ import { splitSelectorFilterFactory } from './split-selector-filter';
 
 test(`Should be a function.`, (t) => {
   const splitSelectorFilter = splitSelectorFilterFactory();
+
   t.is(typeof splitSelectorFilter, `function`);
 });
 

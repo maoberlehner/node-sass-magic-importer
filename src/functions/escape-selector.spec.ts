@@ -4,6 +4,7 @@ import { escapeSelectorFactory } from './escape-selector';
 
 test(`Should be a function.`, (t) => {
   const escapeSelector = escapeSelectorFactory();
+
   t.is(typeof escapeSelector, `function`);
 });
 

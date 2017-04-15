@@ -14,6 +14,7 @@ test.beforeEach((t) => {
 
 test(`Should be a function.`, (t) => {
   const parseSelectorFilters = parseSelectorFiltersFactory(t.context.dependencies);
+
   t.is(typeof parseSelectorFilters, `function`);
 });
 

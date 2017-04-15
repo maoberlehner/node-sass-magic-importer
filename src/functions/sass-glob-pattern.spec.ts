@@ -9,6 +9,7 @@ test.beforeEach((t) => {
 
 test(`Should be a function.`, (t) => {
   const sassGlobPattern = sassGlobPatternFactory(t.context.dependencies);
+
   t.is(typeof sassGlobPattern, `function`);
 });
 

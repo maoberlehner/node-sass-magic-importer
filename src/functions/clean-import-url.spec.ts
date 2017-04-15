@@ -4,6 +4,7 @@ import { cleanImportUrlFactory } from './clean-import-url';
 
 test(`Should be a function.`, (t) => {
   const cleanImportUrl = cleanImportUrlFactory();
+
   t.is(typeof cleanImportUrl, `function`);
 });
 
