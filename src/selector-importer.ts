@@ -1,11 +1,11 @@
 import * as path from 'path';
 
-import { onceImporterFactory } from './classes/OnceImporter';
+import { selectorImporterFactory } from './classes/SelectorImporter';
 
 import { IImporterOptions } from './interfaces/IImporter';
 
-export default function onceImporter(options: IImporterOptions) {
-  const onceImporter = onceImporterFactory();
+export default function selectorImporter(options: IImporterOptions) {
+  const selectorImporter = selectorImporterFactory();
 
   return function importer(url: string, prev: string) {
     const includePathsSet = new Set(this.options.includePaths.split(path.delimiter));
@@ -14,6 +14,6 @@ export default function onceImporter(options: IImporterOptions) {
     }
     const includePaths = [...includePathsSet] as string[];
 
-    return onceImporter.import(url, includePaths);
+    return selectorImporter.import(url, includePaths);
   };
 }

@@ -8,6 +8,7 @@ test(`Should import files only once.`, (t) => {
   const expectedResult = fs.readFileSync(`test/files/once-import.css`, {
     encoding: `utf8`,
   });
+
   const result = sass.renderSync({
     file: `test/files/once-import.scss`,
     importer: onceImporter(),

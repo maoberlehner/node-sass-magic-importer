@@ -1,10 +1,9 @@
 export function cleanImportUrl(url: string) {
-  return url.split(` from `).pop().trim();
+  const importUrl = url.split(` from `).pop() || ``;
+  return importUrl.trim();
 }
 
-export function cleanImportUrlFactory(): (
-  url: string,
-) => string {
+export function cleanImportUrlFactory(): typeof cleanImportUrl {
   return cleanImportUrl.bind(null);
 }
 

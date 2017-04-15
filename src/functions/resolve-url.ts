@@ -20,7 +20,7 @@ export function resolveUrl(
 
   includePaths.some((includePath) => {
     resolvedUrls = glob.sync(
-      path.resolve(includePath, dir, baseGlobPattern)
+      path.resolve(includePath, dir, baseGlobPattern),
     );
     return resolvedUrls.length > 0 || false;
   });

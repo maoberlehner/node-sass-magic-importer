@@ -21,7 +21,10 @@
   "bugs": {
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "css-selector-extract": "^2.0.4",
+    "postcss-scss": "^0.4.1"
+  },
   "devDependencies": {
     "@types/glob": "^5.0.30",
     "@types/node": "^7.0.12",

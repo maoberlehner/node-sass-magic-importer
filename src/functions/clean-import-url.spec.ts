@@ -1,5 +1,4 @@
 import test from 'ava';
-import * as path from 'path';
 
 import { cleanImportUrlFactory } from './clean-import-url';
 

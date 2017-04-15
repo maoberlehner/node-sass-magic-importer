@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
-const OnceImporter_1 = require("./classes/OnceImporter");
-function onceImporter(options) {
-    const onceImporter = OnceImporter_1.onceImporterFactory();
+const SelectorImporter_1 = require("./classes/SelectorImporter");
+function selectorImporter(options) {
+    const selectorImporter = SelectorImporter_1.selectorImporterFactory();
     return function importer(url, prev) {
         const includePathsSet = new Set(this.options.includePaths.split(path.delimiter));
         if (path.isAbsolute(prev)) {
             includePathsSet.add(path.dirname(prev));
         }
         const includePaths = [...includePathsSet];
-        return onceImporter.import(url, includePaths);
+        return selectorImporter.import(url, includePaths);
     };
 }
-exports.default = onceImporter;
-//# sourceMappingURL=once-importer.js.map
+exports.default = selectorImporter;
+//# sourceMappingURL=selector-importer.js.map

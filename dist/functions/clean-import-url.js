@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function cleanImportUrl(url) {
-    return url.split(` from `).pop().trim();
+    const importUrl = url.split(` from `).pop() || ``;
+    return importUrl.trim();
 }
 exports.cleanImportUrl = cleanImportUrl;
 function cleanImportUrlFactory() {
