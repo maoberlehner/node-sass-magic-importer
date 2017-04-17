@@ -3,7 +3,6 @@ export interface ISelectorFilter {
   replacement: any;
 }
 
-export interface ISelectorFilterRaw {
+export interface ISelectorFilterRaw extends ISelectorFilter {
   selector: string;
-  replacement: any;
 }
