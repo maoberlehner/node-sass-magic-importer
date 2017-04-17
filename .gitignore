@@ -15,6 +15,7 @@
 .cache
 .DS_Store
 .idea
+.nyc_output
 .project
 .settings
 .tmproj
@@ -25,4 +26,5 @@ nbproject
 Thumbs.db
 
 # Folders to ignore
+coverage
 node_modules
