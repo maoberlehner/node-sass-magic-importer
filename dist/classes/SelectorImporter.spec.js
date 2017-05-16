@@ -1,5 +1,5 @@
-// TODO: Test all the things.
 "use strict";
+// TODO: Test all the things.
 Object.defineProperty(exports, "__esModule", { value: true });
 const ava_1 = require("ava");
 const cssSelectorExtract = require("css-selector-extract");

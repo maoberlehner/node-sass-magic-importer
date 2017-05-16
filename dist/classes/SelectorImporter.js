@@ -1,5 +1,5 @@
-// TODO: Refactor.
 "use strict";
+// TODO: Refactor.
 Object.defineProperty(exports, "__esModule", { value: true });
 const cssSelectorExtract = require("css-selector-extract");
 const fs = require("fs");
