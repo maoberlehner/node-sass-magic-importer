@@ -11,29 +11,29 @@ import resolveUrl from '../functions/resolve-url';
 import { IImporter } from '../interfaces/IImporter';
 import { ISelectorFilter } from '../interfaces/ISelectorFilter';
 
-type cleanImportUrl = typeof cleanImportUrl;
-type cssSelectorExtract = typeof cssSelectorExtract;
-type fs = typeof fs;
-type parseSelectorFilters = typeof parseSelectorFilters;
-type postcssScss = typeof postcssScss;
-type resolveUrl = typeof resolveUrl;
+type CleanImportUrl = typeof cleanImportUrl;
+type CssSelectorExtract = typeof cssSelectorExtract;
+type Fs = typeof fs;
+type ParseSelectorFilters = typeof parseSelectorFilters;
+type PostcssScss = typeof postcssScss;
+type ResolveUrl = typeof resolveUrl;
 
 export interface IDependencies {
-  cleanImportUrl: cleanImportUrl;
-  cssSelectorExtract: cssSelectorExtract;
-  fs: fs;
-  parseSelectorFilters: parseSelectorFilters;
-  postcssScss: postcssScss;
-  resolveUrl: resolveUrl;
+  cleanImportUrl: CleanImportUrl;
+  cssSelectorExtract: CssSelectorExtract;
+  fs: Fs;
+  parseSelectorFilters: ParseSelectorFilters;
+  postcssScss: PostcssScss;
+  resolveUrl: ResolveUrl;
 }
 
 export class SelectorImporter implements IImporter {
-  private cleanImportUrl: cleanImportUrl;
-  private cssSelectorExtract: cssSelectorExtract;
-  private fs: fs;
-  private parseSelectorFilters: parseSelectorFilters;
-  private postcssScss: postcssScss;
-  private resolveUrl: resolveUrl;
+  private cleanImportUrl: CleanImportUrl;
+  private cssSelectorExtract: CssSelectorExtract;
+  private fs: Fs;
+  private parseSelectorFilters: ParseSelectorFilters;
+  private postcssScss: PostcssScss;
+  private resolveUrl: ResolveUrl;
 
   constructor({
     cleanImportUrl,

@@ -2,14 +2,14 @@ import resolveUrl from '../functions/resolve-url';
 
 import { IImporter } from '../interfaces/IImporter';
 
-type resolveUrl = typeof resolveUrl;
+type ResolveUrl = typeof resolveUrl;
 
 export interface IDependencies {
-  resolveUrl: resolveUrl;
+  resolveUrl: ResolveUrl;
 }
 
 export class OnceImporter implements IImporter {
-  private resolveUrl: resolveUrl;
+  private resolveUrl: ResolveUrl;
   private store: Set<string>;
 
   constructor({ resolveUrl }: IDependencies) {
