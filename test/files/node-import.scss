@@ -1,0 +1,11 @@
+@import '[at-rules] from partials/partial-1';
+@import '[rules] from partials/partial-2';
+@import '[at-rules] from partials/partial-3';
+@import '[functions, mixins, variables] from partials/partial-3';
+
+.test-selector {
+  content: test();
+  color: $variable-exists;
+
+  @include test-mixin();
+}
