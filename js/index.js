@@ -13,6 +13,7 @@ import MagicImporter from './lib/magic-importer';
  *   node-sass custom importer function.
  */
 export default (customOptions = {}) => {
+  let importerInstanceId = 1;
   const options = Object.assign({}, defaultOptions, customOptions);
   const magicImporter = new MagicImporter(options);
 
@@ -25,6 +26,10 @@ export default (customOptions = {}) => {
    *   node-sass custom importer data object or null.
    */
   return function importer(url, prev) {
+    if (!this.magicImporterInstanceId) {
+      this.magicImporterInstanceId = importerInstanceId;
+      importerInstanceId += 1;
+    }
     const nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
 
     if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
@@ -33,6 +38,6 @@ export default (customOptions = {}) => {
       nodeSassIncludePaths
     ).filter(item => item.length);
 
-    return magicImporter.resolveSync(url);
+    return magicImporter.resolveSync(url, this.magicImporterInstanceId);
   };
 };

@@ -36,7 +36,7 @@ describe(`MagicImporter`, () => {
       const magicImporter = new MagicImporter();
       const url = `/some/file.scss`;
       magicImporter.storeAdd(url);
-      expect(magicImporter.store.includes(url)).to.be.true;
+      expect(magicImporter.store[1].includes(url)).to.be.true;
     });
   });
 
@@ -50,7 +50,7 @@ describe(`MagicImporter`, () => {
     it(`URL is in store, should return true`, () => {
       const magicImporter = new MagicImporter();
       const url = `/some/file.scss`;
-      magicImporter.store = [url];
+      magicImporter.store = { 1: [url] };
       expect(magicImporter.isInStore(url)).to.be.true;
     });
 
@@ -66,7 +66,7 @@ describe(`MagicImporter`, () => {
       const magicImporter = new MagicImporter();
       const url = `/some/file.scss`;
       const hasFilters = true;
-      magicImporter.store = [url];
+      magicImporter.store = { 1: [url] };
       expect(magicImporter.isInStore(url, hasFilters)).to.be.false;
       expect(console.warn.calledOnce).to.be.true;
       expect(console.warn.calledWith(`Warning: double import of file "/some/file.scss".`)).to.be.true;
@@ -79,7 +79,7 @@ describe(`MagicImporter`, () => {
       const magicImporter = new MagicImporter({ disableWarnings: true });
       const url = `/some/file.scss`;
       const hasFilters = true;
-      magicImporter.store = [url];
+      magicImporter.store = { 1: [url] };
       expect(magicImporter.isInStore(url, hasFilters)).to.be.false;
       expect(console.warn.calledOnce).to.be.false;
       sinonInstance.restore();

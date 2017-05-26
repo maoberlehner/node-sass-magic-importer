@@ -50,8 +50,8 @@ var MagicImporter = function () {
 
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
-    /** @type {Array} */
-    this.store = [];
+    /** @type {Object} */
+    this.store = {};
   }
 
   /**
@@ -89,13 +89,20 @@ var MagicImporter = function () {
      *
      * @param {String} cleanUrl
      *   Cleaned up import url from node-sass.
+     * @param {Number} storeKey
+     *   A unique identifier for each compile run.
      */
 
   }, {
     key: 'storeAdd',
     value: function storeAdd(cleanUrl) {
+      var storeKey = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
       var absoluteUrl = this.getAbsoluteUrl(cleanUrl);
-      if (!this.store.includes(absoluteUrl)) this.store.push(absoluteUrl);
+      if (!this.store[storeKey]) {
+        this.store[storeKey] = [];
+      }
+      if (!this.store[storeKey].includes(absoluteUrl)) this.store[storeKey].push(absoluteUrl);
     }
 
     /**
@@ -105,6 +112,8 @@ var MagicImporter = function () {
      *   Cleaned up import url from node-sass.
      * @param {Boolean} hasFilters
      *   Does the URL have filters or not.
+     * @param {Number} storeKey
+     *   A unique identifier for each compile run.
      * @return {boolean}
      *   Returns true if the URL has no filters and is already stored.
      */
@@ -113,12 +122,19 @@ var MagicImporter = function () {
     key: 'isInStore',
     value: function isInStore(cleanUrl) {
       var hasFilters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var storeKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
 
       var absoluteUrl = this.getAbsoluteUrl(cleanUrl);
 
-      if (!hasFilters && this.store.includes(absoluteUrl)) return true;
+      if (!this.store[storeKey]) {
+        this.store[storeKey] = [];
+      }
 
-      if (hasFilters && this.store.includes(absoluteUrl)) {
+      if (!hasFilters && this.store[storeKey] && this.store[storeKey].includes(absoluteUrl)) {
+        return true;
+      }
+
+      if (hasFilters && this.store[storeKey].includes(absoluteUrl)) {
         if (!this.options.disableWarnings) {
           // eslint-disable-next-line no-console
           console.warn('Warning: double import of file "' + absoluteUrl + '".');
@@ -134,13 +150,15 @@ var MagicImporter = function () {
      *
      * @param {String} url
      *   Import url from node-sass.
+     * @param {Number} storeKey
+     *   A unique identifier for each compile run.
      * @return {String}
      *   Importer object or null.
      */
 
   }, {
     key: 'resolveSync',
-    value: function resolveSync(url) {
+    value: function resolveSync(url, storeKey) {
       var _this2 = this;
 
       var data = null;
@@ -159,11 +177,11 @@ var MagicImporter = function () {
       var globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
       if (globFiles.length) {
         return { contents: globFiles.map(function (globUrl) {
-            if (!_this2.isInStore(globUrl, hasFilters) || _this2.options.disableImportOnce) {
-              if (!hasFilters) _this2.storeAdd(globUrl);
+            if (!_this2.isInStore(globUrl, hasFilters, storeKey) || _this2.options.disableImportOnce) {
+              if (!hasFilters) _this2.storeAdd(globUrl, storeKey);
               return fs.readFileSync(globUrl, { encoding: 'utf8' });
             }
-            if (!hasFilters) _this2.storeAdd(globUrl);
+            if (!hasFilters) _this2.storeAdd(globUrl, storeKey);
             return '';
           }).join('\n') };
       }
@@ -178,14 +196,14 @@ var MagicImporter = function () {
 
       // If the file is already stored and should not be loaded,
       // prevent node-sass from importing the file again.
-      if (this.isInStore(resolvedUrl, hasFilters) && !this.options.disableImportOnce) {
+      if (this.isInStore(resolvedUrl, hasFilters, storeKey) && !this.options.disableImportOnce) {
         return {
           file: '',
           contents: ''
         };
       }
 
-      if (!hasFilters) this.storeAdd(resolvedUrl);
+      if (!hasFilters) this.storeAdd(resolvedUrl, storeKey);
 
       // Filter.
       var filteredContents = void 0;
@@ -218,19 +236,21 @@ var MagicImporter = function () {
     /**
      * Asynchronously resolve the path to a node-sass import url.
      *
-     * @param {string} url
+     * @param {String} url
      *   Import url from node-sass.
+     * @param {Number} storeKey
+     *   A unique identifier for each compile run.
      * @return {Promise}
      *   Promise for importer object or null.
      */
 
   }, {
     key: 'resolve',
-    value: function resolve(url) {
+    value: function resolve(url, storeKey) {
       var _this3 = this;
 
       return new Promise(function (promiseResolve) {
-        promiseResolve(_this3.resolveSync(url));
+        promiseResolve(_this3.resolveSync(url, storeKey));
       });
     }
   }]);
@@ -249,6 +269,7 @@ var MagicImporter = function () {
 var importer = (function () {
   var customOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
+  var importerInstanceId = 1;
   var options = Object.assign({}, defaultOptions, customOptions);
   var magicImporter = new MagicImporter(options);
 
@@ -261,6 +282,10 @@ var importer = (function () {
    *   node-sass custom importer data object or null.
    */
   return function importer(url, prev) {
+    if (!this.magicImporterInstanceId) {
+      this.magicImporterInstanceId = importerInstanceId;
+      importerInstanceId += 1;
+    }
     var nodeSassIncludePaths = this.options.includePaths.split(path.delimiter);
 
     if (path.isAbsolute(prev)) nodeSassIncludePaths.push(path.dirname(prev));
@@ -268,7 +293,7 @@ var importer = (function () {
       return item.length;
     });
 
-    return magicImporter.resolveSync(url);
+    return magicImporter.resolveSync(url, this.magicImporterInstanceId);
   };
 });
 
