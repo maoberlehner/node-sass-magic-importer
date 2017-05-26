@@ -25,8 +25,8 @@ export default class MagicImporter {
   constructor(options = {}) {
     /** @type {Object} */
     this.options = Object.assign({}, defaultOptions, options);
-    /** @type {Array} */
-    this.store = [];
+    /** @type {Object} */
+    this.store = {};
   }
 
   /**
@@ -62,10 +62,15 @@ export default class MagicImporter {
    *
    * @param {String} cleanUrl
    *   Cleaned up import url from node-sass.
+   * @param {Number} storeKey
+   *   A unique identifier for each compile run.
    */
-  storeAdd(cleanUrl) {
+  storeAdd(cleanUrl, storeKey = 1) {
     const absoluteUrl = this.getAbsoluteUrl(cleanUrl);
-    if (!this.store.includes(absoluteUrl)) this.store.push(absoluteUrl);
+    if (!this.store[storeKey]) {
+      this.store[storeKey] = [];
+    }
+    if (!this.store[storeKey].includes(absoluteUrl)) this.store[storeKey].push(absoluteUrl);
   }
 
   /**
@@ -75,15 +80,23 @@ export default class MagicImporter {
    *   Cleaned up import url from node-sass.
    * @param {Boolean} hasFilters
    *   Does the URL have filters or not.
+   * @param {Number} storeKey
+   *   A unique identifier for each compile run.
    * @return {boolean}
    *   Returns true if the URL has no filters and is already stored.
    */
-  isInStore(cleanUrl, hasFilters = false) {
+  isInStore(cleanUrl, hasFilters = false, storeKey = 1) {
     const absoluteUrl = this.getAbsoluteUrl(cleanUrl);
 
-    if (!hasFilters && this.store.includes(absoluteUrl)) return true;
+    if (!this.store[storeKey]) {
+      this.store[storeKey] = [];
+    }
 
-    if (hasFilters && this.store.includes(absoluteUrl)) {
+    if (!hasFilters && this.store[storeKey] && this.store[storeKey].includes(absoluteUrl)) {
+      return true;
+    }
+
+    if (hasFilters && this.store[storeKey].includes(absoluteUrl)) {
       if (!this.options.disableWarnings) {
         // eslint-disable-next-line no-console
         console.warn(`Warning: double import of file "${absoluteUrl}".`);
@@ -99,10 +112,12 @@ export default class MagicImporter {
    *
    * @param {String} url
    *   Import url from node-sass.
+   * @param {Number} storeKey
+   *   A unique identifier for each compile run.
    * @return {String}
    *   Importer object or null.
    */
-  resolveSync(url) {
+  resolveSync(url, storeKey) {
     let data = null;
     let resolvedUrl = cleanImportUrl(url);
 
@@ -119,11 +134,11 @@ export default class MagicImporter {
     const globFiles = globImporter.resolveFilePathsSync(resolvedUrl);
     if (globFiles.length) {
       return { contents: globFiles.map((globUrl) => {
-        if (!this.isInStore(globUrl, hasFilters) || this.options.disableImportOnce) {
-          if (!hasFilters) this.storeAdd(globUrl);
+        if (!this.isInStore(globUrl, hasFilters, storeKey) || this.options.disableImportOnce) {
+          if (!hasFilters) this.storeAdd(globUrl, storeKey);
           return fs.readFileSync(globUrl, { encoding: `utf8` });
         }
-        if (!hasFilters) this.storeAdd(globUrl);
+        if (!hasFilters) this.storeAdd(globUrl, storeKey);
         return ``;
       }).join(`\n`) };
     }
@@ -138,14 +153,14 @@ export default class MagicImporter {
 
     // If the file is already stored and should not be loaded,
     // prevent node-sass from importing the file again.
-    if (this.isInStore(resolvedUrl, hasFilters) && !this.options.disableImportOnce) {
+    if (this.isInStore(resolvedUrl, hasFilters, storeKey) && !this.options.disableImportOnce) {
       return {
         file: ``,
         contents: ``,
       };
     }
 
-    if (!hasFilters) this.storeAdd(resolvedUrl);
+    if (!hasFilters) this.storeAdd(resolvedUrl, storeKey);
 
     // Filter.
     let filteredContents;
@@ -178,14 +193,16 @@ export default class MagicImporter {
   /**
    * Asynchronously resolve the path to a node-sass import url.
    *
-   * @param {string} url
+   * @param {String} url
    *   Import url from node-sass.
+   * @param {Number} storeKey
+   *   A unique identifier for each compile run.
    * @return {Promise}
    *   Promise for importer object or null.
    */
-  resolve(url) {
+  resolve(url, storeKey) {
     return new Promise((promiseResolve) => {
-      promiseResolve(this.resolveSync(url));
+      promiseResolve(this.resolveSync(url, storeKey));
     });
   }
 }
