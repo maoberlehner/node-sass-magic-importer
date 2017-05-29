@@ -1,38 +1,25 @@
-import * as glob from 'glob';
-import * as path from 'path';
+import { IGlob } from '../interfaces/IGlob';
+import { IPath } from '../interfaces/IPath';
+import { IResolveUrl } from '../interfaces/IResolveUrl';
+import { ISassGlobPattern } from '../interfaces/ISassGlobPattern';
 
-import sassGlobPattern from './sass-glob-pattern';
+export function resolveUrlFactory(
+  glob: IGlob,
+  path: IPath,
+  sassGlobPattern: ISassGlobPattern,
+): IResolveUrl {
+  return (url: string, includePaths: string[] = []) => {
+    const { dir, base } = path.parse(url);
+    const baseGlobPattern = sassGlobPattern(base);
+    let resolvedUrls: string[] = [];
 
-export interface IDependencies {
-  glob: typeof glob;
-  path: typeof path;
-  sassGlobPattern: typeof sassGlobPattern;
+    includePaths.some((includePath) => {
+      resolvedUrls = glob.sync(
+        path.resolve(includePath, dir, baseGlobPattern),
+      );
+      return resolvedUrls.length > 0 || false;
+    });
+
+    return resolvedUrls[0] || url;
+  };
 }
-
-export function resolveUrl(
-  { glob, path, sassGlobPattern }: IDependencies,
-  url: string,
-  includePaths: string[] = [],
-) {
-  const { dir, base } = path.parse(url);
-  const baseGlobPattern = sassGlobPattern(base);
-  let resolvedUrls: string[] = [];
-
-  includePaths.some((includePath) => {
-    resolvedUrls = glob.sync(
-      path.resolve(includePath, dir, baseGlobPattern),
-    );
-    return resolvedUrls.length > 0 || false;
-  });
-
-  return resolvedUrls[0] || url;
-}
-
-export function resolveUrlFactory(dependencies: IDependencies): (
-  url: string,
-  includePaths: string[],
-) => string {
-  return resolveUrl.bind(null, dependencies);
-}
-
-export default resolveUrlFactory({ glob, path, sassGlobPattern });

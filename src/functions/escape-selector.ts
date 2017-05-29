@@ -1,19 +1,17 @@
-export function escapeSelector(selector: string, escapeSequence = `\\`) {
-  if (!selector) {
-    return selector;
-  }
+import { IEscapeSelector } from '../interfaces/IEscapeSelector';
 
-  const specialCharacters = [`@`];
-  const regexSpecialCharacters = [`/`];
-  const regex = new RegExp(
-    `(?!@mixin)(${specialCharacters.join(`|`)}|\\${regexSpecialCharacters.join(`|\\`)})`, `g`,
-  );
+export function escapeSelectorFactory(): IEscapeSelector {
+  return (selector: string, escapeSequence = `\\`) => {
+    if (!selector) {
+      return selector;
+    }
 
-  return selector.replace(regex, `${escapeSequence}$1`);
+    const specialCharacters = [`@`];
+    const regexSpecialCharacters = [`/`];
+    const regex = new RegExp(
+      `(?!@mixin)(${specialCharacters.join(`|`)}|\\${regexSpecialCharacters.join(`|\\`)})`, `g`,
+    );
+
+    return selector.replace(regex, `${escapeSequence}$1`);
+  };
 }
-
-export function escapeSelectorFactory(): typeof escapeSelector {
-  return escapeSelector.bind(null);
-}
-
-export default escapeSelectorFactory();

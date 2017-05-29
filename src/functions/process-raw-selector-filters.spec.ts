@@ -1,29 +1,29 @@
 import test from 'ava';
 import * as sinon from 'sinon';
 
-import escapeSelector from './escape-selector';
+import { escapeSelectorFactory } from './escape-selector';
 
-import { IDependencies, processRawSelectorFiltersFactory } from './process-raw-selector-filters';
+import { processRawSelectorFiltersFactory } from './process-raw-selector-filters';
 
 test.beforeEach((t) => {
-  t.context.dependencies = {
+  const escapeSelector = escapeSelectorFactory();
+
+  t.context.dep = {
     escapeSelector,
-  } as IDependencies;
+  };
 });
 
 test(`Should be a function.`, (t) => {
-  const processRawSelectorFilters = processRawSelectorFiltersFactory(t.context.dependencies);
+  const processRawSelectorFilters = processRawSelectorFiltersFactory(
+    t.context.dep.escapeSelector,
+  );
 
   t.is(typeof processRawSelectorFilters, `function`);
 });
 
 test(`Should escape the selector and replacement.`, (t) => {
-  const escapeSelectorStub = sinon.spy();
-  const dependencies = Object.assign(
-    t.context.dependencies,
-    { escapeSelector: escapeSelectorStub },
-  );
-  const processRawSelectorFilters = processRawSelectorFiltersFactory(dependencies);
+  const escapeSelectorStub = sinon.stub(t.context.dep, `escapeSelector`);
+  const processRawSelectorFilters = processRawSelectorFiltersFactory(escapeSelectorStub);
 
   processRawSelectorFilters([{
     selector: `.some-selector`,
@@ -35,12 +35,8 @@ test(`Should escape the selector and replacement.`, (t) => {
 });
 
 test(`Should detect and handle RegExp selectors.`, (t) => {
-  const escapeSelectorStub = sinon.spy();
-  const dependencies = Object.assign(
-    t.context.dependencies,
-    { escapeSelector: escapeSelectorStub },
-  );
-  const processRawSelectorFilters = processRawSelectorFiltersFactory(dependencies);
+  const escapeSelectorStub = sinon.stub(t.context.dep, `escapeSelector`);
+  const processRawSelectorFilters = processRawSelectorFiltersFactory(escapeSelectorStub);
 
   processRawSelectorFilters([{ selector: `/regex/i`, replacement: undefined }]);
 

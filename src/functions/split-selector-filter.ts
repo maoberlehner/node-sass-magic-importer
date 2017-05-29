@@ -1,17 +1,14 @@
 import { ISelectorFilterRaw } from '../interfaces/ISelectorFilter';
+import { ISplitSelectorFilter } from '../interfaces/ISplitSelectorFilter';
 
-export function splitSelectorFilter(combinedFilter: string): ISelectorFilterRaw {
-  const [selector, replacement] = combinedFilter.split(` as `)
-    .map((x) => x.trim());
+export function splitSelectorFilterFactory(): ISplitSelectorFilter {
+  return (combinedFilter: string): ISelectorFilterRaw => {
+    const [selector, replacement] = combinedFilter.split(` as `)
+      .map((x) => x.trim());
 
-  return {
-    selector,
-    replacement,
+    return {
+      selector,
+      replacement,
+    };
   };
 }
-
-export function splitSelectorFilterFactory(): typeof splitSelectorFilter {
-  return splitSelectorFilter.bind(null);
-}
-
-export default splitSelectorFilterFactory();
