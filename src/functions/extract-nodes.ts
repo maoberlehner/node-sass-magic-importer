@@ -8,13 +8,13 @@ export function extractNodesFactory(
   fs: IFs,
   postcssSyntax: IPostcssSyntax,
 ): ICssFilter {
-  return (resolvedUrl: string, filterNames: string[]) => {
+  return (resolvedUrl: string, filters: string[]) => {
     const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
 
     return cssNodeExtract.processSync({
       css,
-      filterNames,
+      filters,
       postcssSyntax,
-    } as ICssExtractorOptions);
+    });
   };
 }

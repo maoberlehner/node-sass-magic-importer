@@ -22,30 +22,30 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "css-node-extract": "^0.2.2",
-    "css-selector-extract": "^2.0.5",
-    "postcss-scss": "^1.0.0"
+    "css-node-extract": "^1.0.0",
+    "css-selector-extract": "^3.0.1",
+    "postcss-scss": "^1.0.2"
   },
   "devDependencies": {
     "@types/glob": "^5.0.30",
-    "@types/node": "^7.0.18",
-    "@types/sinon": "^2.2.1",
-    "ava": "^0.19.1",
-    "node-sass": "^4.5.2",
-    "nyc": "^10.3.2",
+    "@types/node": "^8.0.5",
+    "@types/sinon": "^2.3.2",
+    "ava": "^0.20.0",
+    "node-sass": "^4.5.3",
+    "nyc": "^11.0.3",
     "rimraf": "^2.6.1",
-    "sinon": "^2.2.0",
-    "tslint": "^5.2.0",
-    "typescript": "^2.3.2"
+    "sinon": "^2.3.5",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.1"
   },
   "main": "dist/index.js",
   "scripts": {
-    "start": "yarn run watch",
-    "watch": "yarn run clean && tsc -w",
-    "build": "yarn run clean && tsc",
+    "start": "npm run watch",
+    "watch": "npm run clean && tsc -w",
+    "build": "npm run clean && tsc",
     "clean": "rimraf dist",
     "lint": "tslint 'src/**/*.ts'",
-    "test": "yarn run build && ava dist/**/*.spec.js test/**/*.test.js",
-    "coverage": "yarn run build && nyc ava dist/**/*.spec.js"
+    "test": "npm run build && ava dist/**/*.spec.js test/**/*.test.js",
+    "coverage": "npm run build && nyc ava dist/**/*.spec.js"
   }
 }

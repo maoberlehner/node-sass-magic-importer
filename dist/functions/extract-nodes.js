@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function extractNodesFactory(cssNodeExtract, fs, postcssSyntax) {
-    return (resolvedUrl, filterNames) => {
+    return (resolvedUrl, filters) => {
         const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
         return cssNodeExtract.processSync({
             css,
-            filterNames,
+            filters,
             postcssSyntax,
         });
     };

@@ -4,6 +4,6 @@
 
 CHANGELOG.md
 CONTRIBUTING.md
-yarn.lock
+package-lock.json
 
 test
