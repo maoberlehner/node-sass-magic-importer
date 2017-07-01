@@ -1,0 +1,135 @@
+@charset 'UTF-8';
+@namespace url(http://www.w3.org/1999/xhtml);
+@document url(http://www.w3.org/);
+@import 'import-test.scss';
+
+@font-face {
+  font-family: 'Font face at rule';
+}
+
+@keyframes keyframes-at-rule {
+  0% { content: 'Keyframes at rule 0%'; }
+  100% { content: 'Keyframes at rule 100%'; }
+}
+
+@viewport {
+  orientation: landscape;
+}
+
+.class-selector {
+  content: 'Class selector';
+}
+
+#id-selector {
+  content: 'Id selector';
+}
+
+%placeholder-selector {
+  content: 'Placeholder selector';
+}
+
+.nested {
+  .selector {
+    content: 'Nested selector';
+  }
+}
+
+@media (min-width: 30em) {
+  .selector-inside-media-at-rule {
+    content: 'Selector inside media at rule';
+  }
+}
+
+.media-at-rule-inside-selector {
+  @media (min-width: 30em) {
+    content: 'Media at rule inside selector';
+  }
+}
+
+@supports (transition: all) {
+  .selector-inside-supports-at-rule {
+    content: 'Selector inside supports at rule';
+  }
+}
+
+.supports-at-rule-inside-selector {
+  @supports (transition: all) {
+    content: 'Supports at rule inside selector';
+  }
+}
+
+$variable1: variable;
+$variable2: variable;
+$variable3: variable;
+
+@function function-at-rule() {
+  @return 'function at rule';
+}
+
+@mixin mixin-at-rule {
+  .selector-inside-mixin-at-rule {
+    content: 'Selector inside mixin at rule';
+  }
+}
+
+.extend-at-rule-inside-selector {
+  @extend .selector;
+}
+
+@if true {
+  .selector-inside-if-at-rule {
+    content: 'Selector inside if at rule';
+  }
+} @else {
+  .selector-inside-else-at-rule {
+    content: 'Selector inside else at rule';
+  }
+}
+
+.if-at-rule-inside-selector {
+  @if true {
+    content: 'If at rule inside selector';
+  }
+}
+
+@for $i from 1 through 3 {
+  .selector-inside-for-at-rule {
+    content: 'Selector inside for at rule';
+  }
+}
+
+.for-at-rule-inside-selector {
+  @for $i from 1 through 3 {
+    content: 'For at rule inside selector';
+  }
+}
+
+@each $thing in $things {
+  .selector-inside-each-at-rule {
+    content: 'Selector inside each at rule';
+  }
+}
+
+.each-at-rule-inside-selector {
+  @each $thing in $things {
+    content: 'Each at rule inside selector';
+  }
+}
+
+@while $i > 0 {
+  .selector-inside-while-at-rule {
+    content: 'Selector inside while at rule';
+  }
+}
+
+.while-at-rule-inside-selector {
+  @while $i > 0 {
+    content: 'While at rule inside selector';
+  }
+}
+
+@debug 'Debug at rule';
+@warn 'Warn at rule';
+@error 'Error at rule';
+
+// Preprocessor comment test.
