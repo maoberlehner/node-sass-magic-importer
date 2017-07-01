@@ -1,0 +1,58 @@
+{
+  "name": "node-sass-package-importer",
+  "description": "Custom importer for node-sass to import packages from the `node_modules` directory",
+  "keywords": [
+    "importer",
+    "module-importer",
+    "node-sass",
+    "package-importer",
+    "sass"
+  ],
+  "version": "3.0.4",
+  "author": "Markus Oberlehner",
+  "homepage": "https://github.com/maoberlehner/node-sass-package-importer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoberlehner/node-sass-package-importer"
+  },
+  "bugs": {
+    "url": "https://github.com/maoberlehner/node-sass-package-importer/issues"
+  },
+  "dependencies": {
+    "resolve": "^1.1.7"
+  },
+  "devDependencies": {
+    "bootstrap": "4.0.0-alpha.2",
+    "chai": "^3.5.0",
+    "esdoc": "^0.4.8",
+    "eslint": "^3.8.1",
+    "eslint-config-modularis": "^2.0.0",
+    "eslint-plugin-import": "^2.0.1",
+    "mocha": "^3.1.2",
+    "node-sass": "^3.13.0",
+    "pre-git": "^3.10.0",
+    "rollup": "^0.36.3",
+    "rollup-plugin-buble": "^0.13.0"
+  },
+  "main": "dist/index.js",
+  "jsnext:main": "js/index.js",
+  "scripts": {
+    "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/PackageImporter.js js/lib/PackageImporter.js",
+    "scripts:lint": "eslint js/* test/*",
+    "scripts:lint-no-error": "eslint js/* test/* || exit 0",
+    "scripts:doc": "esdoc -c .esdocrc",
+    "scripts": "npm run scripts:bundle && npm run scripts:lint-no-error",
+    "test": "mocha"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": [
+        "npm run scripts:lint"
+      ],
+      "pre-push": [
+        "npm test"
+      ]
+    }
+  }
+}
