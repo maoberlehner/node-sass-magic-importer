@@ -2,12 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2015",
-    "outDir": "dist",
     "noImplicitAny": true,
     "strictNullChecks": true,
     "sourceMap": true
-  },
-  "include": [
-    "src/**/*"
-  ]
+  }
 }

@@ -12,7 +12,7 @@
   ],
   "version": "5.0.0",
   "author": "Markus Oberlehner",
-  "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
+  "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-magic-importer",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,20 +21,24 @@
   "bugs": {
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
+  "dependencies": {},
   "devDependencies": {
+    "@types/glob": "^5.0.30",
+    "@types/node": "^8.0.5",
+    "@types/sinon": "^2.3.2",
     "ava": "^0.20.0",
-    "lerna": "^2.0.0-rc.5",
-    "node-sass": "^4.5.3",
-    "tslint": "^5.4.3",
+    "css-node-extract": "^1.0.0",
+    "css-selector-extract": "^3.0.1",
+    "postcss-scss": "^1.0.2",
+    "rimraf": "^2.6.1",
+    "sinon": "^2.3.5",
     "typescript": "^2.4.1"
   },
   "main": "dist/index.js",
   "scripts": {
-    "start": "npm run watch",
-    "watch": "lerna run watch",
-    "build": "lerna run build",
-    "clean": "lerna run clean",
-    "lint": "tslint packages/*/src/**/*.ts",
-    "test": "lerna run test && ava test/**/*.test.js"
+    "build": "npm run clean && tsc",
+    "watch": "npm run clean && tsc -w",
+    "clean": "rimraf dist",
+    "test": "npm run build && ava dist/**/*.spec.js"
   }
 }

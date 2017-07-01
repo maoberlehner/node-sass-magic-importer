@@ -2,7 +2,7 @@ import fs from 'fs';
 import sass from 'node-sass';
 import test from 'ava';
 
-import selectorImporter from '../dist/selector-importer';
+import selectorImporter from '../packages/node-sass-magic-importer/dist/selector-importer';
 
 test(`Should import only specific selectors and replace them.`, (t) => {
   const expectedResult = fs.readFileSync(`test/files/selector-import.css`, {

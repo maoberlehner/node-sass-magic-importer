@@ -1,9 +1,0 @@
-.editorconfig
-.gitattributes
-.travis.yml
-
-CHANGELOG.md
-CONTRIBUTING.md
-package-lock.json
-
-test
