@@ -1,0 +1,58 @@
+{
+  "name": "node-sass-glob-importer",
+  "description": "Custom node-sass importer to allow you to use glob syntax in imports",
+  "keywords": [
+    "glob-importer",
+    "importer",
+    "node-sass",
+    "sass"
+  ],
+  "version": "3.0.2",
+  "author": "Markus Oberlehner",
+  "homepage": "https://github.com/maoberlehner/node-sass-glob-importer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoberlehner/node-sass-glob-importer"
+  },
+  "bugs": {
+    "url": "https://github.com/maoberlehner/node-sass-glob-importer/issues"
+  },
+  "dependencies": {
+    "glob": "^7.1.1",
+    "unique-concat": "^0.2.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "esdoc": "^0.5.2",
+    "eslint": "^3.13.1",
+    "eslint-config-modularis": "^2.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^3.2.0",
+    "node-sass": "^4.12.0",
+    "pre-git": "^3.12.0",
+    "rollup": "^0.41.1",
+    "rollup-plugin-buble": "^0.15.0"
+  },
+  "main": "dist/index.js",
+  "jsnext:main": "js/index.js",
+  "scripts": {
+    "scripts:bundle": "rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/GlobImporter.js js/lib/GlobImporter.js",
+    "scripts:lint": "eslint js/* test/*",
+    "scripts:lint-no-error": "eslint js/* test/* || exit 0",
+    "scripts:doc": "esdoc -c .esdocrc",
+    "scripts": "npm run scripts:bundle && npm run scripts:lint-no-error",
+    "test": "mocha"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": [
+        "npm run scripts:lint"
+      ],
+      "pre-push": [
+        "npm test"
+      ]
+    }
+  }
+}
