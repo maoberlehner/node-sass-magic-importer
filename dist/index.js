@@ -102,7 +102,7 @@ var MagicImporter = function () {
       if (!this.store[storeKey]) {
         this.store[storeKey] = [];
       }
-      if (!this.store[storeKey].includes(absoluteUrl)) this.store[storeKey].push(absoluteUrl);
+      if (this.store[storeKey].indexOf(absoluteUrl) < 0) this.store[storeKey].push(absoluteUrl);
     }
 
     /**
@@ -130,7 +130,7 @@ var MagicImporter = function () {
         this.store[storeKey] = [];
       }
 
-      if (!hasFilters && this.store[storeKey] && this.store[storeKey].includes(absoluteUrl)) {
+      if (!hasFilters && this.store[storeKey] && this.store[storeKey].indexOf(absoluteUrl) >= 0) {
         return true;
       }
 
