@@ -2,7 +2,7 @@ import fs from 'fs';
 import sass from 'node-sass';
 import test from 'ava';
 
-import filterImporter from '../packages/node-sass-magic-importer/dist/filter-importer';
+import filterImporter from '../packages/node-sass-filter-importer/dist/index';
 
 test(`Should import only specific nodes.`, (t) => {
   const expectedResult = fs.readFileSync(`test/files/filter-import.css`, {
