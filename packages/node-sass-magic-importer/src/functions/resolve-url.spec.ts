@@ -3,11 +3,10 @@ import * as glob from 'glob';
 import * as path from 'path';
 import * as sinon from 'sinon';
 
+import { resolveUrlFactory } from './resolve-url';
 import { sassGlobPatternFactory } from './sass-glob-pattern';
 
 import { IGlob } from '../interfaces/IGlob';
-
-import { resolveUrlFactory } from './resolve-url';
 
 test.beforeEach((t) => {
   const sassGlobPattern = sassGlobPatternFactory(path);

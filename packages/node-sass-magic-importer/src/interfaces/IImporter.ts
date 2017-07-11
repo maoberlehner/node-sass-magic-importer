@@ -6,5 +6,8 @@ export interface IImporter {
 }
 
 export interface IImporterOptions {
-  cwd: string;
+  cwd?: string;
+  extensions?: string[];
+  packageKeys?: string[];
+  prefix?: string;
 }
