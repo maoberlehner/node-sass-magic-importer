@@ -1,13 +1,12 @@
-import * as glob from 'glob';
 import * as path from 'path';
 
-import { resolveUrlFactory } from './functions/resolve-url';
-import { sassGlobPatternFactory } from './functions/sass-glob-pattern';
+import {
+  buildIncludePaths,
+  resolveUrl,
+  sassGlobPattern,
+} from 'node-sass-magic-importer/dist/toolbox';
 
-import { IImporterOptions } from './interfaces/IImporter';
-
-const sassGlobPattern = sassGlobPatternFactory(path);
-const resolveUrl = resolveUrlFactory(glob, path, sassGlobPattern);
+import { IImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporter';
 
 export default function onceImporter(options: IImporterOptions) {
   const contextTemplate = {
@@ -15,6 +14,7 @@ export default function onceImporter(options: IImporterOptions) {
   };
 
   return function importer(url: string, prev: string) {
+    const nodeSassOptions = this.options;
     // Create a context for the current importer run.
     // An importer run is different from an importer instance,
     // one importer instance can spawn infinite importer runs.
@@ -25,12 +25,10 @@ export default function onceImporter(options: IImporterOptions) {
     // files already imported in a previous importer run
     // would be detected as multiple imports of the same file.
     const store = this.nodeSassOnceImporterContext.store;
-    // TODO: Refactor inlcude paths thing in function
-    const includePathsSet = new Set(this.options.includePaths.split(path.delimiter));
-    if (path.isAbsolute(prev)) {
-      includePathsSet.add(path.dirname(prev));
-    }
-    const includePaths = [...includePathsSet] as string[];
+    const includePaths = buildIncludePaths(
+      nodeSassOptions.includePaths,
+      prev,
+    );
     const resolvedUrl = resolveUrl(
       url,
       includePaths,

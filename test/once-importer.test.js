@@ -2,7 +2,7 @@ import fs from 'fs';
 import sass from 'node-sass';
 import test from 'ava';
 
-import onceImporter from '../packages/node-sass-magic-importer/dist/once-importer';
+import onceImporter from '../packages/node-sass-once-importer/dist/index';
 
 test(`Should import files only once.`, (t) => {
   const expectedResult = fs.readFileSync(`test/files/once-import.css`, {
