@@ -1,5 +1,5 @@
 # node-sass-package-importer
-[![Build Status](https://travis-ci.org/maoberlehner/node-sass-package-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-package-importer)
+[![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
 
 Custom importer for node-sass to import packages from the `node_modules` directory.
 
@@ -16,12 +16,14 @@ sass.render({
   ...
 });
 ```
+
 ```scss
 // Import the file that is specified in the `package.json` file of the module.
 // In the case of bootstrap, the following file is loaded:
 // https://github.com/twbs/bootstrap/blob/v4-dev/scss/bootstrap.scss
 @import '~bootstrap';
 ```
+
 ```scss
 // Import only specific files:
 @import '~bootstrap/scss/variables';
@@ -81,31 +83,14 @@ sass.render({
 node-sass --importer node_modules/node-sass-package-importer/dist/cli.js -o dist src/index.scss
 ```
 
-## Upgrade from 2.x.x to 3.x.x
-Version 3.x.x does not return a node-sass custom importer function directly. Instead a function which can take a optional parameter for configuration is returned. When the function is executed, it returns a node-sass custom importer function.
+## Upgrade from 3.x.x to 5.x.x
+If you're using only the public API as described above, no changes have to be made. If you're using the undocumented JavaScript library provided by this module, please look at the code directly to see whats changed.
 
-```node
-sass.render({
-  ...
-  // Old
-  importer: packageImporter
-  // New
-  importer: packageImporter()
-  ...
-});
-```
-
-If you want to use the `node-sass-package-importer` in combination with the node-sass CLI, you now have to specify the path to the `node-sass-package-importer` CLI script.
-
-```bash
-# Old
-node-sass --importer node_modules/node-sass-package-importer -o dist src/index.scss
-# New
-node-sass --importer node_modules/node-sass-package-importer/dist/cli.js -o dist src/index.scss
-```
+## Why is there no 4.x version?
+This module is maintained in [one repository](https://github.com/maoberlehner/node-sass-magic-importer) together with multiple other node-sass custom importers. The node-sass-magic-importer repository is using a [monorepo approach](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) with fixed versions for all packages. The projects maintained in the node-sass-magic-importer monorepo started out as separate repositories with separate versioning, so when they were integrated into the monorepo, the versions of all projects were raised to 5.0.0 and are in sync since then.
 
 ## node-sass-magic-importer
-This module is part of the [node-sass-magic-importer](https://github.com/maoberlehner/node-sass-magic-importer) module.
+This module is powered by [node-sass-magic-importer](https://github.com/maoberlehner/node-sass-magic-importer).
 
 ## About
 ### Author
