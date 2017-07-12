@@ -30,6 +30,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "start": "npm run watch",
     "watch": "lerna run watch",
     "build": "lerna run build",
