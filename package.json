@@ -23,9 +23,9 @@
   },
   "devDependencies": {
     "ava": "^0.20.0",
-    "lerna": "^2.0.0-rc.5",
+    "lerna": "^2.0.0",
     "node-sass": "^4.5.3",
-    "tslint": "^5.4.3",
+    "tslint": "^5.5.0",
     "typescript": "^2.4.1"
   },
   "main": "dist/index.js",
