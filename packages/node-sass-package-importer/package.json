@@ -23,6 +23,7 @@
     "node-sass-magic-importer": "^5.0.0"
   },
   "devDependencies": {
+    "@types/node": "^8.0.5",
     "rimraf": "^2.6.1",
     "typescript": "^2.4.1"
   },
