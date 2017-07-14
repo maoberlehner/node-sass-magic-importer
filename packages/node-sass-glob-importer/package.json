@@ -1,6 +1,6 @@
 {
   "name": "node-sass-glob-importer",
-  "description": "Custom node-sass importer to allow you to use glob syntax in imports",
+  "description": "Custom importer for node-sass which makes it possible to use glob syntax in Sass import statements",
   "keywords": [
     "glob-importer",
     "importer",

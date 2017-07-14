@@ -1,6 +1,6 @@
 {
   "name": "node-sass-filter-importer",
-  "description": "Filter certain elements from SCSS code",
+  "description": "Custom importer for node-sass to filter certain elements like variables, mixins or at-rules from Sass code",
   "keywords": [
     "importer",
     "node-sass",

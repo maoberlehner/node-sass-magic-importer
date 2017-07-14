@@ -1,6 +1,6 @@
 {
   "name": "node-sass-selector-importer",
-  "description": "Import only certain CSS selectors form a file",
+  "description": "Custom importer for node-sass to import only certain CSS selectors instead of the whole file",
   "keywords": [
     "importer",
     "node-sass",

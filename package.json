@@ -1,15 +1,5 @@
 {
-  "name": "node-sass-magic-importer",
-  "description": "Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once",
-  "keywords": [
-    "glob-importer",
-    "importer",
-    "module-importer",
-    "node-sass",
-    "package-importer",
-    "sass",
-    "selector-importer"
-  ],
+  "name": "node-sass-magic-importer-monorepo",
   "version": "5.0.0",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",

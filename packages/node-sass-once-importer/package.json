@@ -1,6 +1,6 @@
 {
   "name": "node-sass-once-importer",
-  "description": "Import files only once",
+  "description": "Custom importer for node-sass to import files only once",
   "keywords": [
     "importer",
     "node-sass",
