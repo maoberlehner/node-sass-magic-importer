@@ -12,9 +12,7 @@ import {
   splitSelectorFilter,
 } from 'node-sass-magic-importer/dist/toolbox';
 
-import { IImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporter';
-
-export default function selectorImporter(options: IImporterOptions) {
+export default function selectorImporter() {
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     const selectorFilters = parseSelectorFilters(url);

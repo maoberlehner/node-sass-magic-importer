@@ -6,9 +6,7 @@ import {
   sassGlobPattern,
 } from 'node-sass-magic-importer/dist/toolbox';
 
-import { IImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporter';
-
-export default function onceImporter(options: IImporterOptions) {
+export default function onceImporter() {
   const contextTemplate = {
     store: new Set(),
   };
