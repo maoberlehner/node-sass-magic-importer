@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 
 import {
@@ -28,7 +29,8 @@ export default function selectorImporter() {
 
     const cleanedUrl = cleanImportUrl(url);
     const resolvedUrl = resolveUrl(cleanedUrl, includePaths);
-    const contents = extractSelectors(resolvedUrl, selectorFilters);
+    const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
+    const contents = extractSelectors(css, selectorFilters);
 
     return contents ? { contents } : null;
   };

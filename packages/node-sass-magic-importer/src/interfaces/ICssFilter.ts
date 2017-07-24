@@ -1,4 +1,4 @@
 export type ICssFilter = (
-  url: string,
+  css: string,
   filters: any[],
 ) => string;

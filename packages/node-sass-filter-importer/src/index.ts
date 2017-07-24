@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 
 import {
@@ -25,7 +26,8 @@ export default function nodeImporter() {
 
     const cleanedUrl = cleanImportUrl(url);
     const resolvedUrl = resolveUrl(cleanedUrl, includePaths);
-    const contents = extractNodes(resolvedUrl, nodeFilters);
+    const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
+    const contents = extractNodes(css, nodeFilters);
 
     return contents ? { contents } : null;
   };

@@ -1,6 +1,5 @@
 import * as cssNodeExtract from 'css-node-extract';
 import * as cssSelectorExtract from 'css-selector-extract';
-import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
 import * as postcssScss from 'postcss-scss';
@@ -28,8 +27,8 @@ import { ISelectorFilter, ISelectorFilterRaw } from './interfaces/ISelectorFilte
 export const buildIncludePaths = buildIncludePathsFactory(path);
 export const cleanImportUrl = cleanImportUrlFactory();
 export const escapeSelector = escapeSelectorFactory();
-export const extractNodes = extractNodesFactory(cssNodeExtract, fs, postcssScss);
-export const extractSelectors = extractSelectorsFactory(cssSelectorExtract, fs, postcssScss);
+export const extractNodes = extractNodesFactory(cssNodeExtract, postcssScss);
+export const extractSelectors = extractSelectorsFactory(cssSelectorExtract, postcssScss);
 export const parseNodeFilters = parseNodeFiltersFactory();
 export const processRawSelectorFilters = processRawSelectorFiltersFactory(escapeSelector);
 export const resolvePackageKey = resolvePackageKeyFactory();
