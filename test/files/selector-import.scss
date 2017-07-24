@@ -1,2 +1,25 @@
+@import '../../node_modules/bootstrap/scss/_variables.scss';
+@import '../../node_modules/bootstrap/scss/mixins/_border-radius.scss';
+@import '../../node_modules/bootstrap/scss/mixins/_alert.scss';
+@import '{ .alert, .alert-dismissible as .alert--dismissible, .close as .alert__close } from ../../node_modules/bootstrap/scss/_alert.scss';
+
+@import '../../node_modules/bootstrap/scss/mixins/_breakpoints.scss';
+@import '{ .jumbotron, /\.jumbotron-(.+)/ as .jumbotron--$1 } from ../../node_modules/bootstrap/scss/_jumbotron.scss';
+
+@import '{
+  .special\@-characters\/,
+  .replace-@special/-characters as .replaced-@special/-characters,
+  /\.regex\@-special\/-charecters/,
+  /\.(mixin)/ as @mixin $1
+} from test-dir/special-characters.scss';
+
+.mixin-test {
+  @include mixin;
+}
+
+@import '{} from test-dir/empty-import.scss';
+
+@import '{ .#{$variable}-test } from test-dir/variable-import.scss';
+
 @import '{ .partial-1-1, .partial-1-3 } from partials/partial-1';
 @import '{ .partial-2 as .replaced } from partials/partial-2';

@@ -72,6 +72,18 @@ test(`Should import the modules main file.`, (t) => {
   t.is(result, expectedResult);
 });
 
+test(`Should import the module files with filters.`, (t) => {
+  const expectedResult = fs.readFileSync(`test/files/package-combined-import.css`, {
+    encoding: `utf8`,
+  });
+  const result = sass.renderSync({
+    file: `test/files/package-combined-import.scss`,
+    importer: magicImporter(),
+  }).css.toString();
+
+  t.is(result, expectedResult);
+});
+
 test(`Should import only specific selectors and replace them.`, (t) => {
   const expectedResult = fs.readFileSync(`test/files/selector-import.css`, {
     encoding: `utf8`,

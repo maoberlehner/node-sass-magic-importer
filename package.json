@@ -12,7 +12,10 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "devDependencies": {
+    "@avalanche/component-button": "^4.0.0-alpha.4",
+    "@avalanche/object-grid": "^4.0.0-alpha.12",
     "ava": "^0.20.0",
+    "bootstrap": "^4.0.0-alpha.6",
     "lerna": "^2.0.0",
     "node-sass": "^4.5.3",
     "tslint": "^5.5.0",

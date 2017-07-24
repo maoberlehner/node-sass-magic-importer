@@ -1,3 +1,48 @@
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem; }
+
+.alert--dismissible .alert__close {
+  position: relative;
+  top: -0.75rem;
+  right: -1.25rem;
+  padding: 0.75rem 1.25rem;
+  color: inherit; }
+
+.jumbotron {
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  background-color: #eceeef;
+  border-radius: 0.3rem; }
+  @media (min-width: 576px) {
+    .jumbotron {
+      padding: 4rem 2rem; } }
+
+.jumbotron--hr {
+  border-top-color: #d0d5d8; }
+
+.jumbotron--fluid {
+  padding-right: 0;
+  padding-left: 0;
+  border-radius: 0; }
+
+.special\@-characters\/ {
+  content: 'Special characters'; }
+
+.replaced-\@special\/-characters {
+  content: 'Replaced special characters'; }
+
+.regex\@-special\/-charecters {
+  content: 'Regex special characters'; }
+
+.mixin-test {
+  content: 'Mixin'; }
+
+.variable-test {
+  content: 'Variable import'; }
+
 .partial-1-1 {
   content: 'Partial 1-1'; }
 
