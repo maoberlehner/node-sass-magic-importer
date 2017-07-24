@@ -31,6 +31,7 @@
     "build": "npm run clean && tsc",
     "watch": "npm run clean && tsc -w",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "true"
   }
 }
