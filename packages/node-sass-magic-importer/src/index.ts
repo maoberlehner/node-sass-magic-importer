@@ -1,0 +1,171 @@
+// TODO: add all tests from current projects
+// TODO: Resolve todos in other pacakges
+// TODO: refactor
+// TODO: cleanup (unused dependencies / functins / interfaces / ...)
+
+import * as fs from 'fs';
+import * as getInstalledPath from 'get-installed-path';
+import * as path from 'path';
+
+import {
+  buildIncludePaths,
+  cleanImportUrl,
+  extractNodes,
+  extractSelectors,
+  parseNodeFilters,
+  parseSelectorFilters,
+  resolveGlobUrl,
+  resolvePackageUrl,
+  resolveUrl,
+  sassGlobPattern,
+} from './toolbox';
+
+export default function magicImporter(options: any) {
+  // TODO refactor this options stuff
+  const defaultOptions = {
+    cwd: process.cwd(),
+    extensions: [
+      `.scss`,
+      `.sass`,
+    ],
+    packageKeys: [
+      `sass`,
+      `scss`,
+      `style`,
+      `css`,
+      `main.sass`,
+      `main.scss`,
+      `main.style`,
+      `main.css`,
+      `main`,
+    ],
+    prefix: `~`,
+    disableImportOnce: false,
+  };
+  options = Object.assign({}, defaultOptions, options);
+
+  const CONTEXT_TEMPLATE = {
+    store: new Set(),
+  };
+  const EMPTY_IMPORT = {
+    file: ``,
+    contents: ``,
+  };
+  const DIRECTORY_SEPARATOR = `/`;
+
+  const escapedPrefix = options.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
+  const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
+
+  return function importer(url: string, prev: string) {
+    const nodeSassOptions = this.options;
+    // Create a context for the current importer run.
+    // An importer run is different from an importer instance,
+    // one importer instance can spawn infinite importer runs.
+    if (!this.nodeSassOnceImporterContext) {
+      // TODO: refactor into getContext method?
+      this.nodeSassOnceImporterContext = Object.assign({}, CONTEXT_TEMPLATE);
+    }
+    // Each importer run has it's own new store, otherwise
+    // files already imported in a previous importer run
+    // would be detected as multiple imports of the same file.
+    const store = this.nodeSassOnceImporterContext.store;
+    const includePaths = buildIncludePaths(
+      nodeSassOptions.includePaths,
+      prev,
+    );
+
+    let data = null;
+    let filterPrefix: string = ``;
+    let filteredContents: string|null = null;
+    let cleanedUrl = cleanImportUrl(url); // TODO naming?
+    let isPackageUrl = false;
+
+    if (cleanedUrl.match(matchPackageUrl)) {
+      isPackageUrl = true;
+      cleanedUrl = cleanedUrl.replace(matchPackageUrl, ``); // TODO refactor
+
+      const packageName = cleanedUrl.split(DIRECTORY_SEPARATOR)[0];
+      const packagePath = getInstalledPath.sync(packageName, {
+        cwd: options.cwd,
+        local: true,
+      });
+
+      cleanedUrl = path.resolve(path.dirname(packagePath), cleanedUrl);
+    }
+
+    let resolvedUrl: string|null = resolveUrl(cleanedUrl, includePaths);
+
+    const nodeFilters = parseNodeFilters(url);
+    const selectorFilters = parseSelectorFilters(url);
+    const hasFilters = nodeFilters.length || selectorFilters.length;
+    // TODO if glob && isPackageUrl -> resolvePackagePath
+    // replace the package path prefix with resolved package path
+    // and use this new url for resolveGlob
+    const globFilePaths = resolveGlobUrl(cleanedUrl, includePaths);
+
+    // TODO: refactor
+    if (hasFilters) {
+      filterPrefix = `${url.split(` from `)[0]} from `;
+    }
+
+    if (globFilePaths.length) {
+      const contents = globFilePaths
+        .filter((x) => !store.has(`${filterPrefix}${x}`))
+        .map((x) => `@import '${filterPrefix}${x}';`)
+        .join(`\n`);
+
+      return { contents };
+    }
+
+    // TODO: refactor
+    if (isPackageUrl) {
+      resolvedUrl = resolvePackageUrl(
+        cleanedUrl,
+        options.extensions,
+        options.cwd,
+        options.packageKeys,
+      );
+
+      if (resolvedUrl) {
+        data = { file: resolvedUrl };
+      }
+    }
+
+    // TODO: better comment: resolvedFilterUrl is used for the store to check for identical imports
+    // when checking once import of url
+    // TODO: whitespace in filters, create filters from arrays, or remove all whitespace?
+    const resolvedFilterUrl = `${filterPrefix}${resolvedUrl}`;
+
+    if (store.has(resolvedFilterUrl)) {
+      return EMPTY_IMPORT;
+    }
+
+    if (resolvedUrl && (selectorFilters.length || nodeFilters.length)) {
+      filteredContents = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
+
+      if (selectorFilters.length) {
+        filteredContents = extractSelectors(filteredContents, selectorFilters);
+      }
+
+      if (nodeFilters.length) {
+        filteredContents = extractNodes(filteredContents, nodeFilters);
+      }
+    }
+
+    if (!options.disableImportOnce) {
+      store.add(resolvedFilterUrl);
+    }
+
+    // TODO filter import problem – not solvable because filter imported file might use
+    // something that is not imported if filters are passed through imports?
+    // Known issue in README?
+    if (filteredContents) {
+      data = {
+        file: resolvedUrl,
+        contents: filteredContents,
+      };
+    }
+
+    return data;
+  };
+}

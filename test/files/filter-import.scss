@@ -1,7 +1,18 @@
 @import '[at-rules] from partials/partial-1';
 @import '[rules] from partials/partial-2';
-@import '[at-rules] from partials/partial-3';
-@import '[functions, mixins, variables] from partials/partial-3';
+@import '[functions, mixins, variables, at-rules] from partials/partial-3';
+@import '[
+  variables,
+  mixins
+] from test-dir/sass-features.scss';
+
+.variable-test {
+  content: $variable1;
+}
+
+.mixin-test {
+  @include mixin-at-rule();
+}
 
 .test-selector {
   content: test();

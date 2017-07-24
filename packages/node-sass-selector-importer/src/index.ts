@@ -32,6 +32,7 @@ export default function selectorImporter() {
     const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
     const contents = extractSelectors(css, selectorFilters);
 
+    // TODO return file name
     return contents ? { contents } : null;
   };
 }
