@@ -1,7 +1,7 @@
 # node-sass-glob-importer
 [![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
 
-Custom node-sass importer to allow you to use glob syntax in imports.
+Custom node-sass importer to which allows you to use glob syntax in imports
 
 Globbing allows pattern matching operators to be used to match multiple files at once.
 
