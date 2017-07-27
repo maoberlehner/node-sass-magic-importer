@@ -10,6 +10,7 @@ import * as getInstalledPath from 'get-installed-path';
 import * as path from 'path';
 import * as postcssSyntax from 'postcss-scss';
 
+import { defaultOptions } from './default-options';
 import {
   buildIncludePaths,
   cleanImportUrl,
@@ -21,40 +22,16 @@ import {
   sassGlobPattern,
 } from './toolbox';
 
+const EMPTY_IMPORT = {
+  file: ``,
+  contents: ``,
+};
+const DIRECTORY_SEPARATOR = `/`;
+
 export default function magicImporter(options: any) {
-  // TODO refactor this options stuff
-  const defaultOptions = {
-    cwd: process.cwd(),
-    extensions: [
-      `.scss`,
-      `.sass`,
-    ],
-    packageKeys: [
-      `sass`,
-      `scss`,
-      `style`,
-      `css`,
-      `main.sass`,
-      `main.scss`,
-      `main.style`,
-      `main.css`,
-      `main`,
-    ],
-    prefix: `~`,
-    disableImportOnce: false,
-  };
   options = Object.assign({}, defaultOptions, options);
 
-  const CONTEXT_TEMPLATE = {
-    store: new Set(),
-  };
-  const EMPTY_IMPORT = {
-    file: ``,
-    contents: ``,
-  };
-  const DIRECTORY_SEPARATOR = `/`;
-
-  const escapedPrefix = options.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
+  const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
   const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
 
   return function importer(url: string, prev: string) {
@@ -64,8 +41,7 @@ export default function magicImporter(options: any) {
     // An importer run is different from an importer instance,
     // one importer instance can spawn infinite importer runs.
     if (!this.nodeSassOnceImporterContext) {
-      // TODO: refactor into getContext method?
-      this.nodeSassOnceImporterContext = Object.assign({}, CONTEXT_TEMPLATE);
+      this.nodeSassOnceImporterContext = { store: new Set() };
     }
 
     // Each importer run has it's own new store, otherwise
