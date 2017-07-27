@@ -6,9 +6,11 @@ export function buildIncludePathsFactory(
 ): IBuildIncludePaths {
   return (nodeSassIncludePaths: string, previouslyResolvedPath: string) => {
     const includePathsSet = new Set(nodeSassIncludePaths.split(path.delimiter));
+
     if (path.isAbsolute(previouslyResolvedPath)) {
       includePathsSet.add(path.dirname(previouslyResolvedPath));
     }
+
     return [...includePathsSet] as string[];
   };
 }

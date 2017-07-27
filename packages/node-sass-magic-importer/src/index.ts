@@ -3,15 +3,16 @@
 // TODO: refactor
 // TODO: cleanup (unused dependencies / functins / interfaces / ...)
 
+import * as cssNodeExtract from 'css-node-extract';
+import * as cssSelectorExtract from 'css-selector-extract';
 import * as fs from 'fs';
 import * as getInstalledPath from 'get-installed-path';
 import * as path from 'path';
+import * as postcssSyntax from 'postcss-scss';
 
 import {
   buildIncludePaths,
   cleanImportUrl,
-  extractNodes,
-  extractSelectors,
   parseNodeFilters,
   parseSelectorFilters,
   resolveGlobUrl,
@@ -58,6 +59,7 @@ export default function magicImporter(options: any) {
 
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
+
     // Create a context for the current importer run.
     // An importer run is different from an importer instance,
     // one importer instance can spawn infinite importer runs.
@@ -65,6 +67,7 @@ export default function magicImporter(options: any) {
       // TODO: refactor into getContext method?
       this.nodeSassOnceImporterContext = Object.assign({}, CONTEXT_TEMPLATE);
     }
+
     // Each importer run has it's own new store, otherwise
     // files already imported in a previous importer run
     // would be detected as multiple imports of the same file.
@@ -144,11 +147,19 @@ export default function magicImporter(options: any) {
       filteredContents = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
 
       if (selectorFilters.length) {
-        filteredContents = extractSelectors(filteredContents, selectorFilters);
+        filteredContents = cssSelectorExtract.processSync({
+          css: filteredContents,
+          filters: selectorFilters,
+          postcssSyntax,
+        });
       }
 
       if (nodeFilters.length) {
-        filteredContents = extractNodes(filteredContents, nodeFilters);
+        filteredContents = cssNodeExtract.processSync({
+          css: filteredContents,
+          filters: nodeFilters,
+          postcssSyntax,
+        });
       }
     }
 

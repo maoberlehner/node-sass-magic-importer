@@ -1,10 +1,11 @@
+import * as cssNodeExtract from 'css-node-extract';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as postcssSyntax from 'postcss-scss';
 
 import {
   buildIncludePaths,
   cleanImportUrl,
-  extractNodes,
   parseNodeFilters,
   resolveUrl,
   sassGlobPattern,
@@ -27,7 +28,11 @@ export default function nodeImporter() {
     const cleanedUrl = cleanImportUrl(url);
     const resolvedUrl = resolveUrl(cleanedUrl, includePaths);
     const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
-    const contents = extractNodes(css, nodeFilters);
+    const contents = cssNodeExtract.processSync({
+      css,
+      filters: nodeFilters,
+      postcssSyntax,
+    });
 
     return contents ? { contents } : null;
   };

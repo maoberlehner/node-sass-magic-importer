@@ -1,15 +1,10 @@
-import * as cssNodeExtract from 'css-node-extract';
-import * as cssSelectorExtract from 'css-selector-extract';
 import * as glob from 'glob';
 import * as path from 'path';
-import * as postcssScss from 'postcss-scss';
 import * as resolve from 'resolve';
 
 import { buildIncludePathsFactory } from './functions/build-include-paths';
 import { cleanImportUrlFactory } from './functions/clean-import-url';
 import { escapeSelectorFactory } from './functions/escape-selector';
-import { extractNodesFactory } from './functions/extract-nodes';
-import { extractSelectorsFactory } from './functions/extract-selectors';
 import { parseNodeFiltersFactory } from './functions/parse-node-filters';
 import { parseSelectorFiltersFactory } from './functions/parse-selector-filters';
 import { processRawSelectorFiltersFactory } from './functions/process-raw-selector-filters';
@@ -27,8 +22,6 @@ import { ISelectorFilter, ISelectorFilterRaw } from './interfaces/ISelectorFilte
 export const buildIncludePaths = buildIncludePathsFactory(path);
 export const cleanImportUrl = cleanImportUrlFactory();
 export const escapeSelector = escapeSelectorFactory();
-export const extractNodes = extractNodesFactory(cssNodeExtract, postcssScss);
-export const extractSelectors = extractSelectorsFactory(cssSelectorExtract, postcssScss);
 export const parseNodeFilters = parseNodeFiltersFactory();
 export const processRawSelectorFilters = processRawSelectorFiltersFactory(escapeSelector);
 export const resolvePackageKey = resolvePackageKeyFactory();

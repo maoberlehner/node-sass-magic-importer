@@ -1,11 +1,12 @@
+import * as cssSelectorExtract from 'css-selector-extract';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as postcssSyntax from 'postcss-scss';
 
 import {
   buildIncludePaths,
   cleanImportUrl,
   escapeSelector,
-  extractSelectors,
   parseSelectorFilters,
   processRawSelectorFilters,
   resolveUrl,
@@ -30,7 +31,11 @@ export default function selectorImporter() {
     const cleanedUrl = cleanImportUrl(url);
     const resolvedUrl = resolveUrl(cleanedUrl, includePaths);
     const css = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
-    const contents = extractSelectors(css, selectorFilters);
+    const contents = cssSelectorExtract.processSync({
+      css,
+      filters: selectorFilters,
+      postcssSyntax,
+    });
 
     // TODO return file name
     return contents ? { contents } : null;
