@@ -22,16 +22,18 @@ import {
   sassGlobPattern,
 } from './toolbox';
 
+import { IMagicImporterOptions } from './interfaces/IMagicImporterOptions';
+
 const EMPTY_IMPORT = {
   file: ``,
   contents: ``,
 };
 const DIRECTORY_SEPARATOR = `/`;
 
-export default function magicImporter(options: any) {
-  options = Object.assign({}, defaultOptions, options);
+export default function magicImporter(userOptions: IMagicImporterOptions) {
+  const options = Object.assign({}, defaultOptions, userOptions);
 
-  if (options.prefix) {
+  if (options.hasOwnProperty(`prefix`)) {
     process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
   }
 
