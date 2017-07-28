@@ -56,12 +56,11 @@ export default function magicImporter(options: any) {
     let data = null;
     let filterPrefix: string = ``;
     let filteredContents: string|null = null;
-    let cleanedUrl = cleanImportUrl(url); // TODO naming?
-    let isPackageUrl = false;
+    let cleanedUrl = cleanImportUrl(url);
+    const isPackageUrl = cleanedUrl.match(matchPackageUrl);
 
-    if (cleanedUrl.match(matchPackageUrl)) {
-      isPackageUrl = true;
-      cleanedUrl = cleanedUrl.replace(matchPackageUrl, ``); // TODO refactor
+    if (isPackageUrl) {
+      cleanedUrl = cleanedUrl.replace(matchPackageUrl, ``);
 
       const packageName = cleanedUrl.split(DIRECTORY_SEPARATOR)[0];
       const packagePath = getInstalledPath.sync(packageName, {

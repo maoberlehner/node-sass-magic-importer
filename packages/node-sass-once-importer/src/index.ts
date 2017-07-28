@@ -19,6 +19,7 @@ export default function onceImporter() {
     if (!this.nodeSassOnceImporterContext) {
       this.nodeSassOnceImporterContext = Object.assign({}, contextTemplate);
     }
+
     // Each importer run has it's own new store, otherwise
     // files already imported in a previous importer run
     // would be detected as multiple imports of the same file.

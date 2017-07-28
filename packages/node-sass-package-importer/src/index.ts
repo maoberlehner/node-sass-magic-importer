@@ -52,7 +52,6 @@ export default function packageImporter(options: any) {
       options.packageKeys,
     );
 
-    // TODO: Wirklich css replacen? Why? Why not?
     return file ? { file: file.replace(/\.css$/, ``) } : null;
   };
 }
