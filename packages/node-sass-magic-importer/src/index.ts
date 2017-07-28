@@ -31,6 +31,10 @@ const DIRECTORY_SEPARATOR = `/`;
 export default function magicImporter(options: any) {
   options = Object.assign({}, defaultOptions, options);
 
+  if (options.prefix) {
+    process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
+  }
+
   const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
   const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
 
