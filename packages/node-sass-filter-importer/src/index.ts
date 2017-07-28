@@ -34,6 +34,9 @@ export default function nodeImporter() {
       postcssSyntax,
     });
 
-    return contents ? { contents } : null;
+    return contents ? {
+      file: resolvedUrl,
+      contents,
+    } : null;
   };
 }

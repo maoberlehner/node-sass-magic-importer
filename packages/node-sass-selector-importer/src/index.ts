@@ -37,7 +37,9 @@ export default function selectorImporter() {
       postcssSyntax,
     });
 
-    // TODO return file name
-    return contents ? { contents } : null;
+    return contents ? {
+      file: resolvedUrl,
+      contents,
+    } : null;
   };
 }
