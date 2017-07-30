@@ -3,33 +3,18 @@ import {
   resolvePackageUrl,
   sassUrlVariants,
 } from 'node-sass-magic-importer/dist/toolbox';
+import { defaultOptions } from './default-options';
 
-// TODO
-import { IImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporter';
+import { IPackageImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporterOptions';
 
-export default function packageImporter(options: any) {
-  const defaultOptions = {
-    cwd: process.cwd(),
-    extensions: [
-      `.scss`,
-      `.sass`,
-    ],
-    packageKeys: [
-      `sass`,
-      `scss`,
-      `style`,
-      `css`,
-      `main.sass`,
-      `main.scss`,
-      `main.style`,
-      `main.css`,
-      `main`,
-    ],
-    prefix: `~`,
-  };
-  options = Object.assign({}, defaultOptions, options);
+export default function packageImporter(userOptions: IPackageImporterOptions) {
+  const options = Object.assign({}, defaultOptions, userOptions);
 
-  const escapedPrefix = options.prefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
+  if (options.hasOwnProperty(`prefix`)) {
+    process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
+  }
+
+  const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
   const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
 
   return function importer(url: string, prev: string) {

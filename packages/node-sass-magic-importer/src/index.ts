@@ -22,7 +22,7 @@ import {
   sassGlobPattern,
 } from './toolbox';
 
-import { IMagicImporterOptions } from './interfaces/IMagicImporterOptions';
+import { IMagicImporterOptions } from './interfaces/IImporterOptions';
 
 const EMPTY_IMPORT = {
   file: ``,

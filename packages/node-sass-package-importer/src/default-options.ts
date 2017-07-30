@@ -3,7 +3,6 @@ export const defaultOptions: {
   extensions: string[];
   packageKeys: string[];
   packagePrefix: string;
-  disableImportOnce: boolean;
 } = {
   cwd: process.cwd(),
   extensions: [
@@ -22,5 +21,4 @@ export const defaultOptions: {
     `main`,
   ],
   packagePrefix: `~`,
-  disableImportOnce: false,
 };
