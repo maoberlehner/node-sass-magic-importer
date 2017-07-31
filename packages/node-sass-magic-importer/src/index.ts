@@ -63,6 +63,7 @@ export default function magicImporter(userOptions: IMagicImporterOptions) {
     let filterPrefix: string = ``;
     let filteredContents: string|null = null;
     let cleanedUrl = cleanImportUrl(url);
+    let resolvedUrl: string|null = null;
     const isPackageUrl = cleanedUrl.match(matchPackageUrl);
 
     if (isPackageUrl) {
@@ -75,9 +76,20 @@ export default function magicImporter(userOptions: IMagicImporterOptions) {
       });
 
       cleanedUrl = path.resolve(path.dirname(packagePath), cleanedUrl);
-    }
 
-    let resolvedUrl: string|null = resolveUrl(cleanedUrl, includePaths);
+      resolvedUrl = resolvePackageUrl(
+        cleanedUrl,
+        options.extensions,
+        options.cwd,
+        options.packageKeys,
+      );
+
+      if (resolvedUrl) {
+        data = { file: resolvedUrl };
+      }
+    } else {
+      resolvedUrl = resolveUrl(cleanedUrl, includePaths);
+    }
 
     const nodeFilters = parseNodeFilters(url);
     const selectorFilters = parseSelectorFilters(url);
@@ -99,20 +111,6 @@ export default function magicImporter(userOptions: IMagicImporterOptions) {
         .join(`\n`);
 
       return { contents };
-    }
-
-    // TODO: refactor
-    if (isPackageUrl) {
-      resolvedUrl = resolvePackageUrl(
-        cleanedUrl,
-        options.extensions,
-        options.cwd,
-        options.packageKeys,
-      );
-
-      if (resolvedUrl) {
-        data = { file: resolvedUrl };
-      }
     }
 
     // TODO: better comment: resolvedFilterUrl is used for the store to check for identical imports
