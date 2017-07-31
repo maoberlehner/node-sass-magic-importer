@@ -39,6 +39,10 @@
     "typescript": "^2.4.1"
   },
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=6.11.1",
+    "npm": ">=3.0.0"
+  },
   "scripts": {
     "build": "npm run clean && tsc",
     "watch": "npm run clean && tsc -w",
