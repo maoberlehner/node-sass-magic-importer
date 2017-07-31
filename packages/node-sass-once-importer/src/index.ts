@@ -6,6 +6,11 @@ import {
   sassGlobPattern,
 } from 'node-sass-magic-importer/dist/toolbox';
 
+const EMPTY_IMPORT = {
+  file: ``,
+  contents: ``,
+};
+
 export default function onceImporter() {
   const contextTemplate = {
     store: new Set(),
@@ -34,10 +39,7 @@ export default function onceImporter() {
     );
 
     if (store.has(resolvedUrl)) {
-      return {
-        file: ``,
-        contents: ``,
-      };
+      return EMPTY_IMPORT;
     }
 
     store.add(resolvedUrl);
