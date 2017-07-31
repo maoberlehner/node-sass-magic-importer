@@ -45,7 +45,7 @@ In the example below you can see the default configuration options.
 - `cwd`: Defines the path in which your `node_modules` directory is found.
 - `extensions`: Set which file extensions should get resolved.
 - `packageKeys`: You can define the `package.json` keys to search for and in which order.
-- `prefix`: You can set the special character for indicating a module resolution.
+- `packagePrefix`: You can set the special character for indicating a module resolution.
 
 ```node
 var sass = require('node-sass');
@@ -68,7 +68,7 @@ var options = {
     'main.css',
     'main'
   ],
-  prefix: '~'
+  packagePrefix: '~'
 };
 
 sass.render({
@@ -84,7 +84,7 @@ node-sass --importer node_modules/node-sass-package-importer/dist/cli.js -o dist
 ```
 
 ## Upgrade from 3.x.x to 5.x.x
-If you're using only the public API as described above, no changes have to be made. If you're using the undocumented JavaScript library provided by this module, please look at the code directly to see whats changed.
+- The `prefix` option was renamed to `packagePrefix`.
 
 ## Why is there no 4.x version?
 This module is maintained in [one repository](https://github.com/maoberlehner/node-sass-magic-importer) together with multiple other node-sass custom importers. The node-sass-magic-importer repository is using a [monorepo approach](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) with fixed versions for all packages. The projects maintained in the node-sass-magic-importer monorepo started out as separate repositories with separate versioning, so when they were integrated into the monorepo, the versions of all projects were raised to 5.0.0 and are in sync since then.

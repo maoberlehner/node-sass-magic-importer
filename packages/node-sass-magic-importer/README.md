@@ -202,7 +202,7 @@ var options = {
     'main'
   ],
   // You can set the special character for indicating a module resolution.
-  prefix: '~',
+  packagePrefix: '~',
   // Disable console warnings.
   disableWarnings: false,
   // Disable importing files only once.
@@ -235,7 +235,8 @@ node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist s
 ```
 
 ## Upgrade from 4.x.x to 5.x.x
-It is not possible anymore to set the `includePaths` option when initializing the importer. Use the [node-sass includePaths option](https://github.com/sass/node-sass#includepaths) instead.
+- It is not possible anymore to set the `includePaths` option when initializing the importer. Use the [node-sass includePaths option](https://github.com/sass/node-sass#includepaths) instead.
+- The `prefix` option was renamed to `packagePrefix`.
 
 ## About
 ### Author
