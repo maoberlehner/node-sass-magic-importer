@@ -21,7 +21,6 @@
     "tslint": "^5.5.0",
     "typescript": "^2.4.1"
   },
-  "main": "dist/index.js",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "start": "npm run watch",
