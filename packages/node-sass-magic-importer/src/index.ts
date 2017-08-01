@@ -7,6 +7,7 @@ import * as cssNodeExtract from 'css-node-extract';
 import * as cssSelectorExtract from 'css-selector-extract';
 import * as fs from 'fs';
 import * as getInstalledPath from 'get-installed-path';
+import * as hash from 'object-hash';
 import * as path from 'path';
 import * as postcssSyntax from 'postcss-scss';
 
@@ -23,6 +24,7 @@ import {
 } from './toolbox';
 
 import { IMagicImporterOptions } from './interfaces/IImporterOptions';
+import { ISelectorFilter } from './interfaces/ISelectorFilter';
 
 const EMPTY_IMPORT = {
   file: ``,
@@ -30,7 +32,19 @@ const EMPTY_IMPORT = {
 };
 const DIRECTORY_SEPARATOR = `/`;
 
-export default function magicImporter(userOptions: IMagicImporterOptions) {
+export function getStoreId(
+  resolvedUrl: string|null,
+  selectorFilters: ISelectorFilter[]|null = null,
+  nodeFilters: string[]|null = null,
+) {
+  return hash({
+    resolvedUrl,
+    selectorFilters,
+    nodeFilters,
+  }, { unorderedArrays: true });
+}
+
+export default function magicImporter(userOptions?: IMagicImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);
 
   if (options.hasOwnProperty(`prefix`)) {
@@ -94,10 +108,8 @@ export default function magicImporter(userOptions: IMagicImporterOptions) {
     const nodeFilters = parseNodeFilters(url);
     const selectorFilters = parseSelectorFilters(url);
     const hasFilters = nodeFilters.length || selectorFilters.length;
-    // TODO if glob && isPackageUrl -> resolvePackagePath
-    // replace the package path prefix with resolved package path
-    // and use this new url for resolveGlob
     const globFilePaths = resolveGlobUrl(cleanedUrl, includePaths);
+    const storeId = getStoreId(resolvedUrl, selectorFilters, nodeFilters);
 
     // TODO: refactor
     if (hasFilters) {
@@ -106,19 +118,14 @@ export default function magicImporter(userOptions: IMagicImporterOptions) {
 
     if (globFilePaths.length) {
       const contents = globFilePaths
-        .filter((x) => !store.has(`${filterPrefix}${x}`))
+        .filter((x) => !store.has(getStoreId(x, selectorFilters, nodeFilters)))
         .map((x) => `@import '${filterPrefix}${x}';`)
         .join(`\n`);
 
       return { contents };
     }
 
-    // TODO: better comment: resolvedFilterUrl is used for the store to check for identical imports
-    // when checking once import of url
-    // TODO: whitespace in filters, create filters from arrays, or remove all whitespace?
-    const resolvedFilterUrl = `${filterPrefix}${resolvedUrl}`;
-
-    if (store.has(resolvedFilterUrl)) {
+    if (store.has(storeId)) {
       return EMPTY_IMPORT;
     }
 
@@ -143,7 +150,7 @@ export default function magicImporter(userOptions: IMagicImporterOptions) {
     }
 
     if (!options.disableImportOnce) {
-      store.add(resolvedFilterUrl);
+      store.add(storeId);
     }
 
     // TODO filter import problem – not solvable because filter imported file might use
