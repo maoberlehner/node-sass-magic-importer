@@ -27,7 +27,7 @@
     "watch": "lerna run watch",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "lint": "tslint packages/*/src/**/*.ts",
+    "lint": "tslint packages/**/*.ts -e **/node_modules/** -e **/dist/**",
     "test": "lerna run test && ava test/**/*.test.js"
   }
 }
