@@ -7,7 +7,7 @@ import { defaultOptions } from './default-options';
 
 import { IPackageImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporterOptions';
 
-export default function packageImporter(userOptions?: IPackageImporterOptions) {
+export = function packageImporter(userOptions?: IPackageImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);
 
   if (options.hasOwnProperty(`prefix`)) {
@@ -39,4 +39,4 @@ export default function packageImporter(userOptions?: IPackageImporterOptions) {
 
     return file ? { file: file.replace(/\.css$/, ``) } : null;
   };
-}
+};

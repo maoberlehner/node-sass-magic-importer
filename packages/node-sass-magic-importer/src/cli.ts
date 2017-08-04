@@ -1,3 +1,3 @@
-import magicImporter from './index';
+import magicImporter = require('./index');
 
 export = magicImporter();

@@ -32,7 +32,7 @@ const EMPTY_IMPORT = {
 };
 const DIRECTORY_SEPARATOR = `/`;
 
-export function getStoreId(
+function getStoreId(
   resolvedUrl: string|null,
   selectorFilters: ISelectorFilter[]|null = null,
   nodeFilters: string[]|null = null,
@@ -44,7 +44,7 @@ export function getStoreId(
   }, { unorderedArrays: true });
 }
 
-export default function magicImporter(userOptions?: IMagicImporterOptions) {
+export = function magicImporter(userOptions?: IMagicImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);
 
   if (options.hasOwnProperty(`prefix`)) {
@@ -165,4 +165,4 @@ export default function magicImporter(userOptions?: IMagicImporterOptions) {
 
     return data;
   };
-}
+};

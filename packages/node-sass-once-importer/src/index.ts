@@ -11,7 +11,7 @@ const EMPTY_IMPORT = {
   contents: ``,
 };
 
-export default function onceImporter() {
+export = function onceImporter() {
   const contextTemplate = {
     store: new Set(),
   };
@@ -46,4 +46,4 @@ export default function onceImporter() {
 
     return null;
   };
-}
+};

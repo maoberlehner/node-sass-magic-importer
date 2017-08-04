@@ -1,3 +1,3 @@
-import globImporter from './index';
+import globImporter = require('./index');
 
 export = globImporter();

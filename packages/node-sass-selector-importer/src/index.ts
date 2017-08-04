@@ -14,7 +14,7 @@ import {
   splitSelectorFilter,
 } from 'node-sass-magic-importer/dist/toolbox';
 
-export default function selectorImporter() {
+export = function selectorImporter() {
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     const selectorFilters = parseSelectorFilters(url);
@@ -42,4 +42,4 @@ export default function selectorImporter() {
       contents,
     } : null;
   };
-}
+};

@@ -1,3 +1,3 @@
-import packageImporter from './index';
+import packageImporter = require('./index');
 
 export = packageImporter();

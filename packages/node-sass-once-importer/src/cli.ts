@@ -1,3 +1,3 @@
-import onceImporter from './index';
+import onceImporter = require('./index');
 
 export = onceImporter();

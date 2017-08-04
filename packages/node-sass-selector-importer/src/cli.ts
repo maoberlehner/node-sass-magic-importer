@@ -1,3 +1,3 @@
-import selectorImporter from './index';
+import selectorImporter = require('./index');
 
 export = selectorImporter();

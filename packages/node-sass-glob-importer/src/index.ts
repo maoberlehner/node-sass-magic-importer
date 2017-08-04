@@ -3,7 +3,7 @@ import {
   resolveGlobUrl,
 } from 'node-sass-magic-importer/dist/toolbox';
 
-export default function globImporter() {
+export = function globImporter() {
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     const includePaths = buildIncludePaths(
@@ -23,4 +23,4 @@ export default function globImporter() {
 
     return null;
   };
-}
+};

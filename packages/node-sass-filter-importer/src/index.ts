@@ -11,7 +11,7 @@ import {
   sassGlobPattern,
 } from 'node-sass-magic-importer/dist/toolbox';
 
-export default function nodeImporter() {
+export = function nodeImporter() {
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     const nodeFilters = parseNodeFilters(url);
@@ -39,4 +39,4 @@ export default function nodeImporter() {
       contents,
     } : null;
   };
-}
+};

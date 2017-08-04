@@ -1,3 +1,3 @@
-import filterImporter from './index';
+import filterImporter = require('./index');
 
 export = filterImporter();
