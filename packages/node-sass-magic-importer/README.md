@@ -238,6 +238,9 @@ node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist s
 - It is not possible anymore to set the `includePaths` option when initializing the importer. Use the [node-sass includePaths option](https://github.com/sass/node-sass#includepaths) instead.
 - The `prefix` option was renamed to `packagePrefix`.
 
+## Known issues
+Node filtering and selector filtering goes only one level deep. This means, if you're importing a file with selector or node filtering which is importing other files, those files are not filtered but imported as is. On a technical level, there is no good solution for this problem. One possibility would be to just pass the filters to all imports in the line but this carries the risk of filtering selectors or nodes on which one of the imported files might depend and therefore break the import. I might add this as an optional feature (which can be activated on demand) in the future – let me know if you're interested in multi level filter imports.
+
 ## About
 ### Author
 Markus Oberlehner  

@@ -103,6 +103,9 @@ It is not possible anymore to set the `includePaths` option when initializing th
 ## node-sass-magic-importer
 This module is powered by [node-sass-magic-importer](https://github.com/maoberlehner/node-sass-magic-importer).
 
+## Known issues
+Selector filtering goes only one level deep. This means, if you're importing a file with selector filtering which is importing other files, those files are not filtered but imported as is. On a technical level, there is no good solution for this problem. One possibility would be to just pass the filters to all imports in the line but this carries the risk of filtering selectors on which one of the imported files might depend and therefore break the import. I might add this as an optional feature (which can be activated on demand) in the future – let me know if you're interested in multi level filter imports.
+
 ## About
 ### Author
 Markus Oberlehner  

@@ -153,9 +153,6 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
       store.add(storeId);
     }
 
-    // TODO filter import problem – not solvable because filter imported file might use
-    // something that is not imported if filters are passed through imports?
-    // Known issue in README?
     if (filteredContents) {
       data = {
         file: resolvedUrl,
