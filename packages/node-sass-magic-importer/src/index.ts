@@ -111,7 +111,6 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
     const globFilePaths = resolveGlobUrl(cleanedUrl, includePaths);
     const storeId = getStoreId(resolvedUrl, selectorFilters, nodeFilters);
 
-    // TODO: refactor
     if (hasFilters) {
       filterPrefix = `${url.split(` from `)[0]} from `;
     }
@@ -129,7 +128,7 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
       return EMPTY_IMPORT;
     }
 
-    if (resolvedUrl && (selectorFilters.length || nodeFilters.length)) {
+    if (resolvedUrl && hasFilters) {
       filteredContents = fs.readFileSync(resolvedUrl, { encoding: `utf8` });
 
       if (selectorFilters.length) {
