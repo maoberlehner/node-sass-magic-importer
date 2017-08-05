@@ -28,3 +28,4 @@ Thumbs.db
 # Folders to ignore
 dist
 node_modules
+!test/files/node_modules
