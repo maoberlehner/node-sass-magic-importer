@@ -1,0 +1,42 @@
+import {
+  buildIncludePaths,
+  resolvePackageUrl,
+  sassUrlVariants,
+} from 'node-sass-magic-importer/dist/toolbox';
+import { defaultOptions } from './default-options';
+
+import { IPackageImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporterOptions';
+
+export = function packageImporter(userOptions?: IPackageImporterOptions) {
+  const options = Object.assign({}, defaultOptions, userOptions);
+
+  if (options.hasOwnProperty(`prefix`)) {
+    process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
+  }
+
+  const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
+  const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
+
+  return function importer(url: string, prev: string) {
+    const nodeSassOptions = this.options;
+
+    if (!url.match(matchPackageUrl)) {
+      return null;
+    }
+
+    const includePaths = buildIncludePaths(
+      nodeSassOptions.includePaths,
+      prev,
+    );
+
+    const cleanedUrl = url.replace(matchPackageUrl, ``);
+    const file = resolvePackageUrl(
+      cleanedUrl,
+      options.extensions,
+      options.cwd,
+      options.packageKeys,
+    );
+
+    return file ? { file: file.replace(/\.css$/, ``) } : null;
+  };
+};
