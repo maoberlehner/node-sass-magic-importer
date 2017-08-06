@@ -1,0 +1,18 @@
+.partial-1-1 {
+  content: 'Partial 1-1'; }
+
+.partial-1-2 {
+  content: 'Partial 1-2'; }
+
+.partial-1-3 {
+  content: 'Partial 1-3'; }
+
+.partial-2 {
+  content: 'Partial 2'; }
+
+.partial-3 {
+  content: 'Partial 3'; }
+
+@media (min-width: 42em) {
+  .partial-3-mq {
+    content: 'Partial 3 mq'; } }

@@ -1,0 +1,19 @@
+.partial-3 {
+  content: 'Partial 3';
+}
+
+@media (min-width: 42em) {
+  .partial-3-mq {
+    content: 'Partial 3 mq';
+  }
+}
+
+@function test() {
+  @return 'test';
+}
+
+@mixin test-mixin() {
+  background: rebeccapurple;
+}
+
+$variable-exists: #fff;

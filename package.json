@@ -1,16 +1,6 @@
 {
-  "name": "node-sass-magic-importer",
-  "description": "Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once",
-  "keywords": [
-    "glob-importer",
-    "importer",
-    "module-importer",
-    "node-sass",
-    "package-importer",
-    "sass",
-    "selector-importer"
-  ],
-  "version": "4.1.5",
+  "name": "node-sass-magic-importer-monorepo",
+  "version": "5.0.0",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
   "license": "MIT",
@@ -21,54 +11,23 @@
   "bugs": {
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
-  "dependencies": {
-    "css-node-extract": "^0.2.1",
-    "glob": "^7.1.1",
-    "node-sass-filter-importer": "^1.0.1",
-    "node-sass-glob-importer": "^3.0.2",
-    "node-sass-package-importer": "^3.0.4",
-    "node-sass-selector-importer": "^4.2.0",
-    "postcss-scss": "^0.4.0",
-    "unique-concat": "^0.2.2"
-  },
   "devDependencies": {
-    "babel-core": "^6.21.0",
-    "babel-preset-es2015": "^6.18.0",
-    "bootstrap": "4.0.0-alpha.6",
-    "chai": "^3.5.0",
-    "esdoc": "^0.5.2",
-    "eslint": "^3.13.1",
-    "eslint-config-modularis": "^4.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "foundation-sites": "^6.3.0",
-    "mocha": "^3.2.0",
-    "node-sass": "^4.3.0",
-    "pre-git": "^3.12.0",
-    "rollup": "^0.41.3",
-    "rollup-plugin-babel": "^2.7.1",
-    "sinon": "^1.17.7"
+    "@avalanche/component-button": "^4.0.0-alpha.6",
+    "@avalanche/object-grid": "^4.0.0-alpha.13",
+    "ava": "^0.21.0",
+    "bootstrap": "^4.0.0-alpha.6",
+    "lerna": "^2.0.0",
+    "node-sass": "^4.5.3",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.2"
   },
-  "main": "dist/index.js",
-  "jsnext:main": "js/index.js",
   "scripts": {
-    "scripts:bundle": "rm -R dist && rollup --config --format cjs --output dist/cli.js js/cli.js && rollup --config --format cjs --output dist/index.js js/index.js && rollup --config --format cjs --output dist/lib/default-options.js js/lib/default-options.js && rollup --config --format cjs --output dist/lib/magic-importer.js js/lib/magic-importer.js",
-    "scripts:lint": "eslint js/* test/*",
-    "scripts:lint-no-error": "eslint js/* test/* || exit 0",
-    "scripts:doc": "esdoc -c .esdocrc",
-    "scripts": "npm run scripts:bundle && npm run scripts:lint-no-error",
-    "test:lib": "mocha test/lib/*.test.js --compilers js:babel-core/register",
-    "test:index": "mocha test/index.test.js --compilers js:babel-core/register",
-    "test:cli": "npm run scripts:bundle && mocha test/cli.test.js --compilers js:babel-core/register",
-    "test": "npm run scripts:bundle && mocha test/* --compilers js:babel-core/register"
-  },
-  "config": {
-    "pre-git": {
-      "pre-commit": [
-        "npm run scripts:lint"
-      ],
-      "pre-push": [
-        "npm test"
-      ]
-    }
+    "bootstrap": "lerna bootstrap",
+    "start": "npm run watch",
+    "watch": "lerna run watch",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "lint": "tslint packages/**/*.ts -e **/node_modules/** -e **/dist/**",
+    "test": "lerna run test && ava test/**/*.test.js"
   }
 }

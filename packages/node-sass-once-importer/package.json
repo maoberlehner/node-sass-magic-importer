@@ -1,0 +1,41 @@
+{
+  "name": "node-sass-once-importer",
+  "description": "Custom importer for node-sass to import files only once",
+  "keywords": [
+    "importer",
+    "node-sass",
+    "sass",
+    "once-importer"
+  ],
+  "version": "5.0.0-alpha.1",
+  "author": "Markus Oberlehner",
+  "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-once-importer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoberlehner/node-sass-magic-importer"
+  },
+  "bugs": {
+    "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
+  },
+  "dependencies": {
+    "node-sass-magic-importer": "^5.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.19",
+    "rimraf": "^2.6.1",
+    "typescript": "^2.4.2"
+  },
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=6.11.1",
+    "npm": ">=3.0.0"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "watch": "npm run clean && tsc -w",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build",
+    "test": "true"
+  }
+}

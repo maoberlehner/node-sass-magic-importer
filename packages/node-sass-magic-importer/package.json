@@ -1,0 +1,54 @@
+{
+  "name": "node-sass-magic-importer",
+  "description": "Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once",
+  "keywords": [
+    "glob-importer",
+    "importer",
+    "module-importer",
+    "node-sass",
+    "package-importer",
+    "sass",
+    "selector-importer"
+  ],
+  "version": "5.0.0-alpha.1",
+  "author": "Markus Oberlehner",
+  "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-magic-importer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoberlehner/node-sass-magic-importer"
+  },
+  "bugs": {
+    "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
+  },
+  "dependencies": {
+    "css-node-extract": "^1.0.0",
+    "css-selector-extract": "^3.0.1",
+    "get-installed-path": "^2.0.3",
+    "object-hash": "^1.1.8",
+    "postcss-scss": "^1.0.2",
+    "resolve": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/glob": "^5.0.30",
+    "@types/node": "^8.0.19",
+    "@types/resolve": "0.0.4",
+    "@types/sinon": "^2.3.3",
+    "ava": "^0.21.0",
+    "rimraf": "^2.6.1",
+    "sinon": "^3.0.0",
+    "typescript": "^2.4.2"
+  },
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=6.11.1",
+    "npm": ">=3.0.0"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "watch": "npm run clean && tsc -w",
+    "clean": "rimraf dist",
+    "test": "npm run build && ava dist/**/*.spec.js",
+    "prepublishOnly": "npm run build"
+  }
+}

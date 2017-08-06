@@ -15,6 +15,7 @@
 .cache
 .DS_Store
 .idea
+.nyc_output
 .project
 .settings
 .tmproj
@@ -25,5 +26,6 @@ nbproject
 Thumbs.db
 
 # Folders to ignore
-esdoc
+dist
 node_modules
+!test/files/node_modules
