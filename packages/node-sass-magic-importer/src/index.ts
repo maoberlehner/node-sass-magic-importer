@@ -1,8 +1,3 @@
-// TODO: add all tests from current projects
-// TODO: Resolve todos in other pacakges
-// TODO: refactor
-// TODO: cleanup (unused dependencies / functins / interfaces / ...)
-
 import * as cssNodeExtract from 'css-node-extract';
 import * as cssSelectorExtract from 'css-selector-extract';
 import * as fs from 'fs';
