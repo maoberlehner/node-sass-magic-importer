@@ -4,7 +4,7 @@
 Filter certain elements from SCSS code.
 
 ## Usage
-```node
+```js
 var sass = require('node-sass');
 var filterImporter = require('node-sass-filter-importer');
 

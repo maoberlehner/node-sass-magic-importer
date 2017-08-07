@@ -165,7 +165,7 @@ Globbing allows pattern matching operators to be used to match multiple files at
 ```
 
 ## Usage
-```node
+```js
 var sass = require('node-sass');
 var magicImporter = require('node-sass-magic-importer');
 
@@ -177,7 +177,7 @@ sass.render({
 ```
 
 ### Options
-```node
+```js
 var sass = require('node-sass');
 var magicImporter = require('node-sass-magic-importer');
 
@@ -217,7 +217,7 @@ sass.render({
 ```
 
 ### Gulp
-```node
+```js
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var magicImporter = require('node-sass-magic-importer');

@@ -4,7 +4,7 @@
 Import files only once. If the same file is imported in multiple `@import` statements, this package will ignore subsequent imports of the same file.
 
 ## Usage
-```node
+```js
 var sass = require('node-sass');
 var onceImporter = require('node-sass-once-importer');
 

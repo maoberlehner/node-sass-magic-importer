@@ -43,11 +43,18 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);
 
   if (options.hasOwnProperty(`prefix`)) {
-    process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
+    process.emitWarning(
+      'Using the `prefix` option is not supported anymore, use `packagePrefix` instead.',
+    );
+  }
+  if (options.hasOwnProperty(`inlcudePaths`)) {
+    process.emitWarning(
+      'Using the `inlcudePaths` option is not supported anymore, Use the node-sass `includePaths` option instead.',
+    );
   }
 
-  const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
-  const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
+  const escapedPackagePrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
+  const matchPackageUrl = new RegExp(`^${escapedPackagePrefix}(?!/)`);
 
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
