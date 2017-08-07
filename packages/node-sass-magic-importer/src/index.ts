@@ -46,8 +46,8 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
     process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
   }
 
-  const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
-  const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
+  const escapedPackagePrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
+  const matchPackageUrl = new RegExp(`^${escapedPackagePrefix}(?!/)`);
 
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
