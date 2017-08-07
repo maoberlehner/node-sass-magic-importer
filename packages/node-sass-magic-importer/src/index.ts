@@ -43,7 +43,14 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);
 
   if (options.hasOwnProperty(`prefix`)) {
-    process.emitWarning('Using the `prefix` option is not supported anymore, use `packagePrefix` instead.');
+    process.emitWarning(
+      'Using the `prefix` option is not supported anymore, use `packagePrefix` instead.',
+    );
+  }
+  if (options.hasOwnProperty(`inlcudePaths`)) {
+    process.emitWarning(
+      'Using the `inlcudePaths` option is not supported anymore, Use the node-sass `includePaths` option instead.',
+    );
   }
 
   const escapedPackagePrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
