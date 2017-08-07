@@ -4,7 +4,7 @@
 With selector importing, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
 
 ## Usage
-```node
+```js
 var sass = require('node-sass');
 var selectorImporter = require('node-sass-selector-importer');
 

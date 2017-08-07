@@ -6,7 +6,7 @@ Custom importer for node-sass to import packages from the `node_modules` directo
 ## Usage
 In modern day web development, packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Package importing makes this a little easier.
 
-```node
+```js
 var sass = require('node-sass');
 var packageImporter = require('node-sass-package-importer');
 
@@ -47,7 +47,7 @@ In the example below you can see the default configuration options.
 - `packageKeys`: You can define the `package.json` keys to search for and in which order.
 - `packagePrefix`: You can set the special character for indicating a module resolution.
 
-```node
+```js
 var sass = require('node-sass');
 var packageImporter = require('node-sass-package-importer');
 
