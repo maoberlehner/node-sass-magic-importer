@@ -1,5 +1,6 @@
 # node-sass-once-importer
 [![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
+[![GitHub stars](https://img.shields.io/github/stars/maoberlehner/node-sass-magic-importer.svg?style=social&label=Star)](https://github.com/maoberlehner/node-sass-magic-importer)
 
 Import files only once. If the same file is imported in multiple `@import` statements, this package will ignore subsequent imports of the same file.
 

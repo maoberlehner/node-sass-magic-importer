@@ -1,5 +1,6 @@
 # node-sass-magic-importer
 [![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
+[![GitHub stars](https://img.shields.io/github/stars/maoberlehner/node-sass-magic-importer.svg?style=social&label=Star)](https://github.com/maoberlehner/node-sass-magic-importer)
 
 Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once.
 
