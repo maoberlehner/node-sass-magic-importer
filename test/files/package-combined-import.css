@@ -17,41 +17,77 @@
   padding: 0.75rem 1.25rem;
   color: inherit; }
 
+.alert-primary {
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff; }
+  .alert-primary hr {
+    border-top-color: #9fcdff; }
+  .alert-primary .alert-link {
+    color: #002752; }
+
+.alert-secondary {
+  color: #464a4e;
+  background-color: #e7e8ea;
+  border-color: #dddfe2; }
+  .alert-secondary hr {
+    border-top-color: #cfd2d6; }
+  .alert-secondary .alert-link {
+    color: #2e3133; }
+
 .alert-success {
-  background-color: #dff0d8;
-  border-color: #d0e9c6;
-  color: #3c763d; }
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb; }
   .alert-success hr {
-    border-top-color: #c1e2b3; }
+    border-top-color: #b1dfbb; }
   .alert-success .alert-link {
-    color: #2b542c; }
+    color: #0b2e13; }
 
 .alert-info {
-  background-color: #d9edf7;
-  border-color: #bcdff1;
-  color: #31708f; }
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb; }
   .alert-info hr {
-    border-top-color: #a6d5ec; }
+    border-top-color: #abdde5; }
   .alert-info .alert-link {
-    color: #245269; }
+    color: #062c33; }
 
 .alert-warning {
-  background-color: #fcf8e3;
-  border-color: #faf2cc;
-  color: #8a6d3b; }
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba; }
   .alert-warning hr {
-    border-top-color: #f7ecb5; }
+    border-top-color: #ffe8a1; }
   .alert-warning .alert-link {
-    color: #66512c; }
+    color: #533f03; }
 
 .alert-danger {
-  background-color: #f2dede;
-  border-color: #ebcccc;
-  color: #a94442; }
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb; }
   .alert-danger hr {
-    border-top-color: #e4b9b9; }
+    border-top-color: #f1b0b7; }
   .alert-danger .alert-link {
-    color: #843534; }
+    color: #491217; }
+
+.alert-light {
+  color: #818182;
+  background-color: #fefefe;
+  border-color: #fdfdfe; }
+  .alert-light hr {
+    border-top-color: #ececf6; }
+  .alert-light .alert-link {
+    color: #686868; }
+
+.alert-dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+  border-color: #c6c8ca; }
+  .alert-dark hr {
+    border-top-color: #b9bbbe; }
+  .alert-dark .alert-link {
+    color: #040505; }
 
 .o-grid {
   margin-left: -1em;
