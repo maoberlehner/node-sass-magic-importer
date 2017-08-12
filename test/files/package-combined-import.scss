@@ -1,8 +1,18 @@
+@import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/border-radius';
 @import '~bootstrap/scss/mixins/alert';
 @import '~bootstrap/scss/alert';
 
 @import '{ .o-grid } from ~@avalanche/object-grid';
+
+// Override Bootstrap `$colors` variable.
+$colors: (
+  a: #2196f3,
+  b: #2364aa,
+  c: #73bfb8,
+  d: #fec601,
+  e: #ea7317,
+);
 
 @import '{ .c-button as .btn } from ~@avalanche/component-button';
