@@ -23,9 +23,9 @@
     "node-sass-magic-importer": "^5.0.0-alpha.5"
   },
   "devDependencies": {
-    "@types/node": "^8.0.19",
+    "@types/node": "^8.0.27",
     "rimraf": "^2.6.1",
-    "typescript": "^2.4.2"
+    "typescript": "^2.5.2"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
