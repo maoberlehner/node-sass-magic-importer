@@ -41,5 +41,9 @@ test(`Should return found glob file paths.`, (t) => {
 
   const result = resolveGlobUrl(`test/url/**/*.scss`, [`/test/include/path`]);
 
-  t.deepEqual(result, [`/test/include/path/path/1.scss`, `/test/include/path/path/2.scss`]);
+  if (/^win/.test(process.platform)) {
+    t.deepEqual(result, [`C:/test/include/path/path/1.scss`, `C:/test/include/path/path/2.scss`]);
+  } else {
+    t.deepEqual(result, [`/test/include/path/path/1.scss`, `/test/include/path/path/2.scss`]);
+  }
 });

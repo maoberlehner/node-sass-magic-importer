@@ -21,7 +21,7 @@ test(`Should import the modules main file.`, (t) => {
 });
 
 test(`Should import the modules main file via CLI.`, async (t) => {
-  const cmd = `cd ${__dirname}/files && ../../node_modules/node-sass/bin/node-sass --importer ../../packages/node-sass-package-importer/dist/cli.js package-import.scss`;
+  const cmd = `cd ${__dirname}/files && node ../../node_modules/node-sass/bin/node-sass --importer ../../packages/node-sass-package-importer/dist/cli.js package-import.scss`;
   const expectedResult = fs.readFileSync(`test/files/package-import.css`, {
     encoding: `utf8`,
   });
