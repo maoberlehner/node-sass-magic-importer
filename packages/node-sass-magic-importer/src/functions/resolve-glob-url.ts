@@ -14,7 +14,9 @@ export function resolveGlobUrlFactory(
         const globPaths = glob.sync(url, { cwd: includePath });
 
         globPaths.forEach((relativePath) => {
-          filePaths.add(path.resolve(includePath, relativePath));
+          filePaths.add(path.resolve(includePath, relativePath)
+          // This fixes a problem with importing absolute paths on windows.
+          .split(`\\`).join(`/`));
         });
       });
     }

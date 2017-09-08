@@ -18,13 +18,13 @@ test(`Should return the unmodified URL in an array if no file is specified.`, (t
 
 test(`Should return an array of URL variants.`, (t) => {
   const sassUrlVariants = sassUrlVariantsFactory(path);
-  const urlArray = sassUrlVariants(`some-package-name/some/file`, [`.scss`, `.sass`]);
+  const urlArray = sassUrlVariants(path.join(`some-package-name`, `some`, `file`), [`.scss`, `.sass`]);
 
   t.deepEqual(urlArray, [
-    `some-package-name/some/file`,
-    `some-package-name/some/file.scss`,
-    `some-package-name/some/_file.scss`,
-    `some-package-name/some/file.sass`,
-    `some-package-name/some/_file.sass`,
+    path.join(`some-package-name`, `some`, `file`),
+    path.join(`some-package-name`, `some`, `file.scss`),
+    path.join(`some-package-name`, `some`, `_file.scss`),
+    path.join(`some-package-name`, `some`, `file.sass`),
+    path.join(`some-package-name`, `some`, `_file.sass`),
   ]);
 });
