@@ -20,7 +20,7 @@ test(`Should import files only once.`, (t) => {
 });
 
 test(`Should import files only once via CLI.`, async (t) => {
-  const cmd = `node_modules/node-sass/bin/node-sass --importer packages/node-sass-once-importer/dist/cli.js test/files/once-import.scss`;
+  const cmd = `node node_modules/node-sass/bin/node-sass --importer packages/node-sass-once-importer/dist/cli.js test/files/once-import.scss`;
   const expectedResult = fs.readFileSync(`test/files/once-import.css`, {
     encoding: `utf8`,
   });
