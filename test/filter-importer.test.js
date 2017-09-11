@@ -20,7 +20,7 @@ test(`Should import only specific nodes.`, (t) => {
 });
 
 test(`Should import only specific nodes via CLI.`, async (t) => {
-  const cmd = `node node_modules/node-sass/bin/node-sass --importer packages/node-sass-filter-importer/dist/cli.js test/files/filter-import.scss`;
+  const cmd = `node node_modules/.bin/node-sass --importer packages/node-sass-filter-importer/dist/cli.js test/files/filter-import.scss`;
   const expectedResult = fs.readFileSync(`test/files/filter-import.css`, {
     encoding: `utf8`,
   });
