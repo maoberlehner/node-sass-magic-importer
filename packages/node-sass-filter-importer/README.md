@@ -42,6 +42,38 @@ $variable2: 'value';
 - **silent**: Extract only nodes that do not compile to CSS code (mixins, placeholder selectors, variables,...)
 - **variables**: `$variable`
 
+### webpack
+```js
+// webpack.config.js
+const filterImporter = require('node-sass-filter-importer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader',
+            options: {
+              importer: filterImporter()
+            }
+          }
+        ])
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'style.css'
+    })
+  ]
+}
+```
+
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-filter-importer/dist/cli.js -o dist src/index.scss

@@ -20,7 +20,7 @@ test(`Should import only specific selectors and replace them.`, (t) => {
 });
 
 test(`Should import only specific selectors and replace them via CLI.`, async (t) => {
-  const cmd = `node node_modules/node-sass/bin/node-sass --importer packages/node-sass-selector-importer/dist/cli.js test/files/selector-import.scss`;
+  const cmd = `node node_modules/.bin/node-sass --importer packages/node-sass-selector-importer/dist/cli.js test/files/selector-import.scss`;
   const expectedResult = fs.readFileSync(`test/files/selector-import.css`, {
     encoding: `utf8`,
   });

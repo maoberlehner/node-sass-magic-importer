@@ -20,7 +20,7 @@ test(`Should import glob files.`, (t) => {
 });
 
 test(`Should import glob files via CLI.`, async (t) => {
-  const cmd = `node node_modules/node-sass/bin/node-sass --importer packages/node-sass-glob-importer/dist/cli.js test/files/glob-import.scss`;
+  const cmd = `node node_modules/.bin/node-sass --importer packages/node-sass-glob-importer/dist/cli.js test/files/glob-import.scss`;
   const expectedResult = fs.readFileSync(`test/files/glob-import.css`, {
     encoding: `utf8`,
   });

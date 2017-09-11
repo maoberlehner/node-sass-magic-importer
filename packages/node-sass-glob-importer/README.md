@@ -23,6 +23,38 @@ sass.render({
 });
 ```
 
+### webpack
+```js
+// webpack.config.js
+const globImporter = require('node-sass-glob-importer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader',
+            options: {
+              importer: globImporter()
+            }
+          }
+        ])
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'style.css'
+    })
+  ]
+}
+```
+
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-glob-importer/dist/cli.js -o dist src/index.scss

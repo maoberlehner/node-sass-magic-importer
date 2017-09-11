@@ -100,7 +100,7 @@ test(`Should import only specific selectors and replace them.`, (t) => {
 });
 
 test(`Should convert a Sass file to CSS via CLI.`, async (t) => {
-  const cmd = `node node_modules/node-sass/bin/node-sass --importer packages/node-sass-magic-importer/dist/cli.js test/files/filter-import.scss`;
+  const cmd = `node node_modules/.bin/node-sass --importer packages/node-sass-magic-importer/dist/cli.js test/files/filter-import.scss`;
   const expectedResult = fs.readFileSync(`test/files/filter-import.css`, {
     encoding: `utf8`,
   });
