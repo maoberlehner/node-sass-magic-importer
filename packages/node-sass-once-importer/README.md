@@ -33,6 +33,38 @@ sass.render({
 .selector4 { }
 ```
 
+### webpack
+```js
+// webpack.config.js
+const onceImporter = require('node-sass-once-importer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader',
+            options: {
+              importer: onceImporter()
+            }
+          }
+        ])
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'style.css'
+    })
+  ]
+}
+```
+
 ### CLI
 ```bash
 node-sass --importer node_modules/node-sass-once-importer/dist/cli.js -o dist src/index.scss

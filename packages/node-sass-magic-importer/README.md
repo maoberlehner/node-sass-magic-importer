@@ -215,6 +215,38 @@ sass.render({
 });
 ```
 
+### webpack
+```js
+// webpack.config.js
+const magicImporter = require('node-sass-magic-importer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract([
+          {
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader',
+            options: {
+              importer: magicImporter()
+            }
+          }
+        ])
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'style.css'
+    })
+  ]
+}
+```
+
 ### Gulp
 ```js
 var gulp = require('gulp');
