@@ -44,7 +44,6 @@ To load only a certain file from a module you can specify the file in the import
 In the example below you can see the default configuration options.
 
 - `cwd`: Defines the path in which your `node_modules` directory is found.
-- `extensions`: Set which file extensions should get resolved.
 - `packageKeys`: You can define the `package.json` keys to search for and in which order.
 - `packagePrefix`: You can set the special character for indicating a module resolution.
 
@@ -54,10 +53,6 @@ var packageImporter = require('node-sass-package-importer');
 
 var options = {
   cwd: process.cwd(),
-  extensions: [
-    '.scss',
-    '.sass'
-  ],
   packageKeys: [
     'sass',
     'scss',

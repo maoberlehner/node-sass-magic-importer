@@ -183,11 +183,6 @@ var magicImporter = require('node-sass-magic-importer');
 var options = {
   // Defines the path in which your node_modules directory is found.
   cwd: process.cwd(),
-  // Allowed extensions.
-  extensions: [
-    '.scss',
-    '.sass'
-  ],
   // Define the package.json keys and in which order to search for them.
   packageKeys: [
     'sass',
