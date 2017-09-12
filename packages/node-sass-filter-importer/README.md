@@ -6,8 +6,8 @@ Filter certain elements from SCSS code.
 
 ## Usage
 ```js
-var sass = require('node-sass');
-var filterImporter = require('node-sass-filter-importer');
+const sass = require('node-sass');
+const filterImporter = require('node-sass-filter-importer');
 
 sass.render({
   ...

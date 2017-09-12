@@ -177,10 +177,10 @@ sass.render({
 
 ### Options
 ```js
-var sass = require('node-sass');
-var magicImporter = require('node-sass-magic-importer');
+const sass = require('node-sass');
+const magicImporter = require('node-sass-magic-importer');
 
-var options = {
+const options = {
   // Defines the path in which your node_modules directory is found.
   cwd: process.cwd(),
   // Define the package.json keys and in which order to search for them.
@@ -244,9 +244,9 @@ module.exports = {
 
 ### Gulp
 ```js
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var magicImporter = require('node-sass-magic-importer');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const magicImporter = require('node-sass-magic-importer');
 
 gulp.task('sass', function () {
   return gulp.src('./**/*.scss')

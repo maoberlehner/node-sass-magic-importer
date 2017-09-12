@@ -13,12 +13,12 @@ Globbing allows pattern matching operators to be used to match multiple files at
 
 ## Usage
 ```js
-var sass = require('node-sass');
-var glopImporter = require('node-sass-glob-importer');
+const sass = require('node-sass');
+const globImporter = require('node-sass-glob-importer');
 
 sass.render({
   ...
-  importer: glopImporter()
+  importer: globImporter()
   ...
 });
 ```
