@@ -6,8 +6,8 @@ Import files only once. If the same file is imported in multiple `@import` state
 
 ## Usage
 ```js
-var sass = require('node-sass');
-var onceImporter = require('node-sass-once-importer');
+const sass = require('node-sass');
+const onceImporter = require('node-sass-once-importer');
 
 sass.render({
   ...
