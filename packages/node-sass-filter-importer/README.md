@@ -57,17 +57,17 @@ const options = {
     // Add a node filter for a specific min-width media query.
     customMediaWidth: [
       [
-        { property: `type`, value: `atrule` },
-        { property: `name`, value: `media` },
-        { property: `params`, value: `(min-width: 42em)` }
+        { property: 'type', value: 'atrule' },
+        { property: 'name', value: 'media' },
+        { property: 'params', value:'(min-width: 42em)' }
       ]
     ],
     // Add a node filter for print media queries.
     customMediaPrint: [
       [
-        { property: `type`, value: `atrule` },
-        { property: `name`, value: `media` },
-        { property: `params`, value: `print` }
+        { property: 'type', value: 'atrule' },
+        { property: 'name', value: 'media' },
+        { property: 'params', value: 'print' }
       ]
     ]
   }
