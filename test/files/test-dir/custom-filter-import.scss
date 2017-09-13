@@ -1,0 +1,17 @@
+@media (min-width: 42em) {
+  .custom-1-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media (min-width: 43em) {
+  .custom-2-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media print {
+  .custom-print-mq {
+    content: 'Custom print mq';
+  }
+}

@@ -145,6 +145,7 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
         filteredContents = cssNodeExtract.processSync({
           css: filteredContents,
           filters: nodeFilters,
+          customFilters: options.customFilters,
           postcssSyntax,
         });
       }

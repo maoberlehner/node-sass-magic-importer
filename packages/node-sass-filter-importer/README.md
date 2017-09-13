@@ -41,6 +41,85 @@ $variable2: 'value';
 - **rules**: `.class-selector`, `#id-selector`,...
 - **silent**: Extract only nodes that do not compile to CSS code (mixins, placeholder selectors, variables,...)
 - **variables**: `$variable`
+- **make-your-own**: Define custom filters
+
+### Options
+In the example below you can see the default configuration options.
+
+- `customFilters`: Define custom node filters.
+
+```js
+const sass = require('node-sass');
+const filterImporter = require('node-sass-filter-importer');
+
+const options = {
+  customFilters: {
+    // Add a node filter for a specific min-width media query.
+    customMediaWidth: [
+      [
+        { property: `type`, value: `atrule` },
+        { property: `name`, value: `media` },
+        { property: `params`, value: `(min-width: 42em)` }
+      ]
+    ],
+    // Add a node filter for print media queries.
+    customMediaPrint: [
+      [
+        { property: `type`, value: `atrule` },
+        { property: `name`, value: `media` },
+        { property: `params`, value: `print` }
+      ]
+    ]
+  }
+};
+
+sass.render({
+  ...
+  importer: filterImporter(options)
+  ...
+});
+```
+
+```scss
+// Sass file which implements filter importing.
+@import '[custom-media-width, custom-media-print] from file/with/at/rules';
+```
+
+```scss
+// file/with/at/_rules.scss
+@media (min-width: 42em) {
+  .custom-1-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media (min-width: 43em) {
+  .custom-2-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media print {
+  .custom-print-mq {
+    content: 'Custom print mq';
+  }
+}
+```
+
+```scss
+// CSS output – the `min-width: 43em` media query gets not imported.
+@media (min-width: 42em) {
+  .custom-1-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media print {
+  .custom-print-mq {
+    content: 'Custom print mq';
+  }
+}
+```
 
 ### webpack
 ```js
