@@ -5,7 +5,7 @@ import {
 } from 'node-sass-magic-importer/dist/toolbox';
 import { defaultOptions } from './default-options';
 
-import { IPackageImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporterOptions';
+import { IPackageImporterOptions } from 'node-sass-magic-importer/src/interfaces/IImporterOptions';
 
 export = function packageImporter(userOptions?: IPackageImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);

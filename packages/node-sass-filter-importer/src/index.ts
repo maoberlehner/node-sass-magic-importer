@@ -10,8 +10,13 @@ import {
   resolveUrl,
   sassGlobPattern,
 } from 'node-sass-magic-importer/dist/toolbox';
+import { defaultOptions } from './default-options';
 
-export = function nodeImporter() {
+import { IFilterImporterOptions } from 'node-sass-magic-importer/src/interfaces/IImporterOptions';
+
+export = function nodeImporter(userOptions?: IFilterImporterOptions) {
+  const options = Object.assign({}, defaultOptions, userOptions);
+
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     const nodeFilters = parseNodeFilters(url);
@@ -31,6 +36,7 @@ export = function nodeImporter() {
     const contents = cssNodeExtract.processSync({
       css,
       filters: nodeFilters,
+      customFilters: options.customFilters,
       postcssSyntax,
     });
 

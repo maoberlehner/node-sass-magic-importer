@@ -7,7 +7,7 @@
     "sass",
     "filter-importer"
   ],
-  "version": "5.0.0-alpha.8",
+  "version": "5.0.0-alpha.9",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-filter-importer",
   "license": "MIT",
@@ -19,8 +19,8 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "css-node-extract": "^1.1.0",
-    "node-sass-magic-importer": "^5.0.0-alpha.8",
+    "css-node-extract": "^2.0.1",
+    "node-sass-magic-importer": "^5.0.0-alpha.9",
     "postcss-scss": "^1.0.2"
   },
   "devDependencies": {

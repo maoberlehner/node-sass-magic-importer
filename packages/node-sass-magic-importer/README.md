@@ -130,6 +130,7 @@ $variable2: 'value';
 - **rules**: `.class-selector`, `#id-selector`,...
 - **silent**: Extract only nodes that do not compile to CSS code (mixins, placeholder selectors, variables,...)
 - **variables**: `$variable`
+- **make-your-own**: Define custom filters
 
 ### Module importing
 In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Module importing makes this a little easier.
@@ -200,7 +201,9 @@ const options = {
   // Disable console warnings.
   disableWarnings: false,
   // Disable importing files only once.
-  disableImportOnce: false
+  disableImportOnce: false,
+  // Add custom node filters.
+  customFilters: undefined
 };
 
 sass.render({
@@ -208,6 +211,80 @@ sass.render({
   importer: magicImporter(options)
   ...
 });
+```
+
+#### Custom filters
+```js
+const sass = require('node-sass');
+const magicImporter = require('node-sass-magic-importer');
+
+const options = {
+  customFilters: {
+    // Add a node filter for a specific min-width media query.
+    customMediaWidth: [
+      [
+        { property: `type`, value: `atrule` },
+        { property: `name`, value: `media` },
+        { property: `params`, value: `(min-width: 42em)` }
+      ]
+    ],
+    // Add a node filter for print media queries.
+    customMediaPrint: [
+      [
+        { property: `type`, value: `atrule` },
+        { property: `name`, value: `media` },
+        { property: `params`, value: `print` }
+      ]
+    ]
+  }
+};
+
+sass.render({
+  ...
+  importer: magicImporter(options)
+  ...
+});
+```
+
+```scss
+// Sass file which implements filter importing.
+@import '[custom-media-width, custom-media-print] from file/with/at/rules';
+```
+
+```scss
+// file/with/at/_rules.scss
+@media (min-width: 42em) {
+  .custom-1-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media (min-width: 43em) {
+  .custom-2-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media print {
+  .custom-print-mq {
+    content: 'Custom print mq';
+  }
+}
+```
+
+```scss
+// CSS output – the `min-width: 43em` media query gets not imported.
+@media (min-width: 42em) {
+  .custom-1-mq {
+    content: 'Custom 1 mq';
+  }
+}
+
+@media print {
+  .custom-print-mq {
+    content: 'Custom print mq';
+  }
+}
 ```
 
 ### webpack

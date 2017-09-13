@@ -19,6 +19,37 @@ test(`Should import only specific nodes.`, (t) => {
   t.is(result, expectedResult);
 });
 
+test(`Should import only specific custom nodes.`, (t) => {
+  const expectedResult = fs.readFileSync(`test/files/filter-import-custom.css`, {
+    encoding: `utf8`,
+  });
+  const options = {
+    customFilters: {
+      customMediaWidth: [
+        [
+          { property: `type`, value: `atrule` },
+          { property: `name`, value: `media` },
+          { property: `params`, value: `(min-width: 42em)` },
+        ],
+      ],
+      customMediaPrint: [
+        [
+          { property: `type`, value: `atrule` },
+          { property: `name`, value: `media` },
+          { property: `params`, value: `print` },
+        ],
+      ],
+    },
+  };
+
+  const result = sass.renderSync({
+    file: `test/files/filter-import-custom.scss`,
+    importer: magicImporter(options),
+  }).css.toString();
+
+  t.is(result, expectedResult);
+});
+
 test(`Should import glob files.`, (t) => {
   const expectedResult = fs.readFileSync(`test/files/glob-import.css`, {
     encoding: `utf8`,
