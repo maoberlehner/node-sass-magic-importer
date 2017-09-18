@@ -13,13 +13,13 @@
   },
   "devDependencies": {
     "@avalanche/component-button": "^4.0.0-alpha.6",
-    "@avalanche/object-grid": "^4.0.0-alpha.13",
-    "ava": "^0.21.0",
+    "@avalanche/object-grid": "^4.0.0-alpha.14",
+    "ava": "^0.22.0",
     "bootstrap": "^4.0.0-beta",
-    "lerna": "^2.0.0",
+    "lerna": "^2.2.0",
     "node-sass": "^4.5.3",
-    "tslint": "^5.5.0",
-    "typescript": "^2.4.2"
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",

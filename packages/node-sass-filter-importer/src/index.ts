@@ -38,6 +38,7 @@ export = function nodeImporter(userOptions?: IFilterImporterOptions) {
       filters: nodeFilters,
       customFilters: options.customFilters,
       postcssSyntax,
+      preserveLines: true,
     });
 
     return contents ? {

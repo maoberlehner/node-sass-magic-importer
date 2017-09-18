@@ -35,6 +35,7 @@ export = function selectorImporter() {
       css,
       filters: selectorFilters,
       postcssSyntax,
+      preserveLines: true,
     });
 
     return contents ? {
