@@ -138,6 +138,7 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
           css: filteredContents,
           filters: selectorFilters,
           postcssSyntax,
+          preserveLines: true,
         });
       }
 
@@ -147,6 +148,7 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
           filters: nodeFilters,
           customFilters: options.customFilters,
           postcssSyntax,
+          preserveLines: true,
         });
       }
     }

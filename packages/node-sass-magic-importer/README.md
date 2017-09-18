@@ -345,9 +345,6 @@ node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist s
 ### Multi level filtering
 Node filtering and selector filtering goes only one level deep. This means, if you're importing a file with selector or node filtering which is importing other files, those files are not filtered but imported as is. On a technical level, there is no good solution for this problem. One possibility would be to just pass the filters to all imports in the line but this carries the risk of filtering selectors or nodes on which one of the imported files might depend and therefore break the import. I might add this as an optional feature (which can be activated on demand) in the future – let me know if you're interested in multi level filter imports.
 
-### Source map generation
-You may notice that source map support is limited for styles which are imported using filters. If you have an idea how to fix this, please feel free to create a new issue or pull request.
-
 ## About
 ### Author
 Markus Oberlehner  
