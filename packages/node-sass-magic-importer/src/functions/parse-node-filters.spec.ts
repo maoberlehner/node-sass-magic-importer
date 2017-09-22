@@ -32,3 +32,20 @@ test(`Should return node filters from URL.`, (t) => {
 
   t.deepEqual(nodeFilters, expectedResult);
 });
+
+test(`Should trim empty filter from multi line URL.`, (t) => {
+  const parseNodeFilters = parseNodeFiltersFactory();
+
+  const urlWithFilters = `[
+    at-rules,
+    mixins,
+  ] from style.scss`;
+  const nodeFilters = parseNodeFilters(urlWithFilters);
+
+  const expectedResult = [
+    `at-rules`,
+    `mixins`,
+  ];
+
+  t.deepEqual(nodeFilters, expectedResult);
+});
