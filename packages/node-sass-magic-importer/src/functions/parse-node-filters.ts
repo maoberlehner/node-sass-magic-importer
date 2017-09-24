@@ -9,6 +9,7 @@ export function parseNodeFiltersFactory(): IFilterParser {
     }
 
     return nodeFiltersMatch[1].split(`,`)
-      .map((x) => x.trim());
+      .map((x) => x.trim())
+      .filter((x) => x.length);
     };
 }

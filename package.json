@@ -18,11 +18,13 @@
     "bootstrap": "^4.0.0-beta",
     "lerna": "^2.2.0",
     "node-sass": "^4.5.3",
+    "npm-check-updates": "^2.12.1",
     "tslint": "^5.7.0",
     "typescript": "^2.5.2"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
     "start": "npm run watch",
     "watch": "lerna run watch",
     "build": "lerna run build",
