@@ -16,3 +16,12 @@
 @media (min-width: 42em) {
   .partial-3-mq {
     content: 'Partial 3 mq'; } }
+
+.partial-4-1 {
+  content: 'Partial 4-1'; }
+
+.partial-4-2 {
+  content: 'Partial 4-2'; }
+
+.partial-4-3 {
+  content: 'Partial 4-3'; }
