@@ -31,13 +31,13 @@
   },
   "devDependencies": {
     "@types/glob": "^5.0.32",
-    "@types/node": "^8.0.28",
+    "@types/node": "^8.0.31",
     "@types/resolve": "0.0.4",
-    "@types/sinon": "^2.3.4",
+    "@types/sinon": "^2.3.5",
     "ava": "^0.22.0",
     "rimraf": "^2.6.2",
-    "sinon": "^3.3.0",
-    "typescript": "^2.5.2"
+    "sinon": "^4.0.0",
+    "typescript": "^2.5.3"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
