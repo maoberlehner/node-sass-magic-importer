@@ -3,7 +3,7 @@ import { IFilterParser } from '../interfaces/IFilterParser';
 export function parseNodeFiltersFactory(): IFilterParser {
   return (url: string) => {
     const nodeFiltersMatch = url
-      .replace(/{.*?\/.*?\/.*?}/, '')
+      .replace(/{.*?\/.*?\/.*?}/, ``)
       .match(/\[([\s\S]*)\]/);
 
     if (!nodeFiltersMatch) {
