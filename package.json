@@ -14,6 +14,7 @@
     "lint": "tslint packages/**/*.ts -e **/node_modules/** -e **/dist/**",
     "test": "lerna run test && ava test/**/*.test.js"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/maoberlehner/node-sass-magic-importer"
