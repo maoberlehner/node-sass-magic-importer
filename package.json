@@ -4,6 +4,16 @@
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer",
   "license": "MIT",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
+    "start": "npm run watch",
+    "watch": "lerna run watch",
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "lint": "tslint packages/**/*.ts -e **/node_modules/** -e **/dist/**",
+    "test": "lerna run test && ava test/**/*.test.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/maoberlehner/node-sass-magic-importer"
@@ -21,15 +31,5 @@
     "npm-check-updates": "^2.12.1",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
-  },
-  "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish",
-    "start": "npm run watch",
-    "watch": "lerna run watch",
-    "build": "lerna run build",
-    "clean": "lerna run clean",
-    "lint": "tslint packages/**/*.ts -e **/node_modules/** -e **/dist/**",
-    "test": "lerna run test && ava test/**/*.test.js"
   }
 }
