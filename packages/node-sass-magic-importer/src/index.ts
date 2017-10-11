@@ -1,7 +1,7 @@
 import * as cssNodeExtract from 'css-node-extract';
 import * as cssSelectorExtract from 'css-selector-extract';
+import * as findupSync from 'findup-sync';
 import * as fs from 'fs';
-import * as getInstalledPath from 'get-installed-path';
 import * as hash from 'object-hash';
 import * as path from 'path';
 import * as postcssSyntax from 'postcss-scss';
@@ -85,13 +85,15 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
     if (isPackageUrl) {
       cleanedUrl = cleanedUrl.replace(matchPackageUrl, ``);
 
-      const packageName = cleanedUrl.split(DIRECTORY_SEPARATOR)[0];
-      const packagePath = getInstalledPath.sync(packageName, {
-        cwd: options.cwd,
-        local: true,
-      });
+      const packageName = cleanedUrl.charAt(0) === `@`
+        ? cleanedUrl.split(DIRECTORY_SEPARATOR).slice(0, 2).join(DIRECTORY_SEPARATOR)
+        : cleanedUrl.split(DIRECTORY_SEPARATOR)[0];
+      const packageSearchPath = path.join(packageName, `package.json`);
+      const packagePath = path.dirname(findupSync(packageSearchPath, {
+        cwd: path.join(options.cwd, `node_modules`),
+      }));
 
-      cleanedUrl = path.resolve(path.dirname(packagePath), cleanedUrl);
+      cleanedUrl = path.resolve(packagePath.replace(new RegExp(`${packageName}$`), ``), cleanedUrl);
 
       resolvedUrl = resolvePackageUrl(
         cleanedUrl,
