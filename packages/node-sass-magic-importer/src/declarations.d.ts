@@ -1,3 +1,3 @@
-declare module 'get-installed-path';
+declare module 'findup-sync';
 declare module 'object-hash';
 declare module 'postcss-scss';
