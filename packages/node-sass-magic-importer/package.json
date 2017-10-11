@@ -24,7 +24,7 @@
   "dependencies": {
     "css-node-extract": "^2.1.0",
     "css-selector-extract": "^3.3.1",
-    "get-installed-path": "^3.0.1",
+    "findup-sync": "^2.0.0",
     "object-hash": "^1.1.8",
     "postcss-scss": "^1.0.2",
     "resolve": "^1.4.0"
