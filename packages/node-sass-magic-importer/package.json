@@ -23,8 +23,9 @@
   },
   "dependencies": {
     "css-node-extract": "^2.1.0",
-    "css-selector-extract": "^3.3.1",
+    "css-selector-extract": "^3.3.3",
     "findup-sync": "^2.0.0",
+    "glob": "^7.1.2",
     "object-hash": "^1.1.8",
     "postcss-scss": "^1.0.2",
     "resolve": "^1.4.0"
