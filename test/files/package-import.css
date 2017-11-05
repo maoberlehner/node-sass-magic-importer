@@ -1,2 +1,8 @@
 .test-package-main {
-  content: 'main file'; }
+  content: 'main scss file'; }
+
+.test-package-main {
+  content: 'main css file'; }
+
+.test-package-css {
+  content: 'css index file'; }
