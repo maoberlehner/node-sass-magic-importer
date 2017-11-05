@@ -103,7 +103,7 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
       );
 
       if (resolvedUrl) {
-        data = { file: resolvedUrl };
+        data = { file: resolvedUrl.replace(/\.css$/, ``) };
       }
     } else {
       resolvedUrl = resolveUrl(cleanedUrl, includePaths);

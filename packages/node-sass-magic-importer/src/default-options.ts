@@ -12,6 +12,7 @@ export const defaultOptions: {
   extensions: [
     `.scss`,
     `.sass`,
+    `.css`,
   ],
   packageKeys: [
     `sass`,
