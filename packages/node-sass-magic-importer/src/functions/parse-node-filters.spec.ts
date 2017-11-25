@@ -1,51 +1,51 @@
-import test from 'ava';
-
 import { parseNodeFiltersFactory } from './parse-node-filters';
 
-test(`Should be a function.`, (t) => {
-  const parseNodeFilters = parseNodeFiltersFactory();
+describe(`parseNodeFilters()`, () => {
+  test(`It should be a function.`, () => {
+    const parseNodeFilters = parseNodeFiltersFactory();
 
-  t.is(typeof parseNodeFilters, `function`);
-});
+    expect(typeof parseNodeFilters).toBe(`function`);
+  });
 
-test(`Should return an empty array if no filters were found.`, (t) => {
-  const parseNodeFilters = parseNodeFiltersFactory();
+  test(`It should return an empty array if no filters were found.`, () => {
+    const parseNodeFilters = parseNodeFiltersFactory();
 
-  const urlWithoutFilters = `style.scss`;
-  const nodeFilters = parseNodeFilters(urlWithoutFilters);
+    const urlWithoutFilters = `style.scss`;
+    const nodeFilters = parseNodeFilters(urlWithoutFilters);
 
-  const expectedResult: any[] = [];
+    const expectedResult: any[] = [];
 
-  t.deepEqual(nodeFilters, expectedResult);
-});
+    expect(nodeFilters).toEqual(expectedResult);
+  });
 
-test(`Should return node filters from URL.`, (t) => {
-  const parseNodeFilters = parseNodeFiltersFactory();
+  test(`It should return node filters from URL.`, () => {
+    const parseNodeFilters = parseNodeFiltersFactory();
 
-  const urlWithFilters = `[at-rules, mixins] from style.scss`;
-  const nodeFilters = parseNodeFilters(urlWithFilters);
+    const urlWithFilters = `[at-rules, mixins] from style.scss`;
+    const nodeFilters = parseNodeFilters(urlWithFilters);
 
-  const expectedResult = [
-    `at-rules`,
-    `mixins`,
-  ];
+    const expectedResult = [
+      `at-rules`,
+      `mixins`,
+    ];
 
-  t.deepEqual(nodeFilters, expectedResult);
-});
+    expect(nodeFilters).toEqual(expectedResult);
+  });
 
-test(`Should trim empty filter from multi line URL.`, (t) => {
-  const parseNodeFilters = parseNodeFiltersFactory();
+  test(`It should trim empty filter from multi line URL.`, () => {
+    const parseNodeFilters = parseNodeFiltersFactory();
 
-  const urlWithFilters = `[
-    at-rules,
-    mixins,
-  ] from style.scss`;
-  const nodeFilters = parseNodeFilters(urlWithFilters);
+    const urlWithFilters = `[
+      at-rules,
+      mixins,
+    ] from style.scss`;
+    const nodeFilters = parseNodeFilters(urlWithFilters);
 
-  const expectedResult = [
-    `at-rules`,
-    `mixins`,
-  ];
+    const expectedResult = [
+      `at-rules`,
+      `mixins`,
+    ];
 
-  t.deepEqual(nodeFilters, expectedResult);
+    expect(nodeFilters).toEqual(expectedResult);
+  });
 });

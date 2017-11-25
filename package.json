@@ -11,8 +11,8 @@
     "watch": "lerna run watch",
     "build": "lerna run build",
     "clean": "lerna run clean",
-    "lint": "tslint packages/**/*.ts -e **/node_modules/** -e **/dist/**",
-    "test": "lerna run test && ava 'test/**/*.test.js'"
+    "lint": "tslint **/*.ts -e **/node_modules/** -e **/dist/**",
+    "test": "jest"
   },
   "private": true,
   "repository": {
@@ -25,12 +25,25 @@
   "devDependencies": {
     "@avalanche/component-button": "^4.0.0-alpha.6",
     "@avalanche/object-grid": "^4.0.0-alpha.14",
-    "ava": "^0.22.0",
+    "@types/jest": "^21.1.6",
+    "@types/node-sass": "^3.10.32",
     "bootstrap": "4.0.0-beta",
+    "jest": "^21.2.1",
     "lerna": "^2.2.0",
     "node-sass": "^4.5.3",
     "npm-check-updates": "^2.12.1",
+    "ts-jest": "^21.2.3",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$"
   }
 }

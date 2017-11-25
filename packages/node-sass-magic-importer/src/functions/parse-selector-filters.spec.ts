@@ -1,120 +1,122 @@
-import test from 'ava';
-
 import { escapeSelectorFactory } from './escape-selector';
 import { processRawSelectorFiltersFactory } from './process-raw-selector-filters';
 import { splitSelectorFilterFactory } from './split-selector-filter';
 
 import { parseSelectorFiltersFactory } from './parse-selector-filters';
 
-test.beforeEach((t) => {
-  const escapeSelector = escapeSelectorFactory();
-  const processRawSelectorFilters = processRawSelectorFiltersFactory(escapeSelector);
-  const splitSelectorFilter = splitSelectorFilterFactory();
+const escapeSelector = escapeSelectorFactory();
+const processRawSelectorFilters = processRawSelectorFiltersFactory(escapeSelector);
+const splitSelectorFilter = splitSelectorFilterFactory();
 
-  t.context.dep = {
-    processRawSelectorFilters,
-    splitSelectorFilter,
-  };
-});
+let dependencies: any;
 
-test(`Should be a function.`, (t) => {
-  const parseSelectorFilters = parseSelectorFiltersFactory(
-    t.context.dep.processRawSelectorFilters,
-    t.context.dep.splitSelectorFilter,
-  );
+describe(`parseSelectorFilters()`, () => {
+  beforeEach(() => {
+    dependencies = {
+      processRawSelectorFilters,
+      splitSelectorFilter,
+    };
+  });
 
-  t.is(typeof parseSelectorFilters, `function`);
-});
+  test(`It should be a function.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
 
-test(`Should return an empty array if no filters were found.`, (t) => {
-  const parseSelectorFilters = parseSelectorFiltersFactory(
-    t.context.dep.processRawSelectorFilters,
-    t.context.dep.splitSelectorFilter,
-  );
+    expect(typeof parseSelectorFilters).toBe(`function`);
+  });
 
-  const urlWithoutFilters = `style.scss`;
-  const selectorFilters = parseSelectorFilters(urlWithoutFilters);
-  const expectedResult: any[] = [];
+  test(`It should return an empty array if no filters were found.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
 
-  t.deepEqual(selectorFilters, expectedResult);
-});
+    const urlWithoutFilters = `style.scss`;
+    const selectorFilters = parseSelectorFilters(urlWithoutFilters);
+    const expectedResult: any[] = [];
 
-test(`Should return selector filters from URL.`, (t) => {
-  const parseSelectorFilters = parseSelectorFiltersFactory(
-    t.context.dep.processRawSelectorFilters,
-    t.context.dep.splitSelectorFilter,
-  );
+    expect(selectorFilters).toEqual(expectedResult);
+  });
 
-  const urlWithFilters = `{ .btn, .btn-alert } from style.scss`;
-  const selectorFilters = parseSelectorFilters(urlWithFilters);
-  const expectedResult = [
-    {
-      replacement: undefined,
-      selector: `.btn`,
-    },
-    {
-      replacement: undefined,
-      selector: `.btn-alert`,
-    },
-  ];
+  test(`It should return selector filters from URL.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
 
-  t.deepEqual(selectorFilters, expectedResult);
-});
+    const urlWithFilters = `{ .btn, .btn-alert } from style.scss`;
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult = [
+      {
+        replacement: undefined,
+        selector: `.btn`,
+      },
+      {
+        replacement: undefined,
+        selector: `.btn-alert`,
+      },
+    ];
 
-test(`Should return selector filters and replacements from URL.`, (t) => {
-  const parseSelectorFilters = parseSelectorFiltersFactory(
-    t.context.dep.processRawSelectorFilters,
-    t.context.dep.splitSelectorFilter,
-  );
+    expect(selectorFilters).toEqual(expectedResult);
+  });
 
-  const urlWithFilters = `{ .btn as .button, .btn-alert as .button-alert } from style.scss`;
-  const selectorFilters = parseSelectorFilters(urlWithFilters);
-  const expectedResult = [
-    {
-      replacement: `.button`,
-      selector: `.btn`,
-    },
-    {
-      replacement: `.button-alert`,
-      selector: `.btn-alert`,
-    },
-  ];
+  test(`It should return selector filters and replacements from URL.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
 
-  t.deepEqual(selectorFilters, expectedResult);
-});
+    const urlWithFilters = `{ .btn as .button, .btn-alert as .button-alert } from style.scss`;
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult = [
+      {
+        replacement: `.button`,
+        selector: `.btn`,
+      },
+      {
+        replacement: `.button-alert`,
+        selector: `.btn-alert`,
+      },
+    ];
 
-test(`Should handle special characters.`, (t) => {
-  const parseSelectorFilters = parseSelectorFiltersFactory(
-    t.context.dep.processRawSelectorFilters,
-    t.context.dep.splitSelectorFilter,
-  );
+    expect(selectorFilters).toEqual(expectedResult);
+  });
 
-  const urlWithFilters = `{ .btn@m as .button@m } from style.scss`;
-  const selectorFilters = parseSelectorFilters(urlWithFilters);
-  const expectedResult = [
-    {
-      replacement: `.button\\@m`,
-      selector: `.btn\\@m`,
-    },
-  ];
+  test(`It should handle special characters.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
 
-  t.deepEqual(selectorFilters, expectedResult);
-});
+    const urlWithFilters = `{ .btn@m as .button@m } from style.scss`;
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult = [
+      {
+        replacement: `.button\\@m`,
+        selector: `.btn\\@m`,
+      },
+    ];
 
-test(`Should handle regular expressions.`, (t) => {
-  const parseSelectorFilters = parseSelectorFiltersFactory(
-    t.context.dep.processRawSelectorFilters,
-    t.context.dep.splitSelectorFilter,
-  );
+    expect(selectorFilters).toEqual(expectedResult);
+  });
 
-  const urlWithFilters = `{ /^\\.btn(.*)/i as .button$1 } from style.scss`;
-  const selectorFilters = parseSelectorFilters(urlWithFilters);
-  const expectedResult = [
-    {
-      replacement: `.button$1`,
-      selector: /^\.btn(.*)/i,
-    },
-  ];
+  test(`It should handle regular expressions.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
 
-  t.deepEqual(selectorFilters, expectedResult);
+    const urlWithFilters = `{ /^\\.btn(.*)/i as .button$1 } from style.scss`;
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult = [
+      {
+        replacement: `.button$1`,
+        selector: /^\.btn(.*)/i,
+      },
+    ];
+
+    expect(selectorFilters).toEqual(expectedResult);
+  });
 });

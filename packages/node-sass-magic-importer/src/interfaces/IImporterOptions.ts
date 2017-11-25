@@ -1,7 +1,7 @@
 import { ICustomFilter } from 'css-node-extract/dist/interfaces/ICustomFilter';
 
 export interface IFilterImporterOptions {
-  customFilters?: ICustomFilter[];
+  customFilters?: ICustomFilter;
 }
 
 export interface IPackageImporterOptions {

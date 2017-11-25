@@ -1,73 +1,75 @@
-import test from 'ava';
 import * as glob from 'glob';
 import * as path from 'path';
-import * as sinon from 'sinon';
 
 import { resolveUrlFactory } from './resolve-url';
 import { sassGlobPatternFactory } from './sass-glob-pattern';
 
 import { IGlob } from '../interfaces/IGlob';
 
-test.beforeEach((t) => {
-  const sassGlobPattern = sassGlobPatternFactory(path);
+const sassGlobPattern = sassGlobPatternFactory(path);
 
-  t.context.dep = {
-    sassGlobPattern,
-  };
-});
+let dependencies: any;
 
-test(`Should be a function.`, (t) => {
-  const resolveUrl = resolveUrlFactory(
-    glob,
-    path,
-    t.context.dep.sassGlobPattern,
-  );
+describe(`resolveUrl()`, () => {
+  beforeEach(() => {
+    dependencies = {
+      sassGlobPattern,
+    };
+  });
 
-  t.is(typeof resolveUrl, `function`);
-});
+  test(`It should be a function.`, () => {
+    const resolveUrl = resolveUrlFactory(
+      glob,
+      path,
+      dependencies.sassGlobPattern,
+    );
 
-test(`Should call glob.sync() with resolved include path.`, (t) => {
-  const globStub = { sync: sinon.stub().returns([]) } as any;
-  const sassGlobPatternStub = sinon.stub(t.context.dep, `sassGlobPattern`).returns(`some/string`);
-  const resolveUrl = resolveUrlFactory(
-    globStub,
-    path,
-    sassGlobPatternStub,
-  );
+    expect(typeof resolveUrl).toBe(`function`);
+  });
 
-  resolveUrl(`test/url`, [`test/include/path`]);
+  test(`It should call glob.sync() with resolved include path.`, () => {
+    const globMock = { sync: jest.fn().mockReturnValue([]) } as any;
+    const sassGlobPatternMock = jest.fn().mockReturnValue(`some/string`);
+    const resolveUrl = resolveUrlFactory(
+      globMock,
+      path,
+      sassGlobPatternMock,
+    );
 
-  t.true(sassGlobPatternStub.calledWith(`url`));
-  t.true(globStub.sync.called);
-});
+    resolveUrl(`test/url`, [`test/include/path`]);
 
-test(`Should return the given URL if no absolute URL can be resolved.`, (t) => {
-  const url = `test/url`;
+    expect(sassGlobPatternMock).toBeCalledWith(`url`);
+    expect(globMock.sync).toBeCalled();
+  });
 
-  const sassGlobPatternStub = sinon.stub(t.context.dep, `sassGlobPattern`).returns(`some/string`);
-  const resolveUrl = resolveUrlFactory(
-    glob,
-    path,
-    sassGlobPatternStub,
-  );
-  const resolvedUrl = resolveUrl(url, [`test/include/path`]);
+  test(`It should return the given URL if no absolute URL can be resolved.`, () => {
+    const url = `test/url`;
 
-  t.is(resolvedUrl, url);
-});
+    const sassGlobPatternMock = jest.fn().mockReturnValue(`some/string`);
+    const resolveUrl = resolveUrlFactory(
+      glob,
+      path,
+      sassGlobPatternMock,
+    );
+    const resolvedUrl = resolveUrl(url, [`test/include/path`]);
 
-test(`Should return the absolute URL to a file.`, (t) => {
-  const url = `files/combined.scss`;
-  const includePath = `/`;
-  const absoluteUrl = path.resolve(includePath, url);
+    expect(resolvedUrl).toBe(url);
+  });
 
-  const globStub = { sync: sinon.stub().returns([absoluteUrl]) } as any;
-  const sassGlobPatternStub = sinon.stub(t.context.dep, `sassGlobPattern`).returns(`combined.scss`);
-  const resolveUrl = resolveUrlFactory(
-    globStub,
-    path,
-    sassGlobPatternStub,
-  );
-  const resolvedUrl = resolveUrl(url, [includePath]);
+  test(`It should return the absolute URL to a file.`, () => {
+    const url = `files/combined.scss`;
+    const includePath = `/`;
+    const absoluteUrl = path.resolve(includePath, url);
 
-  t.is(resolvedUrl, absoluteUrl);
+    const globMock = { sync: jest.fn().mockReturnValue([absoluteUrl]) } as any;
+    const sassGlobPatternMock = jest.fn().mockReturnValue(`combined.scss`);
+    const resolveUrl = resolveUrlFactory(
+      globMock,
+      path,
+      sassGlobPatternMock,
+    );
+    const resolvedUrl = resolveUrl(url, [includePath]);
+
+    expect(resolvedUrl).toBe(absoluteUrl);
+  });
 });
