@@ -1,15 +1,15 @@
-import test from 'ava';
-
 import { escapeSelectorFactory } from './escape-selector';
 
-test(`Should be a function.`, (t) => {
-  const escapeSelector = escapeSelectorFactory();
+describe(`escapeSelector()`, () => {
+  test(`It should be a function.`, () => {
+    const escapeSelector = escapeSelectorFactory();
 
-  t.is(typeof escapeSelector, `function`);
-});
+    expect(typeof escapeSelector).toBe(`function`);
+  });
 
-test(`Should escape special characters.`, (t) => {
-  const escapeSelector = escapeSelectorFactory();
+  test(`It should escape special characters.`, () => {
+    const escapeSelector = escapeSelectorFactory();
 
-  t.is(escapeSelector(`@/@mixin`), `\\@\\/@mixin`);
+    expect(escapeSelector(`@/@mixin`)).toBe(`\\@\\/@mixin`);
+  });
 });

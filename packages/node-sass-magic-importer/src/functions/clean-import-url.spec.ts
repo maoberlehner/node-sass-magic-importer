@@ -1,28 +1,28 @@
-import test from 'ava';
-
 import { cleanImportUrlFactory } from './clean-import-url';
 
-test(`Should be a function.`, (t) => {
-  const cleanImportUrl = cleanImportUrlFactory();
+describe(`cleanImportUrl()`, () => {
+  test(`It should be a function.`, () => {
+    const cleanImportUrl = cleanImportUrlFactory();
 
-  t.is(typeof cleanImportUrl, `function`);
-});
+    expect(typeof cleanImportUrl).toBe(`function`);
+  });
 
-test(`Should return URL without filters.`, (t) => {
-  const cleanImportUrl = cleanImportUrlFactory();
+  test(`It should return URL without filters.`, () => {
+    const cleanImportUrl = cleanImportUrlFactory();
 
-  const urlWithSelectorFilters = `{ .btn, .btn-alert } from style.scss`;
-  const urlWithNodeFilters = `[variables, mixins] from style.scss`;
-  const urlWithBoth = `[variables, mixins] { .btn, .btn-alert } from style.scss`;
-  const urlWithoutFilters = `style.scss`;
+    const urlWithSelectorFilters = `{ .btn, .btn-alert } from style.scss`;
+    const urlWithNodeFilters = `[variables, mixins] from style.scss`;
+    const urlWithBoth = `[variables, mixins] { .btn, .btn-alert } from style.scss`;
+    const urlWithoutFilters = `style.scss`;
 
-  const urlCleanedSelectorFilters = cleanImportUrl(urlWithSelectorFilters);
-  const urlCleanedNodeFilters = cleanImportUrl(urlWithNodeFilters);
-  const urlCleanedBoth = cleanImportUrl(urlWithBoth);
-  const urlCleanedFilters = cleanImportUrl(urlWithoutFilters);
+    const urlCleanedSelectorFilters = cleanImportUrl(urlWithSelectorFilters);
+    const urlCleanedNodeFilters = cleanImportUrl(urlWithNodeFilters);
+    const urlCleanedBoth = cleanImportUrl(urlWithBoth);
+    const urlCleanedFilters = cleanImportUrl(urlWithoutFilters);
 
-  t.is(urlCleanedSelectorFilters, `style.scss`);
-  t.is(urlCleanedNodeFilters, `style.scss`);
-  t.is(urlCleanedBoth, `style.scss`);
-  t.is(urlCleanedFilters, `style.scss`);
+    expect(urlCleanedSelectorFilters).toBe(`style.scss`);
+    expect(urlCleanedNodeFilters).toBe(`style.scss`);
+    expect(urlCleanedBoth).toBe(`style.scss`);
+    expect(urlCleanedFilters).toBe(`style.scss`);
+  });
 });

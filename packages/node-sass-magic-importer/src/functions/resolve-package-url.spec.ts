@@ -1,50 +1,52 @@
-import test from 'ava';
 import * as path from 'path';
-import * as sinon from 'sinon';
 
 import { resolvePackageUrlFactory } from './resolve-package-url';
 import { sassUrlVariantsFactory } from './sass-url-variants';
 
-test.beforeEach((t) => {
-  const sassUrlVariants = sassUrlVariantsFactory(path);
+const sassUrlVariants = sassUrlVariantsFactory(path);
 
-  t.context.dep = {
-    sassUrlVariants,
-  };
-});
+let dependencies: any;
 
-test(`Should be a function.`, (t) => {
-  const resolveStub = { sync: sinon.stub().returns(`resolved/path.scss`) } as any;
-  const resolvePackageKeysStub = sinon.stub().returns({ main: `some/file.scss` });
-  const resolvePackageUrl = resolvePackageUrlFactory(
-    resolveStub,
-    resolvePackageKeysStub,
-    t.context.dep.sassUrlVariants,
-  );
+describe(`resolvePackageUrl()`, () => {
+  beforeEach(() => {
+    dependencies = {
+      sassUrlVariants,
+    };
+  });
 
-  t.is(typeof resolvePackageUrl, `function`);
-});
+  test(`It should be a function.`, () => {
+    const resolveMock = { sync: jest.fn().mockReturnValue(`resolved/path.scss`) } as any;
+    const resolvePackageKeysMock = jest.fn().mockReturnValue({ main: `some/file.scss` });
+    const resolvePackageUrl = resolvePackageUrlFactory(
+      resolveMock,
+      resolvePackageKeysMock,
+      dependencies.sassUrlVariants,
+    );
 
-test(`Should resolve the path to a file in the node_modules directory.`, (t) => {
-  const url = `some/file.scss`;
-  const extensions = [`.scss`];
-  const cwd = `/`;
-  const packageKeys = [`main`];
+    expect(typeof resolvePackageUrl).toBe(`function`);
+  });
 
-  const resolveStub = { sync: sinon.stub().returns(`resolved/path.scss`) } as any;
-  const resolvePackageKeysStub = sinon.stub().returns({ main: `some/file.scss` });
-  const sassUrlVariantsStub = sinon.stub(t.context.dep, `sassUrlVariants`).returns([
-    `some/url/variant.scss`,
-  ]);
-  const resolvePackageUrl = resolvePackageUrlFactory(
-    resolveStub,
-    resolvePackageKeysStub,
-    sassUrlVariantsStub,
-  );
+  test(`It should resolve the path to a file in the node_modules directory.`, () => {
+    const url = `some/file.scss`;
+    const extensions = [`.scss`];
+    const cwd = `/`;
+    const packageKeys = [`main`];
 
-  const file = resolvePackageUrl(url, extensions, cwd, packageKeys);
+    const resolveMock = { sync: jest.fn().mockReturnValue(`resolved/path.scss`) } as any;
+    const resolvePackageKeysMock = jest.fn().mockReturnValue({ main: `some/file.scss` });
+    const sassUrlVariantsMock = jest.fn().mockReturnValue([
+      `some/url/variant.scss`,
+    ]);
+    const resolvePackageUrl = resolvePackageUrlFactory(
+      resolveMock,
+      resolvePackageKeysMock,
+      sassUrlVariantsMock,
+    );
 
-  t.true(sassUrlVariantsStub.calledWith(url, extensions));
-  t.true(resolveStub.sync.calledWith(`some/url/variant.scss`));
-  t.is(file, `resolved/path.scss`);
+    const file = resolvePackageUrl(url, extensions, cwd, packageKeys);
+
+    expect(sassUrlVariantsMock).toBeCalledWith(url, extensions);
+    expect(resolveMock.sync.mock.calls[0][0]).toBe(`some/url/variant.scss`);
+    expect(file).toBe(`resolved/path.scss`);
+  });
 });

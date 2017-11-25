@@ -14,6 +14,12 @@
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-magic-importer",
   "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "watch": "npm run clean && tsc -w",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/maoberlehner/node-sass-magic-importer"
@@ -34,10 +40,7 @@
     "@types/glob": "^5.0.32",
     "@types/node": "^8.0.31",
     "@types/resolve": "0.0.4",
-    "@types/sinon": "^2.3.5",
-    "ava": "^0.22.0",
     "rimraf": "^2.6.2",
-    "sinon": "^4.0.0",
     "typescript": "^2.5.3"
   },
   "main": "dist/index.js",
@@ -45,12 +48,5 @@
   "engines": {
     "node": ">=6.11.1",
     "npm": ">=3.0.0"
-  },
-  "scripts": {
-    "build": "npm run clean && tsc",
-    "watch": "npm run clean && tsc -w",
-    "clean": "rimraf dist",
-    "test": "npm run build && ava dist/**/*.spec.js",
-    "prepublishOnly": "npm run build"
   }
 }
