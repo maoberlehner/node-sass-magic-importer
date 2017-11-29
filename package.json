@@ -37,13 +37,18 @@
     "typescript": "^2.5.3"
   },
   "jest": {
+    "coveragePathIgnorePatterns": [
+      "/dist/",
+      "/node_modules/"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js"
     ],
     "transform": {
-      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.ts$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$"
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "mapCoverage": true
   }
 }
