@@ -22,7 +22,7 @@ describe(`resolveGlobUrl()`, () => {
       path,
     );
 
-    const result = resolveGlobUrl(`test/url`, [`/test/include/path`]);
+    const result = resolveGlobUrl(`test/url`);
 
     expect(globMock.hasMagic).toBeCalled();
     expect(result).toEqual([]);

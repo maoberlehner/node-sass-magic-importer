@@ -16,7 +16,7 @@ describe(`resolvePackageUrl()`, () => {
 
   test(`It should be a function.`, () => {
     const resolveMock = { sync: jest.fn().mockReturnValue(`resolved/path.scss`) } as any;
-    const resolvePackageKeysMock = jest.fn().mockReturnValue({ main: `some/file.scss` });
+    const resolvePackageKeysMock = jest.fn().mockReturnValue({});
     const resolvePackageUrl = resolvePackageUrlFactory(
       resolveMock,
       resolvePackageKeysMock,
@@ -33,7 +33,7 @@ describe(`resolvePackageUrl()`, () => {
     const packageKeys = [`main`];
 
     const resolveMock = { sync: jest.fn().mockReturnValue(`resolved/path.scss`) } as any;
-    const resolvePackageKeysMock = jest.fn().mockReturnValue({ main: `some/file.scss` });
+    const resolvePackageKeysMock = jest.fn().mockReturnValue({});
     const sassUrlVariantsMock = jest.fn().mockReturnValue([
       `some/url/variant.scss`,
     ]);
@@ -48,5 +48,17 @@ describe(`resolvePackageUrl()`, () => {
     expect(sassUrlVariantsMock).toBeCalledWith(url, extensions);
     expect(resolveMock.sync.mock.calls[0][0]).toBe(`some/url/variant.scss`);
     expect(file).toBe(`resolved/path.scss`);
+  });
+
+  test(`It should return \`null\` if no url can be resolved.`, () => {
+    const resolveMock = { sync: jest.fn().mockReturnValue(false) } as any;
+    const resolvePackageKeysMock = jest.fn().mockReturnValue({});
+    const resolvePackageUrl = resolvePackageUrlFactory(
+      resolveMock,
+      resolvePackageKeysMock,
+      dependencies.sassUrlVariants,
+    );
+
+    expect(resolvePackageUrl(``, [], ``, [])).toBe(null);
   });
 });

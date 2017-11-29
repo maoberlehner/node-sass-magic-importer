@@ -16,6 +16,13 @@ describe(`sassUrlVariants()`, () => {
     expect(urlArray).toEqual([`some-package-name`]);
   });
 
+  test(`It should return the unmodified URL in an array if no extensions are specified.`, () => {
+    const sassUrlVariants = sassUrlVariantsFactory(path);
+    const urlArray = sassUrlVariants(path.join(`some-package-name`, `some`, `file`));
+
+    expect(urlArray).toEqual([path.join(`some-package-name`, `some`, `file`)]);
+  });
+
   test(`It should return an array of URL variants.`, () => {
     const sassUrlVariants = sassUrlVariantsFactory(path);
     const urlArray = sassUrlVariants(path.join(`some-package-name`, `some`, `file`), [`.scss`, `.sass`]);

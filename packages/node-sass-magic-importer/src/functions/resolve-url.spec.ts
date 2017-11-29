@@ -72,4 +72,17 @@ describe(`resolveUrl()`, () => {
 
     expect(resolvedUrl).toBe(absoluteUrl);
   });
+
+  test(`It should return the given URL if no include path could be resolved.`, () => {
+    const url = `files/combined.scss`;
+
+    const resolveUrl = resolveUrlFactory(
+      glob,
+      path,
+      dependencies.sassGlobPattern,
+    );
+    const resolvedUrl = resolveUrl(url);
+
+    expect(resolvedUrl).toBe(url);
+  });
 });

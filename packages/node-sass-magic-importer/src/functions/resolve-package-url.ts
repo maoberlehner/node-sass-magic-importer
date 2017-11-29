@@ -13,6 +13,7 @@ export function resolvePackageUrlFactory(
 
     sassUrlVariants(url, extensions).some((urlVariant) => {
       try {
+        /* istanbul ignore next: resolve.sync is mocked anyway */
         const resolvedPath = resolve.sync(urlVariant, {
           basedir: cwd,
           packageFilter: (packageJson) => resolvePackageKey(packageJson, packageKeys),

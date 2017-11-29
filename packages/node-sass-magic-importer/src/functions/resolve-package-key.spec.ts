@@ -25,4 +25,19 @@ describe(`resolvePackageKey()`, () => {
 
     expect(newPackageJson).toEqual(expectedResult);
   });
+
+  test(`It should return the original package.json if no key is found.`, () => {
+    const resolvePackageKey = resolvePackageKeyFactory();
+    const packageJson = {
+      foo: `some/file.js`,
+      bar: `some/file.scss`,
+    };
+    const packageKeys = [
+      `sass`,
+      `main`,
+    ];
+    const newPackageJson = resolvePackageKey(packageJson, packageKeys);
+
+    expect(newPackageJson).toBe(packageJson);
+  });
 });

@@ -1,4 +1,4 @@
 export type ISassUrlVariants = (
   url: string,
-  extensions: string[],
+  extensions?: string[],
 ) => string[];
