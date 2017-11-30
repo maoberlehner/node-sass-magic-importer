@@ -13,7 +13,7 @@
     "clean": "lerna run clean",
     "lint": "tslint **/*.ts -e **/node_modules/** -e **/dist/**",
     "coverage": "jest --coverage",
-    "coveralls": "jest --coverage && cat coverage/lcov.info | coveralls",
+    "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls",
     "test": "jest"
   },
   "private": true,
