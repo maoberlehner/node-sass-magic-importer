@@ -12,6 +12,8 @@
     "build": "lerna run build",
     "clean": "lerna run clean",
     "lint": "tslint **/*.ts -e **/node_modules/** -e **/dist/**",
+    "coverage": "jest --coverage",
+    "coveralls": "jest --coverage && cat coverage/lcov.info | coveralls",
     "test": "jest"
   },
   "private": true,
@@ -28,6 +30,7 @@
     "@types/jest": "^21.1.6",
     "@types/node-sass": "^3.10.32",
     "bootstrap": "4.0.0-beta",
+    "coveralls": "^3.0.0",
     "jest": "^21.2.1",
     "lerna": "^2.2.0",
     "node-sass": "^4.5.3",
