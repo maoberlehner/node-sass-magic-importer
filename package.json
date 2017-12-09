@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "publish": "lerna publish",
+    "publish": "npm run bootstrap && npm run build && lerna publish",
     "start": "npm run watch",
     "watch": "lerna run watch",
     "build": "lerna run build",
