@@ -10,7 +10,7 @@
     "sass",
     "selector-importer"
   ],
-  "version": "5.0.0",
+  "version": "5.0.1",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-magic-importer",
   "license": "MIT",
