@@ -7,7 +7,7 @@
     "sass",
     "filter-importer"
   ],
-  "version": "5.0.1",
+  "version": "5.0.2",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-filter-importer",
   "license": "MIT",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "css-node-extract": "^2.1.0",
-    "node-sass-magic-importer": "^5.0.1",
+    "node-sass-magic-importer": "^5.0.2",
     "postcss-scss": "^1.0.2"
   },
   "devDependencies": {
