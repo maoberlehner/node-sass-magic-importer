@@ -27,13 +27,26 @@ describe(`parseSelectorFilters()`, () => {
     expect(typeof parseSelectorFilters).toBe(`function`);
   });
 
+  test(`It should return an empty array if there is no filter divider.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
+    const urlWithoutFilters = `style.scss`;
+
+    const selectorFilters = parseSelectorFilters(urlWithoutFilters);
+    const expectedResult: any[] = [];
+
+    expect(selectorFilters).toEqual(expectedResult);
+  });
+
   test(`It should return an empty array if no filters were found.`, () => {
     const parseSelectorFilters = parseSelectorFiltersFactory(
       dependencies.processRawSelectorFilters,
       dependencies.splitSelectorFilter,
     );
+    const urlWithoutFilters = `[some-thing] from style.scss`;
 
-    const urlWithoutFilters = `style.scss`;
     const selectorFilters = parseSelectorFilters(urlWithoutFilters);
     const expectedResult: any[] = [];
 
@@ -45,8 +58,8 @@ describe(`parseSelectorFilters()`, () => {
       dependencies.processRawSelectorFilters,
       dependencies.splitSelectorFilter,
     );
-
     const urlWithFilters = `{ .btn, .btn-alert } from style.scss`;
+
     const selectorFilters = parseSelectorFilters(urlWithFilters);
     const expectedResult = [
       {
@@ -67,8 +80,8 @@ describe(`parseSelectorFilters()`, () => {
       dependencies.processRawSelectorFilters,
       dependencies.splitSelectorFilter,
     );
-
     const urlWithFilters = `{ .btn as .button, .btn-alert as .button-alert } from style.scss`;
+
     const selectorFilters = parseSelectorFilters(urlWithFilters);
     const expectedResult = [
       {
@@ -84,13 +97,74 @@ describe(`parseSelectorFilters()`, () => {
     expect(selectorFilters).toEqual(expectedResult);
   });
 
+  test(`It should ignore curly brackets used in a glob pattern.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
+    const urlWithFilters = `style{1}.scss`;
+
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult: any[] = [];
+
+    expect(selectorFilters).toEqual(expectedResult);
+  });
+
+  test(`It should return selector filters from URL with glob pattern.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
+    const urlWithFilters = `{ .btn, .btn-alert } from style{1}.scss`;
+
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult = [
+      {
+        replacement: undefined,
+        selector: `.btn`,
+      },
+      {
+        replacement: undefined,
+        selector: `.btn-alert`,
+      },
+    ];
+
+    expect(selectorFilters).toEqual(expectedResult);
+  });
+
+  test(`It should return selector filters when filter contains \`from\`.`, () => {
+    const parseSelectorFilters = parseSelectorFiltersFactory(
+      dependencies.processRawSelectorFilters,
+      dependencies.splitSelectorFilter,
+    );
+    const urlWithFilters = `{ .btn, .btn-alert, .from } from style.scss`;
+
+    const selectorFilters = parseSelectorFilters(urlWithFilters);
+    const expectedResult = [
+      {
+        replacement: undefined,
+        selector: `.btn`,
+      },
+      {
+        replacement: undefined,
+        selector: `.btn-alert`,
+      },
+      {
+        replacement: undefined,
+        selector: `.from`,
+      },
+    ];
+
+    expect(selectorFilters).toEqual(expectedResult);
+  });
+
   test(`It should handle special characters.`, () => {
     const parseSelectorFilters = parseSelectorFiltersFactory(
       dependencies.processRawSelectorFilters,
       dependencies.splitSelectorFilter,
     );
-
     const urlWithFilters = `{ .btn@m as .button@m } from style.scss`;
+
     const selectorFilters = parseSelectorFilters(urlWithFilters);
     const expectedResult = [
       {
@@ -107,8 +181,8 @@ describe(`parseSelectorFilters()`, () => {
       dependencies.processRawSelectorFilters,
       dependencies.splitSelectorFilter,
     );
-
     const urlWithFilters = `{ /^\\.btn(.*)/i as .button$1 } from style.scss`;
+
     const selectorFilters = parseSelectorFilters(urlWithFilters);
     const expectedResult = [
       {
