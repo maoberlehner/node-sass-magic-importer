@@ -77,6 +77,20 @@ describe(`parseNodeFilters()`, () => {
     expect(nodeFilters).toEqual(expectedResult);
   });
 
+  test(`It should handle spaces in node filters.`, () => {
+    const parseNodeFilters = parseNodeFiltersFactory();
+    const urlWithFilters = `[ at-rules, mixins, from ] from style.scss`;
+
+    const nodeFilters = parseNodeFilters(urlWithFilters);
+    const expectedResult = [
+      `at-rules`,
+      `mixins`,
+      `from`,
+    ];
+
+    expect(nodeFilters).toEqual(expectedResult);
+  });
+
   test(`It should trim empty filter from multi line URL.`, () => {
     const parseNodeFilters = parseNodeFiltersFactory();
     const urlWithFilters = `[
