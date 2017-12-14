@@ -2,7 +2,7 @@ import { IFilterParser } from '../interfaces/IFilterParser';
 
 export function parseNodeFiltersFactory(): IFilterParser {
   return (url: string) => {
-    const filterDivider = /[\n\r\s]+from[\n\r\s]+/;
+    const filterDivider = /[\s]+from[\s]+/;
 
     if (!filterDivider.test(url)) {
       return [];

@@ -7,7 +7,7 @@ export function parseSelectorFiltersFactory(
   splitSelectorFilter: ISplitSelectorFilter,
 ): IParseSelectorFilters {
   return (url: string) => {
-    const filterDivider = /[\n\r\s]+from[\n\r\s]+/;
+    const filterDivider = /[\s]+from[\s]+/;
 
     if (!filterDivider.test(url)) {
       return [];
