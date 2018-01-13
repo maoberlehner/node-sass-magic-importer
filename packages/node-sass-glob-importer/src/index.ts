@@ -13,7 +13,7 @@ export = function globImporter() {
 
     const filePaths = resolveGlobUrl(url, includePaths);
 
-    if (filePaths.length) {
+    if (filePaths) {
       const contents = filePaths
         .map((x: string) => `@import '${x}';`)
         .join(`\n`);

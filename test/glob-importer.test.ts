@@ -19,6 +19,17 @@ describe(`globImporter()`, () => {
     expect(result).toBe(expectedResult);
   });
 
+  test(`Should not fail when dir is empty.`, () => {
+    const expectedResult = ``;
+
+    const result = sass.renderSync({
+      file: `test/files/glob-import-empty-dir.scss`,
+      importer: globImporter(),
+    }).css.toString();
+
+    expect(result).toBe(expectedResult);
+  });
+
   test(`It should import glob files via CLI.`, async () => {
     // tslint:disable-next-line max-line-length
     const cmd = `node node_modules/.bin/node-sass --importer packages/node-sass-glob-importer/dist/cli.js test/files/glob-import.scss`;

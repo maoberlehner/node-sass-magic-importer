@@ -119,7 +119,7 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
       filterPrefix = `${url.split(` from `)[0]} from `;
     }
 
-    if (globFilePaths.length) {
+    if (globFilePaths) {
       const contents = globFilePaths
         .filter((x) => !store.has(getStoreId(x, selectorFilters, nodeFilters)))
         .map((x) => `@import '${filterPrefix}${x}';`)

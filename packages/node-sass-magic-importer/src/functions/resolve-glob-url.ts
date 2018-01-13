@@ -19,8 +19,10 @@ export function resolveGlobUrlFactory(
           .split(`\\`).join(`/`));
         });
       });
+
+      return [...filePaths];
     }
 
-    return [...filePaths];
+    return null;
   };
 }
