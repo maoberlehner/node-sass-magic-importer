@@ -25,7 +25,7 @@ describe(`resolveGlobUrl()`, () => {
     const result = resolveGlobUrl(`test/url`);
 
     expect(globMock.hasMagic).toBeCalled();
-    expect(result).toEqual([]);
+    expect(result).toEqual(null);
   });
 
   test(`It should return found glob file paths.`, () => {
