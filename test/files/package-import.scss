@@ -1,3 +1,7 @@
 @import '~test-package-main';
 @import '~test-package-main/css/main';
 @import '~test-package-css';
+
+@import '~@namespace/test-package-main';
+@import '~@namespace/test-package-main/css/main';
+@import '~@namespace/test-package-css';

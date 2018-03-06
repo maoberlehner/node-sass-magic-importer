@@ -6,7 +6,7 @@ import { exec } from 'child_process';
 import * as packageImporter from '../packages/node-sass-package-importer/dist/index';
 
 describe(`packageImporter()`, () => {
-  test(`It should import the modules main file.`, () => {
+  test(`It should import files from modules.`, () => {
     const expectedResult = fs.readFileSync(`test/files/package-import.css`, {
       encoding: `utf8`,
     });
@@ -20,7 +20,7 @@ describe(`packageImporter()`, () => {
     expect(result).toBe(expectedResult);
   });
 
-  test(`It should import the modules main file via CLI.`, async () => {
+  test(`It should import files from modules via CLI.`, async () => {
     // tslint:disable-next-line max-line-length
     const cmd = `cd ${__dirname}/files && node ../../node_modules/.bin/node-sass --importer ../../packages/node-sass-package-importer/dist/cli.js package-import.scss`;
     const expectedResult = fs.readFileSync(`test/files/package-import.css`, {

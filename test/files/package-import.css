@@ -6,3 +6,12 @@
 
 .test-package-css {
   content: 'css index file'; }
+
+.namespace-test-package-main {
+  content: 'namespace main scss file'; }
+
+.namespace-test-package-main {
+  content: 'namespace main css file'; }
+
+.namespace-test-package-css {
+  content: 'namespace css index file'; }
