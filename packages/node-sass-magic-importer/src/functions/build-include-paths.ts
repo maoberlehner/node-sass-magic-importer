@@ -5,12 +5,12 @@ export function buildIncludePathsFactory(
   path: IPath,
 ): IBuildIncludePaths {
   return (nodeSassIncludePaths: string, previouslyResolvedPath: string) => {
-    const includePathsSet = new Set(nodeSassIncludePaths.split(path.delimiter));
+    const includePaths = [];
 
     if (path.isAbsolute(previouslyResolvedPath)) {
-      includePathsSet.add(path.dirname(previouslyResolvedPath));
+      includePaths.push(path.dirname(previouslyResolvedPath));
     }
 
-    return [...includePathsSet] as string[];
+    return [...new Set([...includePaths, ...nodeSassIncludePaths.split(path.delimiter)])] as string[];
   };
 }

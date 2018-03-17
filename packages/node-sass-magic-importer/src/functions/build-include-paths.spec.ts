@@ -26,12 +26,12 @@ describe(`buildIncludePaths()`, () => {
   test(`It should return an array with node-sass include paths and include path from previous file.`, () => {
     const buildIncludePaths = buildIncludePathsFactory(path);
 
-    const nodeSassIncludePaths = `/include/path1${path.delimiter}/include/path2`;
-    const previouslyResolvedPath = `/include/path3/file.scss`;
+    const nodeSassIncludePaths = `/include/include-path1${path.delimiter}/include/include-path2`;
+    const previouslyResolvedPath = `/include/previously-resolved-path/file.scss`;
     const expectedResult = [
-      `/include/path1`,
-      `/include/path2`,
-      `/include/path3`,
+      `/include/previously-resolved-path`,
+      `/include/include-path1`,
+      `/include/include-path2`,
     ];
 
     expect(buildIncludePaths(nodeSassIncludePaths, previouslyResolvedPath))
