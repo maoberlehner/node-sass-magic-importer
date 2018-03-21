@@ -16,6 +16,9 @@ export = function onceImporter() {
     store: new Set(),
   };
 
+  // cache for path resolution
+  let includePathsCache: Map<string, string[]> = new Map();
+
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     // Create a context for the current importer run.
@@ -29,10 +32,14 @@ export = function onceImporter() {
     // files already imported in a previous importer run
     // would be detected as multiple imports of the same file.
     const store = this.nodeSassOnceImporterContext.store;
-    const includePaths = buildIncludePaths(
-      nodeSassOptions.includePaths,
-      prev,
-    );
+    // per instance of new importer created, path resolution is shared
+    if (!includePathsCache.has(url)) {
+      includePathsCache.set(url, buildIncludePaths(
+        nodeSassOptions.includePaths,
+        prev,
+      ));
+    }
+    const includePaths = includePathsCache.get(url);
     const resolvedUrl = resolveUrl(
       url,
       includePaths,
