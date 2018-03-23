@@ -16,8 +16,6 @@ export = function onceImporter() {
     store: new Set(),
   };
 
-  // cache for path resolution
-  let includePathsCache: Map<string, string[]> = new Map();
   // cache for resolvedUrls
   let resolvedUrlsCache: Map<string, string> = new Map();
 
@@ -35,15 +33,15 @@ export = function onceImporter() {
     // would be detected as multiple imports of the same file.
     const store = this.nodeSassOnceImporterContext.store;
     // per instance of new importer created, path resolution is shared
-    if (!includePathsCache.has(nodeSassOptions.includePaths)) {
-      includePathsCache.set(url, buildIncludePaths(
-        nodeSassOptions.includePaths,
-        prev,
-      ));
-    }
-    const includePaths = includePathsCache.get(nodeSassOptions.includePaths);
 
-    if (!resolvedUrlsCache.has(url)){
+    const includePaths = buildIncludePaths(
+      nodeSassOptions.includePaths,
+      prev,
+    );
+
+    // the perf improvement here is avoiding a glob.sync call in resolveUrl
+    // if we dont need it
+    if (!resolvedUrlsCache.has(url)) {
       resolvedUrlsCache.set(url, resolveUrl(
         url,
         includePaths,
