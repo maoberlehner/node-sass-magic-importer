@@ -1,4 +1,5 @@
 # node-sass-magic-importer
+
 [![Patreon](https://img.shields.io/badge/patreon-donate-blue.svg)](https://www.patreon.com/maoberlehner)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://paypal.me/maoberlehner)
 [![Build Status](https://travis-ci.org/maoberlehner/node-sass-magic-importer.svg?branch=master)](https://travis-ci.org/maoberlehner/node-sass-magic-importer)
@@ -8,12 +9,15 @@
 Custom node-sass importer for selector specific imports, node importing, module importing, globbing support and importing files only once.
 
 ## Install
+
 ```bash
 npm install node-sass-magic-importer --save-dev
 ```
 
 ## Features
+
 This importer enables several comfort functions for importing SASS files more easily.
+
 - [Selector filtering](#selector-filtering): import only specific selectors from a file.  
   (Uses the [node-sass-selector-importer](https://github.com/maoberlehner/node-sass-selector-importer) module.)
 - [Node filtering](#node-filtering): import only specific nodes from a file.  
@@ -26,12 +30,14 @@ This importer enables several comfort functions for importing SASS files more ea
 By default every file is only imported once even if you `@import` the same file multiple times in your code (except if you are using filters).
 
 ### Selector filtering
+
 With selector filtering, it is possible to import only certain CSS selectors form a file. This is especially useful if you want to import only a few CSS classes from a huge library or framework.
 
 ```scss
 // Example:
 @import '{ .btn, .btn-alert } from style.scss';
 ```
+
 ```scss
 // Result:
 .btn { }
@@ -39,10 +45,12 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 
 #### Transform imported selectors
+
 ```scss
 // Example:
 @import '{ .btn as .button, .btn-alert as .button--alert } from style.scss';
 ```
+
 ```scss
 // Result:
 .button { }
@@ -50,10 +58,12 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 
 #### RegEx
+
 ```scss
 // Example:
 @import '{ /^\..+-alert/ } from style.scss';
 ```
+
 ```scss
 // Result:
 .box-alert { }
@@ -64,6 +74,7 @@ With selector filtering, it is possible to import only certain CSS selectors for
 // Example:
 @import '{ /^\.btn(.*)/ as .button$1 } from style.scss';
 ```
+
 ```scss
 // Result:
 .button { }
@@ -71,6 +82,7 @@ With selector filtering, it is possible to import only certain CSS selectors for
 ```
 
 #### Usage with Bootstrap
+
 Bootstrap is a mighty and robust framework but most of the time you use only certain parts of it. There is the possibility to [customize](http://getbootstrap.com/customize/) Bootstrap to your needs but this can be annoying and you still end up with more code than you need. Also you might want to use just some specific parts of Bootstrap but your project uses the BEM syntax for writing class names.
 
 ```scss
@@ -85,6 +97,7 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
   .close as .alert__close
 } from bootstrap/scss/alert';
 ```
+
 ```scss
 // Result:
 .alert {
@@ -107,12 +120,14 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 ```
 
 ### Node filtering
+
 Filter certain elements from SCSS code.
 
 ```scss
 // Example:
 @import '[variables, mixins] from style.scss';
 ```
+
 ```scss
 // style.scss:
 $variable1: 'value';
@@ -127,6 +142,7 @@ $variable2: 'value';
 ```
 
 #### Filters
+
 - **at-rules**: `@media`, `@supports`, `@mixin`,...
 - **functions**: `@function`
 - **mixins**: `@mixin`
@@ -136,6 +152,7 @@ $variable2: 'value';
 - **make-your-own**: Define custom filters
 
 ### Module importing
+
 In modern day web development, modules and packages are everywhere. There is no way around [npm](https://www.npmjs.com/) if you are a JavaScript developer. More and more CSS and SASS projects move to npm but it can be annoying to find a convenient way of including them into your project. Module importing makes this a little easier.
 
 ```scss
@@ -144,6 +161,7 @@ In modern day web development, modules and packages are everywhere. There is no 
 // https://github.com/twbs/bootstrap/blob/v4-dev/scss/bootstrap.scss
 @import '~bootstrap';
 ```
+
 ```scss
 // Import only specific files:
 @import '~bootstrap/scss/variables';
@@ -155,11 +173,13 @@ In modern day web development, modules and packages are everywhere. There is no 
 The "~" is mandatory and marks the import path as module.
 
 #### Path resolving
+
 If only the module name is given (e.g. `@import '~bootstrap'`) the importer looks in the `package.json` file of the module for the following keys: "sass", "scss", "style", "css", "main.sass", "main.scss", "main.style", "main.css" and "main". The first key that is found is used for resolving the path and importing the file into your sass code.
 
 To load only a certain file from a module you can specify the file in the import url (e.g. `@import '~bootstrap/scss/_alert.scss'`). The `node-sass-magic-importer` also supports partial file name resolving so you can import files by only specifying their base name without prefix and extension (e.g. `@import '~bootstrap/scss/alert'`). Sadly bootstrap and most other frameworks do not load their dependencies directly in the concerned files. So you have to load all dependencies of a file manually like in the example above. I recommend you to do better and to import dependencies directly in the files that are using them.
 
 ### Globbing
+
 Globbing allows pattern matching operators to be used to match multiple files at once.
 
 ```scss
@@ -168,6 +188,7 @@ Globbing allows pattern matching operators to be used to match multiple files at
 ```
 
 ## Usage
+
 ```js
 var sass = require('node-sass');
 var magicImporter = require('node-sass-magic-importer');
@@ -180,6 +201,7 @@ sass.render({
 ```
 
 ### Options
+
 ```js
 const sass = require('node-sass');
 const magicImporter = require('node-sass-magic-importer');
@@ -217,6 +239,7 @@ sass.render({
 ```
 
 #### Custom filters
+
 ```js
 const sass = require('node-sass');
 const magicImporter = require('node-sass-magic-importer');
@@ -291,6 +314,7 @@ sass.render({
 ```
 
 ### webpack
+
 ```js
 // webpack.config.js
 const magicImporter = require('node-sass-magic-importer');
@@ -323,6 +347,7 @@ module.exports = {
 ```
 
 ### Gulp
+
 ```js
 const gulp = require('gulp');
 const sass = require('gulp-sass');
@@ -336,20 +361,26 @@ gulp.task('sass', function () {
 ```
 
 ### CLI
+
 ```bash
 node-sass --importer node_modules/node-sass-magic-importer/dist/cli.js -o dist src/index.scss
 ```
 
 ## Upgrade from 4.x.x to 5.x.x
+
 - It is not possible anymore to set the `includePaths` option when initializing the importer. Use the [node-sass includePaths option](https://github.com/sass/node-sass#includepaths) instead.
 - The `prefix` option was renamed to `packagePrefix`.
 
 ## Known issues
+
 ### Multi level filtering
+
 Node filtering and selector filtering goes only one level deep. This means, if you're importing a file with selector or node filtering which is importing other files, those files are not filtered but imported as is. On a technical level, there is no good solution for this problem. One possibility would be to just pass the filters to all imports in the line but this carries the risk of filtering selectors or nodes on which one of the imported files might depend and therefore break the import. I might add this as an optional feature (which can be activated on demand) in the future – let me know if you're interested in multi level filter imports.
 
 ## About
+
 ### Author
+
 Markus Oberlehner  
 Website: https://markus.oberlehner.net  
 Twitter: https://twitter.com/MaOberlehner  
@@ -357,4 +388,5 @@ PayPal.me: https://paypal.me/maoberlehner
 Patreon: https://www.patreon.com/maoberlehner
 
 ### License
+
 MIT
