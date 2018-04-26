@@ -27,17 +27,17 @@
   "devDependencies": {
     "@avalanche/component-button": "^4.0.0-alpha.6",
     "@avalanche/object-grid": "^4.0.0-alpha.14",
-    "@types/jest": "^21.1.8",
+    "@types/jest": "^22.2.3",
     "@types/node-sass": "^3.10.32",
     "bootstrap": "4.0.0-beta",
     "coveralls": "^3.0.0",
-    "jest": "^21.2.1",
-    "lerna": "^2.5.1",
-    "node-sass": "^4.7.2",
-    "npm-check-updates": "^2.13.0",
-    "ts-jest": "^21.2.4",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.2"
+    "jest": "^22.4.3",
+    "lerna": "^2.11.0",
+    "node-sass": "^4.9.0",
+    "npm-check-updates": "^2.14.2",
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.3"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
@@ -51,7 +51,6 @@
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
-    "mapCoverage": true
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$"
   }
 }
