@@ -1,0 +1,5 @@
+@import '~test-package1';
+@import '~test-package2/**/*.scss';
+@import '{ .partial-1-1 as .replaced1 } from partials/_partial*';
+@import '{ .partial-1-2 as .replaced2 } from partials/_partial*';
+@import '{ .partial-1-3 as .replaced3 } from partials/_partial*';

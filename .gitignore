@@ -29,5 +29,6 @@ Thumbs.db
 coverage
 dist
 node_modules
+!scripts/files/node_modules
 !test/bugfix/*/files/node_modules
 !test/files/node_modules

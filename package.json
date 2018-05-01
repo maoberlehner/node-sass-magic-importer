@@ -11,6 +11,7 @@
     "watch": "lerna run watch",
     "build": "lerna run build",
     "clean": "lerna run clean",
+    "benchmark": "node scripts/benchmark.js",
     "lint": "tslint **/*.ts -e **/node_modules/** -e **/dist/**",
     "coverage": "jest --coverage --maxWorkers=4",
     "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls",
