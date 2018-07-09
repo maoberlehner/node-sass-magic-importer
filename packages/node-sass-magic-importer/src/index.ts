@@ -88,10 +88,8 @@ export = function magicImporter(userOptions?: IMagicImporterOptions) {
       const packageName = cleanedUrl.charAt(0) === `@`
         ? cleanedUrl.split(DIRECTORY_SEPARATOR).slice(0, 2).join(DIRECTORY_SEPARATOR)
         : cleanedUrl.split(DIRECTORY_SEPARATOR)[0];
-      const packageSearchPath = path.join(packageName, `package.json`);
-      const packagePath = path.dirname(findupSync(packageSearchPath, {
-        cwd: path.join(options.cwd, `node_modules`),
-      }));
+      const packageSearchPath = path.join('node_modules', packageName, `package.json`);
+      const packagePath = path.dirname(findupSync(packageSearchPath, { cwd: options.cwd }));
 
       cleanedUrl = path.resolve(packagePath.replace(new RegExp(`${packageName}$`), ``), cleanedUrl);
 
