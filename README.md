@@ -8,7 +8,7 @@
 
 node-sass-magic-importer is a tool to enhance Sass `@import` statements.
 
-The node-sass-magic-importer project consists of multiple [node-sass costum importers](https://github.com/sass/node-sass#importer--v200---experimental) which make it possible to do a lot of fancy things with Sass `@import` statements. Some of the highlights are selector and filter imports.
+The node-sass-magic-importer project consists of multiple [node-sass custom importers](https://github.com/sass/node-sass#importer--v200---experimental) which make it possible to do a lot of fancy things with Sass `@import` statements. Some of the highlights are selector and filter imports.
 
 - `@import '{ .btn as .button } from ~bootstrap';` imports only `.btn` selectors and renames them to `.button`.
 - `@import '[variables, mixins] from menu.scss';` imports only Sass variables (e.g. `$menu-height`) and mixins (e.g. `@mixin menu-item()`) but no selectors.
