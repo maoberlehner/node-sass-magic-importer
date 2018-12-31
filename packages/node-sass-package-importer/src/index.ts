@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import {
   buildIncludePaths,
   resolvePackageUrl,
@@ -37,6 +38,14 @@ export = function packageImporter(userOptions?: IPackageImporterOptions) {
       options.packageKeys,
     );
 
-    return file ? { file: file.replace(/\.css$/, ``) } : null;
+    if (!file) {
+      return null;
+    }
+
+    if (/\.css$/.test(file)) {
+      return { contents: fs.readFileSync(file, 'utf-8') };
+    }
+
+    return { file: file.replace(/\.css$/, ``) };
   };
 };
