@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import {
   buildIncludePaths,
   resolvePackageUrl,
-  sassUrlVariants,
 } from 'node-sass-magic-importer/dist/toolbox';
 import { defaultOptions } from './default-options';
 
@@ -18,17 +17,10 @@ export = function packageImporter(userOptions?: IPackageImporterOptions) {
   const escapedPrefix = options.packagePrefix.replace(/[-/\\^$*+?.()|[\]{}]/g, `\\$&`);
   const matchPackageUrl = new RegExp(`^${escapedPrefix}(?!/)`);
 
-  return function importer(url: string, prev: string) {
-    const nodeSassOptions = this.options;
-
+  return function importer(url: string) {
     if (!url.match(matchPackageUrl)) {
       return null;
     }
-
-    const includePaths = buildIncludePaths(
-      nodeSassOptions.includePaths,
-      prev,
-    );
 
     const cleanedUrl = url.replace(matchPackageUrl, ``);
     const file = resolvePackageUrl(
