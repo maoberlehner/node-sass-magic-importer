@@ -7,7 +7,7 @@
     "sass",
     "selector-importer"
   ],
-  "version": "5.3.0",
+  "version": "5.3.1",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-selector-importer",
   "license": "MIT",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "css-selector-extract": "^3.3.6",
-    "node-sass-magic-importer": "^5.3.0",
+    "node-sass-magic-importer": "^5.3.1",
     "postcss-scss": "^2.0.0"
   },
   "devDependencies": {
