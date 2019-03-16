@@ -9,17 +9,15 @@ const EMPTY_IMPORT = {
 };
 
 export = function onceImporter() {
-  const contextTemplate = {
-    store: new Set(),
-  };
-
   return function importer(url: string, prev: string) {
     const nodeSassOptions = this.options;
     // Create a context for the current importer run.
     // An importer run is different from an importer instance,
     // one importer instance can spawn infinite importer runs.
     if (!this.nodeSassOnceImporterContext) {
-      this.nodeSassOnceImporterContext = Object.assign({}, contextTemplate);
+      this.nodeSassOnceImporterContext = {
+        store: new Set(),
+      };
     }
 
     // Each importer run has it's own new store, otherwise
