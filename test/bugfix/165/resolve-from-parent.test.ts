@@ -12,7 +12,7 @@ describe(`magicImporter()`, () => {
       file: `test/bugfix/165/files/resolve-from-parent.scss`,
       importer: magicImporter({
         cwd: `${__dirname}/files`,
-      }),
+      }) as any,
       // This is important for the test case!
       includePaths: [`${__dirname}/files`],
     }).css.toString();

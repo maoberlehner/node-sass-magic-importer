@@ -13,7 +13,7 @@ describe(`magicImporter()`, () => {
 
     const result = sass.renderSync({
       file: `test/files/filter-import.scss`,
-      importer: magicImporter(),
+      importer: magicImporter() as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -44,7 +44,7 @@ describe(`magicImporter()`, () => {
 
     const result = sass.renderSync({
       file: `test/files/filter-import-custom.scss`,
-      importer: magicImporter(options),
+      importer: magicImporter(options) as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -57,7 +57,7 @@ describe(`magicImporter()`, () => {
 
     const result = sass.renderSync({
       file: `test/files/glob-import.scss`,
-      importer: magicImporter(),
+      importer: magicImporter() as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -72,7 +72,7 @@ describe(`magicImporter()`, () => {
       file: `test/files/glob-combined-import.scss`,
       importer: magicImporter({
         cwd: `${__dirname}/files`,
-      }),
+      }) as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -85,7 +85,7 @@ describe(`magicImporter()`, () => {
 
     const result = sass.renderSync({
       file: `test/files/once-import.scss`,
-      importer: magicImporter(),
+      importer: magicImporter() as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -99,7 +99,7 @@ describe(`magicImporter()`, () => {
       file: `test/files/package-import.scss`,
       importer: magicImporter({
         cwd: `${__dirname}/files`,
-      }),
+      }) as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -111,7 +111,7 @@ describe(`magicImporter()`, () => {
     });
     const result = sass.renderSync({
       file: `test/files/package-combined-import.scss`,
-      importer: magicImporter(),
+      importer: magicImporter() as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
@@ -124,7 +124,7 @@ describe(`magicImporter()`, () => {
 
     const result = sass.renderSync({
       file: `test/files/selector-import.scss`,
-      importer: magicImporter(),
+      importer: magicImporter() as any,
     }).css.toString();
 
     expect(result).toBe(expectedResult);
