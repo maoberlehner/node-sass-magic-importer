@@ -1,9 +1,6 @@
-import * as path from 'path';
-
 import {
   buildIncludePaths,
   resolveUrl,
-  sassGlobPattern,
 } from 'node-sass-magic-importer/dist/toolbox';
 
 const EMPTY_IMPORT = {

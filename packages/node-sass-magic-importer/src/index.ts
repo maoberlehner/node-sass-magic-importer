@@ -15,7 +15,6 @@ import {
   resolveGlobUrl,
   resolvePackageUrl,
   resolveUrl,
-  sassGlobPattern,
 } from './toolbox';
 
 import { IMagicImporterOptions } from './interfaces/IImporterOptions';

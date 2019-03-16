@@ -1,6 +1,5 @@
 import * as cssNodeExtract from 'css-node-extract';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as postcssSyntax from 'postcss-scss';
 
 import {
@@ -8,7 +7,6 @@ import {
   cleanImportUrl,
   parseNodeFilters,
   resolveUrl,
-  sassGlobPattern,
 } from 'node-sass-magic-importer/dist/toolbox';
 import { defaultOptions } from './default-options';
 

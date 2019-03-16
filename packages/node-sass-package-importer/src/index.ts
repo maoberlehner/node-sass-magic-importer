@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import {
-  buildIncludePaths,
   resolvePackageUrl,
 } from 'node-sass-magic-importer/dist/toolbox';
 import { defaultOptions } from './default-options';

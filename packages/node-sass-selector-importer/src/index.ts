@@ -1,17 +1,12 @@
 import * as cssSelectorExtract from 'css-selector-extract';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as postcssSyntax from 'postcss-scss';
 
 import {
   buildIncludePaths,
   cleanImportUrl,
-  escapeSelector,
   parseSelectorFilters,
-  processRawSelectorFilters,
   resolveUrl,
-  sassGlobPattern,
-  splitSelectorFilter,
 } from 'node-sass-magic-importer/dist/toolbox';
 
 export = function selectorImporter() {
