@@ -31,9 +31,9 @@
     "postcss-scss": "^2.0.0"
   },
   "devDependencies": {
-    "@types/node": "^11.11.3",
+    "@types/node": "^11.13.9",
     "rimraf": "^2.6.3",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.4.5"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
