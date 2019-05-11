@@ -1,4 +1,4 @@
-import { ICustomFilter } from 'css-node-extract/src/interfaces/ICustomFilter';
+import { ICustomFilter } from 'css-node-extract/dist/interfaces/ICustomFilter';
 
 export const defaultOptions: {
   cwd: string;
