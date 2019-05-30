@@ -10,7 +10,7 @@ import {
 } from 'node-sass-magic-importer/dist/toolbox';
 import { defaultOptions } from './default-options';
 
-import { IFilterImporterOptions } from 'node-sass-magic-importer/src/interfaces/IImporterOptions';
+import { IFilterImporterOptions } from 'node-sass-magic-importer/dist/interfaces/IImporterOptions';
 
 export = function nodeImporter(userOptions?: IFilterImporterOptions) {
   const options = Object.assign({}, defaultOptions, userOptions);
