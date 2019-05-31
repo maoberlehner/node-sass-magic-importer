@@ -28,17 +28,17 @@
   "devDependencies": {
     "@avalanche/component-button": "^4.0.0-alpha.7",
     "@avalanche/object-grid": "^4.0.0-alpha.15",
-    "@types/jest": "^24.0.12",
+    "@types/jest": "^24.0.13",
     "@types/node-sass": "^4.11.0",
     "bootstrap": "4.0.0-beta",
     "coveralls": "^3.0.3",
-    "jest": "^24.7.1",
-    "lerna": "^3.13.4",
+    "jest": "^24.8.0",
+    "lerna": "^3.14.1",
     "node-sass": "^4.12.0",
-    "npm-check-updates": "^3.1.8",
+    "npm-check-updates": "^3.1.9",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0",
-    "typescript": "^3.4.5"
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1"
   },
   "jest": {
     "coveragePathIgnorePatterns": [

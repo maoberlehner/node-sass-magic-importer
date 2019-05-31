@@ -20,7 +20,7 @@ export function resolveGlobUrlFactory(
         });
       });
 
-      return [...filePaths];
+      return [...filePaths] as string[];
     }
 
     return null;
