@@ -33,28 +33,33 @@ sass.render({
 ```js
 // webpack.config.js
 const globImporter = require('node-sass-glob-importer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract([
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           {
             loader: 'css-loader'
           }, {
             loader: 'sass-loader',
             options: {
-              importer: globImporter()
+              sassOptions: {
+                importer: globImporter()
+              }
             }
           }
-        ])
+        ]
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'style.css'
     })
   ]
