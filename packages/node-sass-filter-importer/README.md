@@ -133,28 +133,34 @@ sass.render({
 ```js
 // webpack.config.js
 const filterImporter = require('node-sass-filter-importer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract([
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           {
             loader: 'css-loader'
-          }, {
+          },
+          {
             loader: 'sass-loader',
             options: {
-              importer: filterImporter()
+              sassOptions: {
+                importer: filterImporter()
+              }
             }
           }
-        ])
+        ]
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'style.css'
     })
   ]

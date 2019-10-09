@@ -112,28 +112,34 @@ Bootstrap is a mighty and robust framework but most of the time you use only cer
 ```js
 // webpack.config.js
 const selectorImporter = require('node-sass-selector-importer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract([
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           {
             loader: 'css-loader'
-          }, {
+          },
+          {
             loader: 'sass-loader',
             options: {
-              importer: selectorImporter()
+              sassOptions: {
+                importer: selectorImporter()
+              }
             }
           }
-        ])
+        ]
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'style.css'
     })
   ]
