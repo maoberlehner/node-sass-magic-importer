@@ -7,7 +7,7 @@
     "sass",
     "once-importer"
   ],
-  "version": "5.3.2",
+  "version": "5.3.3",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-once-importer",
   "license": "MIT",
@@ -26,7 +26,8 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "node-sass-magic-importer": "^5.3.2"
+    "node-sass-magic-importer": "^5.3.2",
+    "nodejs-md5": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^12.0.4",
