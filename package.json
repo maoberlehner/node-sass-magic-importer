@@ -34,7 +34,7 @@
     "coveralls": "^3.1.0",
     "jest": "^26.5.2",
     "lerna": "^3.22.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "npm-check-updates": "^9.0.4",
     "ts-jest": "^26.4.1",
     "tslint": "^6.1.3",
