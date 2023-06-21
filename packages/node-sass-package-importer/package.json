@@ -8,7 +8,7 @@
     "package-importer",
     "sass"
   ],
-  "version": "5.3.2",
+  "version": "5.3.3",
   "author": "Markus Oberlehner",
   "homepage": "https://github.com/maoberlehner/node-sass-magic-importer/tree/master/packages/node-sass-package-importer",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "url": "https://github.com/maoberlehner/node-sass-magic-importer/issues"
   },
   "dependencies": {
-    "node-sass-magic-importer": "^5.3.2"
+    "node-sass-magic-importer": "^5.3.3"
   },
   "devDependencies": {
     "@types/node": "^14.11.5",
